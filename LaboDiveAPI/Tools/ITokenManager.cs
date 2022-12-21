@@ -1,6 +1,6 @@
-﻿using LaboDiveAPI.Models.DTO.UserAPI;
+﻿using API.Models.DTO.UserAPI;
 
-namespace LaboDiveAPI.Tools
+namespace API.Tools
 {
     public interface ITokenManager
     {

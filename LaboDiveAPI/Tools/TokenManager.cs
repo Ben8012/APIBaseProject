@@ -1,10 +1,10 @@
-﻿using LaboDiveAPI.Models.DTO.UserAPI;
+﻿using API.Models.DTO.UserAPI;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace LaboDiveAPI.Tools
+namespace API.Tools
 {
     public class TokenManager
     {

@@ -1,11 +1,11 @@
 ﻿using BLL.Models.DTO.User;
 using BLL.Models.Forms;
-using LaboDiveAPI.Models.DTO.UserAPI;
-using LaboDiveAPI.Models.Forms;
+using API.Models.DTO.UserAPI;
+using API.Models.Forms;
 using System.Security.Principal;
 using System.Transactions;
 
-namespace LaboDiveAPI.Mappers
+namespace API.Mappers
 {
     public static class MapperAPI
     {

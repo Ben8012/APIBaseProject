@@ -1,4 +1,4 @@
-﻿namespace LaboDiveAPI.Models.DTO.UserAPI
+﻿namespace API.Models.DTO.UserAPI
 {
     public class User
     {

@@ -2,7 +2,7 @@ using BLL.Interfaces;
 using BLL.Services;
 using DAL.Interfaces;
 using DAL.Services;
-using LaboDiveAPI.Tools;
+using API.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

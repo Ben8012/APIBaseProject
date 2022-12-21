@@ -1,13 +1,13 @@
 ﻿using BLL.Interfaces;
-using LaboDiveAPI.Mappers;
-using LaboDiveAPI.Models.DTO.UserAPI;
-using LaboDiveAPI.Models.Forms;
-using LaboDiveAPI.Tools;
+using API.Mappers;
+using API.Models.DTO.UserAPI;
+using API.Models.Forms;
+using API.Tools;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LaboDiveAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

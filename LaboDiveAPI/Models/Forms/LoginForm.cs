@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LaboDiveAPI.Models.Forms
+namespace API.Models.Forms
 {
     public class LoginForm
     {
