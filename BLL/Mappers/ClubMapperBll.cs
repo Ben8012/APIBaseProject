@@ -25,7 +25,7 @@ namespace BLL.Mappers
             };
         }
 
-        internal static AddClubFormDal ToAddUserFromDal(this AddClubFormBll addClubFromBll)
+        internal static AddClubFormDal ToAddClubFromDal(this AddClubFormBll addClubFromBll)
         {
             return new AddClubFormDal()
             {
@@ -35,7 +35,7 @@ namespace BLL.Mappers
             };
         }
 
-        internal static UpdateClubFormDal ToUpdateUserFormDal(this UpdateClubFormBll updateClubFormBll)
+        internal static UpdateClubFormDal ToUpdateClubFormDal(this UpdateClubFormBll updateClubFormBll)
         {
             return new UpdateClubFormDal()
             {

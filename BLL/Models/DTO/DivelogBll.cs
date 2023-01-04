@@ -11,7 +11,7 @@
         public int WaterTemperature { get; set; }
         public DateTime DiveDate { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
         public int UserId { get; set; }
         public int EventId { get; set; }

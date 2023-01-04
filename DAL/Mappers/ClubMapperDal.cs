@@ -12,7 +12,6 @@ namespace DAL.Mappers
             {
                 Id = (int)reader["Id"],
                 Name = (string)reader["name"],
-               
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 IsActive = (bool)reader["isActive"],

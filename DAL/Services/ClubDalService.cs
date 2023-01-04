@@ -25,12 +25,25 @@ namespace DAL.Services
         }
         public int? Delete(int id)
         {
-            throw new NotImplementedException();
+            Command command = new Command("DELETE FROM [Club] WHERE Id=@Id", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
         }
 
         public IEnumerable<ClubDal> GetAll()
         {
-            Command command = new Command("SELECT Id, name, createdAt, updatedAt, isActive,  adress_id, creator_id FROM [Club];", false);
+            Command command = new Command("SELECT Id, name, createdAt, updatedAt, isActive, adress_Id, creator_Id FROM [Club];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToClubDal());
@@ -44,17 +57,85 @@ namespace DAL.Services
 
         public ClubDal? GetById(int id)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                ClubDal? club = GetClubById(id);
+                if (club == null) throw new Exception("Id invalide");
+                return club;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
         }
 
         public ClubDal? Insert(AddClubFormDal form)
         {
-            throw new NotImplementedException();
+
+            Command command = new Command("INSERT INTO [Club](name, createdAt, isActive,creator_Id, adress_Id) OUTPUT inserted.id VALUES(@name, GETDATE(), 1,@creator_Id , @adress_Id )", false);
+            command.AddParameter("name", form.Name);
+            command.AddParameter("adress_Id", form.AdressId);
+            command.AddParameter("creator_Id", form.CreatorId);
+           
+            try
+            {
+                int? id = (int?)_connection.ExecuteScalar(command); // recuperer l'id du contact inseré
+                if (id.HasValue)
+                {
+                    ClubDal? club = GetClubById(id.Value);
+                    return club;
+                }
+                else
+                {
+                    throw new Exception("probleme de recuperation de l'id lors de l'insertion");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public ClubDal? Update(UpdateClubFormDal form)
         {
-            throw new NotImplementedException();
+            Command command = new Command("UPDATE [Club] SET name = @name, adress_Id=@adress_Id, creator_Id=@creator_ID OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", form.Id);
+            command.AddParameter("name", form.Name);
+            command.AddParameter("adress_Id", form.AdressId);
+            command.AddParameter("creator_Id", form.CreatorId);
+           
+            try
+            {
+                int? resultid = (int?)_connection.ExecuteScalar(command);
+                if (!resultid.HasValue) throw new Exception("probleme de recuperation de l'id lors de la mise a jour");
+                ClubDal? club = GetClubById(resultid.Value);
+                if (club is null) throw new Exception("probleme de recuperation de l'utilisateur lors de la mise a jour");
+                return club;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
+
+
+        private ClubDal? GetClubById(int id)
+        {
+            Command command = new Command("SELECT Id, name, createdAt, updatedAt, isActive,  adress_id, creator_id FROM [Club] WHERE Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToClubDal()).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
     }
 }

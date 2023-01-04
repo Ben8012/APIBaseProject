@@ -1,10 +1,6 @@
 ﻿using API.Models.DTO;
-using API.Models.DTO.UserAPI;
 using API.Models.Forms.Club;
-using API.Models.Forms.UserAPI;
 using BLL.Models.DTO;
-using BLL.Models.DTO.User;
-using BLL.Models.Forms;
 using BLL.Models.Forms.Club;
 
 namespace API.Mappers
@@ -25,7 +21,7 @@ namespace API.Mappers
             };
         }
 
-        internal static AddClubFormBll ToAddUserFromBll(this AddClubForm addClubFrom)
+        internal static AddClubFormBll ToAddClubFromBll(this AddClubForm addClubFrom)
         {
             return new AddClubFormBll()
             {
@@ -35,7 +31,7 @@ namespace API.Mappers
             };
         }
 
-        internal static UpdateClubFormBll ToUpdateUserFormBll(this UpdateClubForm updateClubForm)
+        internal static UpdateClubFormBll ToUpdateClubFormBll(this UpdateClubForm updateClubForm)
         {
             return new UpdateClubFormBll()
             {

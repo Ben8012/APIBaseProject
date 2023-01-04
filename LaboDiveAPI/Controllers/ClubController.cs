@@ -1,6 +1,9 @@
-﻿using API.Models.Forms.Club;
+﻿using API.Mappers;
+using API.Models.Forms.Club;
 using API.Models.Forms.Insurance;
 using API.Tools;
+using BLL.Interfaces;
+using BLL.Models.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,13 +13,13 @@ namespace API.Controllers
     [ApiController]
     public class ClubController : ControllerBase
     {
-
+        private readonly IClubBll _clubBll;
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
 
-        public ClubController(ILogger<UserController> logger, ITokenManager token)
+        public ClubController(ILogger<UserController> logger, ITokenManager token, IClubBll clubBll)
         {
-
+            _clubBll= clubBll;
             _logger = logger;
             _token = token;
         }
@@ -27,7 +30,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_clubBll.GetAll().Select(u => u.ToClub()));
             }
             catch (Exception ex)
             {
@@ -40,7 +43,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_clubBll.GetById(id)?.ToClub());
             }
             catch (Exception ex)
             {
@@ -60,7 +63,7 @@ namespace API.Controllers
 
             try
             {
-                return Ok();
+                return Ok(_clubBll.Insert(form.ToAddClubFromBll())?.ToClub());
             }
             catch (Exception ex)
             {
@@ -76,7 +79,7 @@ namespace API.Controllers
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok();
+                return Ok(_clubBll.Update(form.ToUpdateClubFormBll())?.ToClub());
             }
             catch (Exception ex)
             {
@@ -90,7 +93,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_clubBll.Delete(id));
 
             }
             catch (Exception ex)

@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[Message]
 (
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
 	[sender_Id] INT NOT NULL,
 	[reciever_Id] INT NOT NULL,
 	[content] NVARCHAR(1000) NOT NULL,

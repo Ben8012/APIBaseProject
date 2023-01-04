@@ -22,6 +22,9 @@ builder.Services.AddScoped<ITokenManager, TokenManager>();
 //injection user
 builder.Services.AddScoped<IUserDal, UserDalService>();
 builder.Services.AddScoped<IUserBll, UserBllService>();
+//injection club
+builder.Services.AddScoped<IClubDal, ClubDalService>();
+builder.Services.AddScoped<IClubBll, ClubBllService>();
 
 
 string connectionString = builder.Configuration.GetConnectionString("Labo");
