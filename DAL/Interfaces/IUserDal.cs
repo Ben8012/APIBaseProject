@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using DAL.Models.DTO;
 using DAL.Models.Forms;
 using System;
 using System.Collections.Generic;

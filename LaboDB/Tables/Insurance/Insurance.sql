@@ -1,8 +1,7 @@
 ﻿CREATE TABLE [dbo].[Insurance]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [name] NVARCHAR(50) NOT NULL,
-    [refNumber] NVARCHAR(50) NOT NULL,
     [picture] NVARCHAR(50) NULL,
     [createdAt] DATETIME2 NOT NULL,
     [updatedAt] DATETIME2 NULL,

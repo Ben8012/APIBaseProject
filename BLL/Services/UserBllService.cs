@@ -10,7 +10,7 @@ using BLL.Interfaces;
 using DAL.Interfaces;
 using BLL.Models.Forms;
 using BLL.Mappers;
-using BLL.Models.DTO.User;
+using BLL.Models.DTO;
 
 namespace BLL.Services
 {

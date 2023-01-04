@@ -8,10 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Common;
 using Tools;
-using DAL.Models;
 using DAL.Models.Forms;
 using DAL.Interfaces;
 using Org.BouncyCastle.Crypto.Generators;
+using DAL.Models.DTO;
 
 namespace DAL.Services
 {
@@ -28,7 +28,7 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAll()
         {
-            Command command = new Command("SELECT Id, LastName, FirstName, Email, Birthdate, CreatedAt, UpdatedAt FROM [User];", false);
+            Command command = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id FROM [User];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToUserDal());
@@ -59,12 +59,20 @@ namespace DAL.Services
 
         public UserDal? Insert(AddUserFormDal form)
         {
-            Command command = new Command("SP_InsertUser", true);
-            command.AddParameter("LastName", form.LastName);
-            command.AddParameter("FirstName", form.FirstName);
-            command.AddParameter("Email", form.Email);
-            command.AddParameter("Birthdate", form.Birthdate);
-            command.AddParameter("Password", form.Password);
+            Command command = new Command("INSERT INTO [User](firstname, lastname, email, passwd, phone, role, birthDate, createdAt, isActive, insuranceNumber, insurance_Id,adress_Id) OUTPUT inserted.id VALUES(@firstname, @lastname, @email,@passwd , @phone , @role, @birthDate, @createdAt, @isActive,@insuranceNumber,@insurance_Id,@adress_Id)", false);
+            command.AddParameter("lastname", form.LastName);
+            command.AddParameter("firstname", form.FirstName);
+            command.AddParameter("email", form.Email);
+            command.AddParameter("passwd", form.Password);
+            command.AddParameter("phone", form.Phone == null ? DBNull.Value : form.Phone);
+            command.AddParameter("role", "user");
+            command.AddParameter("birthDate", form.Birthdate);
+            command.AddParameter("createdAt", DateTime.Now);
+            command.AddParameter("isActive",1);
+            command.AddParameter("insuranceNumber", form.InsuranceNumber == null ? DBNull.Value : form.InsuranceNumber);
+            command.AddParameter("insurance_Id", form.InsuranceId == 0 ? DBNull.Value :form.InsuranceId);
+            command.AddParameter("adress_Id", form.AdressId);
+
 
             try
             {
@@ -90,12 +98,17 @@ namespace DAL.Services
 
         public UserDal? Update(UpdateUserFormDal form)
         {
-            Command command = new Command($"SP_UpdateUser", true);
+            Command command = new Command("UPDATE [User] SET firstname = @firstname, lastname=@lastname, email=@email, phone=@phone, birthDate=@birthDate, updatedAt=@updatedAt, insuranceNumber=@insuranceNumber, insurance_Id=@insurance_Id, adress_Id=@adress_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
-            command.AddParameter("FirstName", form.FirstName);
-            command.AddParameter("Email", form.Email);
-            command.AddParameter("Birthdate", form.Birthdate);
-            command.AddParameter("LastName", form.LastName);
+            command.AddParameter("lastname", form.LastName);
+            command.AddParameter("firstname", form.FirstName);
+            command.AddParameter("email", form.Email);
+            command.AddParameter("phone", form.Phone == null ? DBNull.Value : form.Phone);
+            command.AddParameter("birthDate", form.Birthdate);
+            command.AddParameter("updatedAt", DateTime.Now);
+            command.AddParameter("insuranceNumber", form.InsuranceNumber == null ? DBNull.Value : form.InsuranceNumber);
+            command.AddParameter("insurance_Id", form.InsuranceId == 0 ? DBNull.Value : form.InsuranceId);
+            command.AddParameter("adress_Id", form.AdressId);
 
             try
             {
@@ -134,7 +147,7 @@ namespace DAL.Services
 
         private UserDal? GetUserById(int id)
         {
-            Command command = new Command("SELECT Id, LastName, FirstName, Email, Birthdate, CreatedAt, UpdatedAt FROM [User] WHERE Id = @Id;", false);
+            Command command = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id FROM [User] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -151,7 +164,7 @@ namespace DAL.Services
         public UserDal Login(LoginFormDal form)
         {
             string? passwordHash;
-            Command command = new Command("SELECT Password FROM [User] WHERE Email = @Email ", false);
+            Command command = new Command("SELECT passwd FROM [User] WHERE email = @Email ", false);
             command.AddParameter("Email", form.Email);
             try
             {
@@ -173,7 +186,7 @@ namespace DAL.Services
                 throw ex;
             }
             
-            Command command2 = new Command("SELECT Id, LastName, FirstName, Email, Birthdate, CreatedAt, UpdatedAt FROM [User] WHERE Email = @Email", false);
+            Command command2 = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id FROM [User] WHERE Email = @Email", false);
             command2.AddParameter("Email", form.Email);
 
             try

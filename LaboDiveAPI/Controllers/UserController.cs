@@ -1,11 +1,11 @@
 ﻿using BLL.Interfaces;
 using API.Mappers;
 using API.Models.DTO.UserAPI;
-using API.Models.Forms;
 using API.Tools;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using API.Models.Forms.UserAPI;
 
 namespace API.Controllers
 {
@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             try
@@ -39,7 +39,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetById/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             try
@@ -54,14 +54,18 @@ namespace API.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost("Insert")]
+        [HttpPost]
         public IActionResult Insert([FromBody]AddUserForm form)
         {
-            //form.Password = "Test1234=";
-            //form.Email = "benjamin@mail.com";
-            //form.FirstName = "Benjamin";
-            //form.LastName = "Sterckx";
-            //form.Birthdate = new DateTime(1980,12,10);
+            form.Password = "Test1234=";
+            form.Email = "benjamin@mail.com";
+            form.FirstName = "Benjamin";
+            form.LastName = "Sterckx";
+            form.Birthdate = new DateTime(1980,12,10);
+            form.AdressId = 1;
+            form.Phone = null;
+            form.InsuranceNumber = null;
+            
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
 
             form.Password = BCrypt.Net.BCrypt.HashPassword(form.Password);
@@ -77,8 +81,8 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("Update")]
-        public IActionResult Update([FromBody] UpdateUserForm form)
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] UpdateUserForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
@@ -92,7 +96,7 @@ namespace API.Controllers
 
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             try
@@ -107,11 +111,11 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost("/api/Login")]
         public IActionResult Login([FromBody]LoginForm form)
         {
-            //form.Email = "benjamin@mail.com";
-            //form.Password = "Test1234=";
+            form.Email = "benjamin@mail.com";
+            form.Password = "Test1234=";
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState Login est invalide" });
             try
             {

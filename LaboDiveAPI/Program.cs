@@ -16,6 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+//injection token
+builder.Services.AddScoped<ITokenManager, TokenManager>();
+
 //injection user
 builder.Services.AddScoped<IUserDal, UserDalService>();
 builder.Services.AddScoped<IUserBll, UserBllService>();

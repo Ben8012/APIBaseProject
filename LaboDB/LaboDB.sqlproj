@@ -65,6 +65,7 @@
     <Folder Include="Tables\Club" />
     <Folder Include="Tables\Event" />
     <Folder Include="Tables\Divelog" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\User.sql" />
@@ -90,5 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="LaboDB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Script.PostDeployment1.sql" />
   </ItemGroup>
 </Project>

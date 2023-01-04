@@ -1,4 +1,4 @@
-﻿using BLL.Models.DTO.User;
+﻿using BLL.Models.DTO;
 using BLL.Models.Forms;
 using System;
 using System.Collections.Generic;
