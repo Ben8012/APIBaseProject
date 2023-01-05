@@ -7,7 +7,7 @@ namespace BLL.Mappers
 {
     public static class DiveplaceMapperBll
     {
-        internal static DiveplaceBll ToDiveplace(this DiveplaceDal diveplaceDal)
+        internal static DiveplaceBll ToDiveplaceBll(this DiveplaceDal diveplaceDal)
         {
             return new DiveplaceBll()
             {

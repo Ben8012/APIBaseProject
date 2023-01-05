@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[Divelog]
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
-	[diveType] NVARCHAR NOT NULL,
-	[description] NVARCHAR NULL,
+	[diveType] NVARCHAR(50) NOT NULL,
+	[description] NVARCHAR(250) NULL,
 	[duration] INT NOT NULL,
 	[maxDeep] INT NOT NULL,
 	[airTemperature] INT NULL,

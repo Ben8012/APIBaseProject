@@ -1,7 +1,8 @@
 ﻿using DAL.Interfaces;
 using DAL.Mappers;
 using DAL.Models.DTO;
-using DAL.Models.Forms.Club;
+using DAL.Models.Forms.Event;
+using DAL.Models.Forms.Insurance;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,20 +13,19 @@ using Tools;
 
 namespace DAL.Services
 {
-    public class ClubDalService : IClubDal
+    public class InsuranceDalService : IInsuranceDal
     {
-
         private readonly Connection _connection;
         private readonly ILogger _logger;
 
-        public ClubDalService(ILogger<ClubDalService> logger, Connection connection)
+        public InsuranceDalService(ILogger<InsuranceDalService> logger, Connection connection)
         {
             _connection = connection;
             _logger = logger;
         }
         public int? Delete(int id)
         {
-            Command command = new Command("DELETE FROM [Club] WHERE Id=@Id", false);
+            Command command = new Command("DELETE FROM [Insurance] WHERE Id=@Id", false);
             command.AddParameter("Id", id);
             try
             {
@@ -41,12 +41,12 @@ namespace DAL.Services
             }
         }
 
-        public IEnumerable<ClubDal> GetAll()
+        public IEnumerable<InsuranceDal> GetAll()
         {
-            Command command = new Command("SELECT Id, name, createdAt, updatedAt, isActive, adress_Id, creator_Id FROM [Club];", false);
+            Command command = new Command("SELECT Id, [name], picture, createdAt, updatedAt, isActive, adress_Id FROM [Insurance];", false);
             try
             {
-                return _connection.ExecuteReader(command, dr => dr.ToClubDal());
+                return _connection.ExecuteReader(command, dr => dr.ToInsuranceDal());
             }
             catch (Exception ex)
             {
@@ -55,14 +55,14 @@ namespace DAL.Services
             }
         }
 
-        public ClubDal? GetById(int id)
+        public InsuranceDal? GetById(int id)
         {
 
             try
             {
-                ClubDal? club = GetClubById(id);
-                if (club == null) throw new Exception("Id invalide");
-                return club;
+                InsuranceDal? insurance = GetInsuranceById(id);
+                if (insurance == null) throw new Exception("Id invalide");
+                return insurance;
             }
             catch (Exception ex)
             {
@@ -71,21 +71,23 @@ namespace DAL.Services
             }
         }
 
-        public ClubDal? Insert(AddClubFormDal form)
+        public InsuranceDal? Insert(AddInsuranceFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Club](name, createdAt, isActive,creator_Id, adress_Id) OUTPUT inserted.id VALUES(@name, GETDATE(), 1,@creator_Id , @adress_Id )", false);
+            Command command = new Command("INSERT INTO [Insurance](name, picture, createdAt, isActive, adress_Id ) OUTPUT inserted.id VALUES( @name, @picture, @createdAt, @isActive, @adress_Id )", false);
             command.AddParameter("name", form.Name);
+            command.AddParameter("picture", form.Picture);
+            command.AddParameter("createdAt", DateTime.Now);
+            command.AddParameter("isActive", 1);
             command.AddParameter("adress_Id", form.AdressId);
-            command.AddParameter("creator_Id", form.CreatorId);
            
             try
             {
                 int? id = (int?)_connection.ExecuteScalar(command); // recuperer l'id du contact inseré
                 if (id.HasValue)
                 {
-                    ClubDal? club = GetClubById(id.Value);
-                    return club;
+                    InsuranceDal? eventD = GetInsuranceById(id.Value);
+                    return eventD;
                 }
                 else
                 {
@@ -98,21 +100,22 @@ namespace DAL.Services
             }
         }
 
-        public ClubDal? Update(UpdateClubFormDal form)
+        public InsuranceDal? Update(UpdateInsuranceFormDal form)
         {
-            Command command = new Command("UPDATE [Club] SET name = @name, adress_Id=@adress_Id, creator_Id=@creator_ID OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Insurance] SET name = @name , picture = @picture , updatedAt = @updatedAt , adress_Id = @adress_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
-            command.AddParameter("adress_Id", form.AdressId);
-            command.AddParameter("creator_Id", form.CreatorId);
-           
+            command.AddParameter("picture", form.Picture);
+            command.AddParameter("updatedAt", DateTime.Now);
+            command.AddParameter("adress_Id", form.AdressId );
+          
             try
             {
                 int? resultid = (int?)_connection.ExecuteScalar(command);
                 if (!resultid.HasValue) throw new Exception("probleme de recuperation de l'id lors de la mise a jour");
-                ClubDal? club = GetClubById(resultid.Value);
-                if (club is null) throw new Exception("probleme de recuperation de l'utilisateur lors de la mise a jour");
-                return club;
+                InsuranceDal? insurance = GetInsuranceById(resultid.Value);
+                if (insurance is null) throw new Exception("probleme de recuperation de l'utilisateur lors de la mise a jour");
+                return insurance;
             }
             catch (Exception ex)
             {
@@ -122,13 +125,13 @@ namespace DAL.Services
         }
 
 
-        private ClubDal? GetClubById(int id)
+        private InsuranceDal? GetInsuranceById(int id)
         {
-            Command command = new Command("SELECT Id, name, createdAt, updatedAt, isActive,  adress_id, creator_id FROM [Club] WHERE Id = @Id;", false);
+            Command command = new Command("SELECT Id, [name], picture, createdAt, updatedAt, isActive, adress_Id FROM [Insurance] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
-                return _connection.ExecuteReader(command, dr => dr.ToClubDal()).SingleOrDefault();
+                return _connection.ExecuteReader(command, dr => dr.ToInsuranceDal()).SingleOrDefault();
             }
             catch (Exception ex)
             {
@@ -136,6 +139,5 @@ namespace DAL.Services
                 throw ex;
             }
         }
-
     }
 }

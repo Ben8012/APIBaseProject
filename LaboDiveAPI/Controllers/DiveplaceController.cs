@@ -1,5 +1,9 @@
-﻿using API.Models.Forms.Insurance;
+﻿using API.Mappers;
+using API.Models.Forms.Divelog;
+using API.Models.Forms.Diveplace;
+using API.Models.Forms.Insurance;
 using API.Tools;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,12 +14,13 @@ namespace API.Controllers
     public class DiveplaceController : ControllerBase
     {
 
+        private readonly IDiveplaceBll _diveplaceBll;
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
 
-        public DiveplaceController(ILogger<UserController> logger, ITokenManager token)
+        public DiveplaceController(ILogger<DiveplaceController> logger, ITokenManager token, IDiveplaceBll diveplaceBll)
         {
-
+            _diveplaceBll = diveplaceBll;
             _logger = logger;
             _token = token;
         }
@@ -26,7 +31,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_diveplaceBll.GetAll().Select(u => u.ToDiveplace()));
             }
             catch (Exception ex)
             {
@@ -39,7 +44,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_diveplaceBll.GetById(id)?.ToDiveplace());
             }
             catch (Exception ex)
             {
@@ -50,7 +55,7 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public IActionResult Insert([FromBody] AddInsuranceForm form)
+        public IActionResult Insert([FromBody] AddDiveplaceForm form)
         {
 
 
@@ -59,7 +64,7 @@ namespace API.Controllers
 
             try
             {
-                return Ok();
+                return Ok(_diveplaceBll.Insert(form.ToAddDiveplaceFromBll())?.ToDiveplace());
             }
             catch (Exception ex)
             {
@@ -69,13 +74,13 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateInsuranceForm form)
+        [HttpPut]
+        public IActionResult Update([FromBody] UpdateDiveplaceForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok();
+                return Ok(_diveplaceBll.Update(form.ToUpdateDiveplaceFormBll())?.ToDiveplace());
             }
             catch (Exception ex)
             {
@@ -89,7 +94,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_diveplaceBll.Delete(id));
 
             }
             catch (Exception ex)

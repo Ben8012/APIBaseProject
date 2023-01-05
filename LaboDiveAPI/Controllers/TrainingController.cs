@@ -1,5 +1,9 @@
-﻿using API.Models.Forms.Insurance;
+﻿using API.Mappers;
+using API.Models.Forms.Insurance;
+using API.Models.Forms.Organisation;
+using API.Models.Forms.Training;
 using API.Tools;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,13 +13,13 @@ namespace API.Controllers
     [ApiController]
     public class TrainingController : ControllerBase
     {
-
+        private readonly ITrainingBll _trainingBll;
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
 
-        public TrainingController(ILogger<UserController> logger, ITokenManager token)
+        public TrainingController(ILogger<TrainingController> logger, ITokenManager token, ITrainingBll trainingBll)
         {
-
+            _trainingBll = trainingBll;
             _logger = logger;
             _token = token;
         }
@@ -26,7 +30,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_trainingBll.GetAll().Select(u => u.ToTraining()));
             }
             catch (Exception ex)
             {
@@ -39,7 +43,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_trainingBll.GetById(id)?.ToTraining());
             }
             catch (Exception ex)
             {
@@ -50,7 +54,7 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public IActionResult Insert([FromBody] AddInsuranceForm form)
+        public IActionResult Insert([FromBody] AddTrainingForm form)
         {
 
 
@@ -59,7 +63,7 @@ namespace API.Controllers
 
             try
             {
-                return Ok();
+                return Ok(_trainingBll.Insert(form.ToAddTrainingFromBll())?.ToTraining());
             }
             catch (Exception ex)
             {
@@ -69,13 +73,13 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateInsuranceForm form)
+        [HttpPut]
+        public IActionResult Update([FromBody] UpdateTrainingForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok();
+                return Ok(_trainingBll.Update(form.ToUpdateTrainingFormBll())?.ToTraining());
             }
             catch (Exception ex)
             {
@@ -89,7 +93,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_trainingBll.Delete(id));
 
             }
             catch (Exception ex)

@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using System.Data.SqlClient;
 using System.Text;
 using Tools;
+using DAL.Models.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,27 @@ builder.Services.AddScoped<IUserBll, UserBllService>();
 //injection club
 builder.Services.AddScoped<IClubDal, ClubDalService>();
 builder.Services.AddScoped<IClubBll, ClubBllService>();
+//injection divelog
+builder.Services.AddScoped<IDivelogDal, DivelogDalService>();
+builder.Services.AddScoped<IDivelogBll, DivelogBllService>();
+//injection diveplace
+builder.Services.AddScoped<IDiveplaceDal, DiveplaceDalService>();
+builder.Services.AddScoped<IDiveplaceBll, DiveplaceBllService>();
+//injection event
+builder.Services.AddScoped<IEventDal, EventDalService>();
+builder.Services.AddScoped<IEventBll, EventBllService>();
+//injection insurance
+builder.Services.AddScoped<IInsuranceDal, InsuranceDalService>();
+builder.Services.AddScoped<IInsuranceBll, InsuranceBllService>();
+//injection message
+builder.Services.AddScoped<IMessageDal, MessageDalService>();
+builder.Services.AddScoped<IMessageBll, MessageBllService>();
+//injection organisation
+builder.Services.AddScoped<IOrganisationDal, OrganisationDalService>();
+builder.Services.AddScoped<IOrganisationBll, OrganisationBllService>();
+//injection organisation
+builder.Services.AddScoped<ITrainingDal, TrainingDalService>();
+builder.Services.AddScoped<ITrainingBll, TrainingBllService>();
 
 
 string connectionString = builder.Configuration.GetConnectionString("Labo");

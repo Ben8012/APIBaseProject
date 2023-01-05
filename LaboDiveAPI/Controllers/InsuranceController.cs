@@ -1,4 +1,6 @@
-﻿using API.Models.DTO.UserAPI;
+﻿using API.Mappers;
+using API.Models.DTO.UserAPI;
+using API.Models.Forms.Event;
 using API.Models.Forms.Insurance;
 using API.Models.Forms.UserAPI;
 using API.Tools;
@@ -13,14 +15,13 @@ namespace API.Controllers
     [ApiController]
     public class InsuranceController : ControllerBase
     {
-
-       
+        private readonly IInsuranceBll _insuranceBll;
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
 
-        public InsuranceController(ILogger<UserController> logger, ITokenManager token)
+        public InsuranceController(ILogger<InsuranceController> logger, ITokenManager token, IInsuranceBll insuranceBll)
         {
-            
+            _insuranceBll = insuranceBll;
             _logger = logger;
             _token = token;
         }
@@ -31,7 +32,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_insuranceBll.GetAll().Select(u => u.ToInsurance()));
             }
             catch (Exception ex)
             {
@@ -44,7 +45,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_insuranceBll.GetById(id)?.ToInsurance());
             }
             catch (Exception ex)
             {
@@ -53,18 +54,18 @@ namespace API.Controllers
         }
 
 
-       
+
         [HttpPost]
         public IActionResult Insert([FromBody] AddInsuranceForm form)
         {
-            
+
 
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
 
-            
+
             try
             {
-                return Ok();
+                return Ok(_insuranceBll.Insert(form.ToAddInsuranceFromBll())?.ToInsurance());
             }
             catch (Exception ex)
             {
@@ -74,13 +75,13 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateInsuranceForm form)
+        [HttpPut]
+        public IActionResult Update([FromBody] UpdateInsuranceForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok();
+                return Ok(_insuranceBll.Update(form.ToUpdateInsuranceFormBll())?.ToInsurance());
             }
             catch (Exception ex)
             {
@@ -94,7 +95,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_insuranceBll.Delete(id));
 
             }
             catch (Exception ex)
@@ -103,6 +104,7 @@ namespace API.Controllers
             }
         }
 
-      
+
+
     }
 }

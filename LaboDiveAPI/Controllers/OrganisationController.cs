@@ -1,6 +1,10 @@
 ﻿
+using API.Mappers;
 using API.Models.Forms.Insurance;
+using API.Models.Forms.Message;
+using API.Models.Forms.Organisation;
 using API.Tools;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,14 +14,13 @@ namespace API.Controllers
     [ApiController]
     public class OrganisationController : ControllerBase
     {
-
-
+        private readonly IOrganisationBll _organisationBll;
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
 
-        public OrganisationController(ILogger<UserController> logger, ITokenManager token)
+        public OrganisationController(ILogger<OrganisationController> logger, ITokenManager token, IOrganisationBll organisationBll)
         {
-
+            _organisationBll = organisationBll;
             _logger = logger;
             _token = token;
         }
@@ -28,7 +31,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_organisationBll.GetAll().Select(u => u.ToOrganisation()));
             }
             catch (Exception ex)
             {
@@ -41,7 +44,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_organisationBll.GetById(id)?.ToOrganisation());
             }
             catch (Exception ex)
             {
@@ -52,7 +55,7 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public IActionResult Insert([FromBody] AddInsuranceForm form)
+        public IActionResult Insert([FromBody] AddOrganisationForm form)
         {
 
 
@@ -61,7 +64,7 @@ namespace API.Controllers
 
             try
             {
-                return Ok();
+                return Ok(_organisationBll.Insert(form.ToAddOrganisationFromBll())?.ToOrganisation());
             }
             catch (Exception ex)
             {
@@ -71,13 +74,13 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateInsuranceForm form)
+        [HttpPut]
+        public IActionResult Update([FromBody] UpdateOrganisationForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok();
+                return Ok(_organisationBll.Update(form.ToUpdateOrganisationFormBll())?.ToOrganisation());
             }
             catch (Exception ex)
             {
@@ -91,7 +94,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_organisationBll.Delete(id));
 
             }
             catch (Exception ex)

@@ -1,5 +1,9 @@
-﻿using API.Models.Forms.Insurance;
+﻿using API.Mappers;
+using API.Models.Forms.Club;
+using API.Models.Forms.Divelog;
+using API.Models.Forms.Insurance;
 using API.Tools;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,12 +14,13 @@ namespace API.Controllers
     public class DivelogController : ControllerBase
     {
 
+        private readonly IDivelogBll _divelogBll;
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
 
-        public DivelogController(ILogger<UserController> logger, ITokenManager token)
+        public DivelogController(ILogger<DivelogController> logger, ITokenManager token, IDivelogBll divelogBll)
         {
-
+            _divelogBll = divelogBll;
             _logger = logger;
             _token = token;
         }
@@ -26,7 +31,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_divelogBll.GetAll().Select(u => u.ToDivelog()));
             }
             catch (Exception ex)
             {
@@ -39,7 +44,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_divelogBll.GetById(id)?.ToDivelog());
             }
             catch (Exception ex)
             {
@@ -50,7 +55,7 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public IActionResult Insert([FromBody] AddInsuranceForm form)
+        public IActionResult Insert([FromBody] AddDivelogForm form)
         {
 
 
@@ -59,7 +64,7 @@ namespace API.Controllers
 
             try
             {
-                return Ok();
+                return Ok(_divelogBll.Insert(form.ToAddDivelogFromBll())?.ToDivelog());
             }
             catch (Exception ex)
             {
@@ -69,13 +74,13 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateInsuranceForm form)
+        [HttpPut]
+        public IActionResult Update([FromBody] UpdateDivelogForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok();
+                return Ok(_divelogBll.Update(form.ToUpdateDivelogFormBll())?.ToDivelog());
             }
             catch (Exception ex)
             {
@@ -89,7 +94,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_divelogBll.Delete(id));
 
             }
             catch (Exception ex)

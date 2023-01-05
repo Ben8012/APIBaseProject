@@ -1,5 +1,8 @@
-﻿using API.Models.Forms.Insurance;
+﻿using API.Mappers;
+using API.Models.Forms.Insurance;
+using API.Models.Forms.Message;
 using API.Tools;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,13 +12,13 @@ namespace API.Controllers
     [ApiController]
     public class MessageController : ControllerBase
     {
-
+        private readonly IMessageBll _messageBll;
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
 
-        public MessageController(ILogger<UserController> logger, ITokenManager token)
+        public MessageController(ILogger<MessageController> logger, ITokenManager token, IMessageBll messageBll)
         {
-
+            _messageBll = messageBll;
             _logger = logger;
             _token = token;
         }
@@ -26,7 +29,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_messageBll.GetAll().Select(u => u.ToMessage()));
             }
             catch (Exception ex)
             {
@@ -39,7 +42,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_messageBll.GetById(id)?.ToMessage());
             }
             catch (Exception ex)
             {
@@ -50,7 +53,7 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public IActionResult Insert([FromBody] AddInsuranceForm form)
+        public IActionResult Insert([FromBody] AddMessageForm form)
         {
 
 
@@ -59,7 +62,7 @@ namespace API.Controllers
 
             try
             {
-                return Ok();
+                return Ok(_messageBll.Insert(form.ToAddMessageFromBll())?.ToMessage());
             }
             catch (Exception ex)
             {
@@ -69,13 +72,13 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateInsuranceForm form)
+        [HttpPut]
+        public IActionResult Update([FromBody] UpdateMessageForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok();
+                return Ok(_messageBll.Update(form.ToUpdateMessageFormBll())?.ToMessage());
             }
             catch (Exception ex)
             {
@@ -89,7 +92,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_messageBll.Delete(id));
 
             }
             catch (Exception ex)

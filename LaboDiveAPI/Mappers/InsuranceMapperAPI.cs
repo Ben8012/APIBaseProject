@@ -9,7 +9,7 @@ namespace API.Mappers
 {
     public static class InsuranceMapperAPI
     {
-        internal static Insurance ToEvent(this InsuranceBll insuranceBll)
+        internal static Insurance ToInsurance(this InsuranceBll insuranceBll)
         {
             return new Insurance()
             {

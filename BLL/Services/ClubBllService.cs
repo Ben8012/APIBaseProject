@@ -18,7 +18,7 @@ namespace BLL.Services
         private readonly ILogger _logger;
         private readonly IClubDal _clubDal;
 
-        public ClubBllService(ILogger<UserBllService> logger, IClubDal clubDal)
+        public ClubBllService(ILogger<ClubBllService> logger, IClubDal clubDal)
         {
             _clubDal = clubDal;
             _logger = logger;

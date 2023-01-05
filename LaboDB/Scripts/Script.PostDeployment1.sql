@@ -116,7 +116,17 @@ INSERT INTO Diveplace([name],picture,map,createdAt,isActive,adress_Id) VALUES
     
 
 
+INSERT INTO [Training]([name],prerequis,picture,isSpeciality, createdAt, isActive, organisation_Id) VALUES
+    ('OWD','rien','image.jpg',0,GETDATE(),1,1)
 
+INSERT INTO [Club]([Name],createdAt, isActive,adress_Id,creator_Id)VALUES
+    ('EYD',GETDATE(),1,1,1)
+
+INSERT INTO [Event]([name], startDate, endDate, createdAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id) VALUES
+    ('Loisir', '2023-01-01', '2023-01-02', GETDATE(), 1 , 1, 1,1,1)
+
+INSERT INTO Divelog(diveType,[description],duration,maxDeep, airTemperature, waterTemperature,diveDate, createdAt,isActive,[user_Id],event_Id) VALUES
+    ('formation','chouette',45,15,15,16,'2022-01-01',GETDATE(),1,1,1)
 
 
 

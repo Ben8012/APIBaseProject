@@ -17,7 +17,7 @@ namespace API.Controllers
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
 
-        public ClubController(ILogger<UserController> logger, ITokenManager token, IClubBll clubBll)
+        public ClubController(ILogger<ClubController> logger, ITokenManager token, IClubBll clubBll)
         {
             _clubBll= clubBll;
             _logger = logger;
@@ -73,8 +73,8 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] UpdateClubForm form)
+        [HttpPut]
+        public IActionResult Update([FromBody] UpdateClubForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try

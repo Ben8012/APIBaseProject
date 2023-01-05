@@ -20,8 +20,8 @@ namespace DAL.Mappers
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 IsActive = (bool)reader["isActive"],
-                UserId = (int)reader["creator_id"],
-                EventId = reader["event_id"] is DBNull ? 0 : (int)reader["adress_id"]
+                UserId = (int)reader["user_Id"],
+                EventId = reader["event_Id"] is DBNull ? 0 : (int)reader["event_Id"]
             };
 
         }

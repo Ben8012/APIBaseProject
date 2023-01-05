@@ -7,7 +7,7 @@ namespace BLL.Mappers
 {
     public static class InsuranceMapperBll
     {
-        internal static InsuranceBll ToEventBll(this InsuranceDal insuranceDal)
+        internal static InsuranceBll ToInsuranceBll(this InsuranceDal insuranceDal)
         {
             return new InsuranceBll()
             {
