@@ -20,5 +20,8 @@ namespace BLL.Interfaces
         DivelogBll? Update(UpdateDivelogFormBll form);
 
         int? Delete(int id);
+        int? Enable(int id);
+
+        int? Disable(int id);
     }
 }

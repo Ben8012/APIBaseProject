@@ -4,6 +4,7 @@ using BLL.Models.DTO;
 using BLL.Models.Forms.Event;
 using BLL.Models.Forms.Insurance;
 using DAL.Interfaces;
+using DAL.Models.DTO;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,16 @@ namespace BLL.Services
         public InsuranceBll? Update(UpdateInsuranceFormBll form)
         {
             return _insuranceDal.Update(form.ToUpdateInsuranceFormDal())?.ToInsuranceBll();
+        }
+
+        public int? Disable(int id)
+        {
+            return _insuranceDal.Disable(id);
+        }
+
+        public int? Enable(int id)
+        {
+            return _insuranceDal.Enable(id); ;
         }
     }
 }

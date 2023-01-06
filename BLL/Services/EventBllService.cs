@@ -50,5 +50,35 @@ namespace BLL.Services
         {
             return _eventDal.Update(form.ToUpdateEventFormDal())?.ToEventBll();
         }
+
+        public int? Disable(int id)
+        {
+            return _eventDal.Disable(id);
+        }
+
+        public int? Enable(int id)
+        {
+            return _eventDal.Enable(id); ;
+        }
+
+        public int? Participate(int userId, int eventId)
+        {
+            return _eventDal.Participate(userId, eventId);
+        }
+
+        public int? UnParticipate(int userId, int eventId)
+        {
+            return _eventDal.UnParticipate(userId, eventId);
+        }
+
+        public int? Invite(int inviterId, int invitedId, int eventId)
+        {
+            return _eventDal.Invite(inviterId, invitedId, eventId);
+        }
+
+        public int? UnInvite(int inviterId, int invitedId, int eventId)
+        {
+            return _eventDal.UnInvite(inviterId, invitedId, eventId);
+        }
     }
 }

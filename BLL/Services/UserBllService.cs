@@ -11,6 +11,7 @@ using DAL.Interfaces;
 using BLL.Models.Forms;
 using BLL.Mappers;
 using BLL.Models.DTO;
+using DAL.Models.DTO;
 
 namespace BLL.Services
 {
@@ -53,6 +54,26 @@ namespace BLL.Services
         public UserBll Login(LoginFormBll form)
         {
             return _userDal.Login(form.ToLoginFormDal()).ToUserBll();
+        }
+
+        public int? Disable(int id)
+        {
+            return _userDal.Disable(id);
+        }
+
+        public int? Enable(int id)
+        {
+            return _userDal.Enable(id); 
+        }
+
+        public int? Like(int likerId, int likedId)
+        {
+            return _userDal.Like( likerId, likedId);
+        }
+
+        public int? UnLike(int likerId, int likedId)
+        {
+            return _userDal.UnLike( likerId, likedId);
         }
     }
 }

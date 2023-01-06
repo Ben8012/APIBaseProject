@@ -42,6 +42,43 @@ namespace DAL.Services
             }
         }
 
+        public int? Disable(int id)
+        {
+            Command command = new Command("UPDATE [Diveplace] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 0);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? Enable(int id)
+        {
+            Command command = new Command("UPDATE [Diveplace] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 1);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public IEnumerable<DiveplaceDal> GetAll()
         {
             Command command = new Command("SELECT Id, name, picture, map, description, createdAt, updatedAt, isActive, adress_Id FROM [Diveplace];", false);
@@ -131,6 +168,25 @@ namespace DAL.Services
             }
         }
 
+        public int? Vote(int userId, int diveplaceId, int vote)
+        {
+            Command command = new Command("INSERT INTO [User_Diveplace](user_Id, diveplace_Id,evaluation, createdAt ) VALUES( @user_Id, @diveplace_Id,@evaluation, @createdAt )", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("diveplace_Id", diveplaceId);
+            command.AddParameter("evaluation", vote);
+            command.AddParameter("createdAt", DateTime.Now);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la l'insertion du vote");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         private DiveplaceDal? GetDiveplaceById(int id)
         {

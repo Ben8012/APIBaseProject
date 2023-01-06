@@ -42,6 +42,42 @@ namespace DAL.Services
             }
         }
 
+        public int? Disable(int id)
+        {
+            Command command = new Command("UPDATE [Event] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 0);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? Enable(int id)
+        {
+            Command command = new Command("UPDATE [Event] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 1);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IEnumerable<EventDal> GetAll()
         {
             Command command = new Command("SELECT Id, [name], startDate, endDate, createdAt, updatedAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id FROM [Event];", false);
@@ -129,6 +165,85 @@ namespace DAL.Services
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+
+        public int? Participate(int userId, int eventId)
+        {
+            Command command = new Command("INSERT INTO [Participe]( user_Id, event_Id, createdAt) VALUES( @user_Id, @event_Id, @createdAt)", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("event_Id", eventId);
+            command.AddParameter("createdAt", DateTime.Now);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? UnInvite(int inviterId, int invitedId, int eventId)
+        {
+            Command command = new Command("DELETE FROM [Invite] WHERE inviter_Id = @inviter_Id AND invited_Id = @invited_Id  AND event_Id = @event_Id", false);
+            command.AddParameter("inviter_Id", inviterId);
+            command.AddParameter("invited_Id", invitedId);
+            command.AddParameter("event_Id", eventId);
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+
+        public int? Invite(int inviterId, int invitedId, int eventId)
+        {
+            Command command = new Command("INSERT INTO [Invite]( inviter_Id, invited_Id, event_Id, createdAt) VALUES( @inviter_Id, @invited_Id, @event_Id, @createdAt)", false);
+            command.AddParameter("inviter_Id", inviterId);
+            command.AddParameter("invited_Id", invitedId);
+            command.AddParameter("event_Id", eventId);
+            command.AddParameter("createdAt", DateTime.Now);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? UnParticipate(int userId, int eventId)
+        {
+            Command command = new Command("DELETE FROM [Participe] WHERE user_Id = @user_Id AND event_Id = @event_Id", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("event_Id", eventId);
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
                 throw ex;
             }
         }

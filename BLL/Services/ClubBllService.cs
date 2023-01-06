@@ -48,5 +48,25 @@ namespace BLL.Services
         {
             return _clubDal.Update(form.ToUpdateClubFormDal())?.ToClubBll();
         }
+
+        public int? Disable(int id)
+        {
+            return _clubDal.Disable(id);
+        }
+
+        public int? Enable(int id)
+        {
+            return _clubDal.Enable(id); 
+        }
+
+        public int? Participate(int userId, int clubId)
+        {
+            return _clubDal.Participate(userId, clubId);
+        }
+
+        public int? UnParticipate(int userId, int clubId)
+        {
+            return _clubDal.UnParticipate(userId, clubId);
+        }
     }
 }

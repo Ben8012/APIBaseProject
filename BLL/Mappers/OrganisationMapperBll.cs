@@ -42,5 +42,16 @@ namespace BLL.Mappers
                 AdressId = updateOrganisationFormBll.AdressId,
             };
         }
+
+        internal static AddOrganisationParticipeFormDal ToAddOrganisationParticipeFormDal(this AddOrganisationParticipeFormBll form)
+        {
+            return new AddOrganisationParticipeFormDal()
+            {
+                UserId = form.UserId,
+                OrganisationId = form.OrganisationId,
+                Level = form.Level,
+                RefNumber = form.RefNumber,
+            };
+        }
     }
 }

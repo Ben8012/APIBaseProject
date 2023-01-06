@@ -20,5 +20,8 @@ namespace BLL.Interfaces
         MessageBll? Update(UpdateMessageFormBll form);
 
         int? Delete(int id);
+        int? Enable(int id);
+
+        int? Disable(int id);
     }
 }

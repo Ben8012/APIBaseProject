@@ -41,6 +41,42 @@ namespace DAL.Services
             }
         }
 
+        public int? Disable(int id)
+        {
+            Command command = new Command("UPDATE [Insurance] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 0);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? Enable(int id)
+        {
+            Command command = new Command("UPDATE [Insurance] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 1);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IEnumerable<InsuranceDal> GetAll()
         {
             Command command = new Command("SELECT Id, [name], picture, createdAt, updatedAt, isActive, adress_Id FROM [Insurance];", false);

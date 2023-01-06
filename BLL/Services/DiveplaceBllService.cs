@@ -4,6 +4,7 @@ using BLL.Models.DTO;
 using BLL.Models.Forms.Divelog;
 using BLL.Models.Forms.Diveplace;
 using DAL.Interfaces;
+using DAL.Models.DTO;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,21 @@ namespace BLL.Services
         public DiveplaceBll? Update(UpdateDiveplaceFormBll form)
         {
             return _diveplaceDal.Update(form.ToUpdateDiveplaceFormDal())?.ToDiveplaceBll();
+        }
+
+        public int? Disable(int id)
+        {
+            return _diveplaceDal.Disable(id);
+        }
+
+        public int? Enable(int id)
+        {
+            return _diveplaceDal.Enable(id); 
+        }
+
+        public int? Vote(int userId, int diveplaceId, int vote)
+        {
+            return _diveplaceDal.Vote( userId, diveplaceId, vote);
         }
     }
 }

@@ -16,5 +16,7 @@ namespace DAL.Interfaces
         TrainingDal? Update(UpdateTrainingFormDal form);
 
         int? Delete(int id);
+        int? Enable(int id);
+        int? Disable(int id);
     }
 }

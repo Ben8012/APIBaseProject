@@ -205,5 +205,83 @@ namespace DAL.Services
             }
         }
 
+
+        public int? Disable(int id)
+        {
+            Command command = new Command("UPDATE [User] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 0);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? Enable(int id)
+        {
+            Command command = new Command("UPDATE [User] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 1);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? UnLike(int likerId, int likedId)
+        {
+            Command command = new Command("DELETE FROM [Like] WHERE liker_Id = @liker_Id AND liked_Id = @liked_Id ", false);
+            command.AddParameter("liker_Id", likerId);
+            command.AddParameter("liked_Id", likedId);
+           
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+
+        public int? Like(int likerId, int likedId)
+        {
+            Command command = new Command("INSERT INTO [Like]( liker_Id, liked_Id, createdAt) VALUES( @liker_Id, @liked_Id,@createdAt)",false);
+            command.AddParameter("liker_Id", likerId);
+            command.AddParameter("liked_Id", likedId);
+            command.AddParameter("createdAt", DateTime.Now);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
     }
 }

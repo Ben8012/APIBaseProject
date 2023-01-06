@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using API.Models.Forms.UserAPI;
+using BLL.Models.DTO;
 
 namespace API.Controllers
 {
@@ -110,6 +111,34 @@ namespace API.Controllers
             }
         }
 
+        [HttpPatch("Enable/{id}")]
+        public IActionResult Enable(int id)
+        {
+            try
+            {
+                return Ok(_userBll.Enable(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPatch("Disable/{id}")]
+        public IActionResult Disable(int id)
+        {
+            try
+            {
+                return Ok(_userBll.Disable(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost("/api/Login")]
         public IActionResult Login([FromBody]LoginForm form)
@@ -142,6 +171,37 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "le login a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPost("Like/{likerId}/{likedId}")]
+        public IActionResult Like(int likerId, int likedId)
+        {
+
+            if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
+
+            try
+            {
+                return Ok(_userBll.Like(likerId, likedId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'insertion a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+
+        }
+
+        [HttpDelete("UnLike/{likerId}/{likedId}")]
+        public IActionResult UnLike(int likerId, int likedId)
+        {
+            try
+            {
+                return Ok(_userBll.UnLike(likerId, likedId));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
             }
         }
     }

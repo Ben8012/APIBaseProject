@@ -4,6 +4,7 @@ using BLL.Models.DTO;
 using BLL.Models.Forms.Message;
 using BLL.Models.Forms.Organisation;
 using DAL.Interfaces;
+using DAL.Models.DTO;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,21 @@ namespace BLL.Services
         public OrganisationBll? Update(UpdateOrganisationFormBll form)
         {
             return _organisationDal.Update(form.ToUpdateOrganisationFormDal())?.ToOrganisationBll();
+        }
+
+        public int? Disable(int id)
+        {
+            return _organisationDal.Disable(id);
+        }
+
+        public int? Enable(int id)
+        {
+            return _organisationDal.Enable(id); ;
+        }
+
+        public int? Participe(AddOrganisationParticipeFormBll form)
+        {
+            return _organisationDal.Participe(form.ToAddOrganisationParticipeFormDal());
         }
     }
 }

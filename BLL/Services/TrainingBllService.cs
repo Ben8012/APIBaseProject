@@ -4,6 +4,7 @@ using BLL.Models.DTO;
 using BLL.Models.Forms.Organisation;
 using BLL.Models.Forms.Training;
 using DAL.Interfaces;
+using DAL.Models.DTO;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,16 @@ namespace BLL.Services
         public TrainingBll? Update(UpdateTrainingFormBll form)
         {
             return _trainingDal.Update(form.ToUpdateTrainingFormDal())?.ToTrainingBll();
+        }
+
+        public int? Disable(int id)
+        {
+            return _trainingDal.Disable(id);
+        }
+
+        public int? Enable(int id)
+        {
+            return _trainingDal.Enable(id); ;
         }
     }
 }

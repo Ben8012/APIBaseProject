@@ -20,5 +20,10 @@ namespace BLL.Interfaces
         DiveplaceBll? Update(UpdateDiveplaceFormBll form);
 
         int? Delete(int id);
+        int? Enable(int id);
+
+        int? Disable(int id);
+
+        int? Vote(int userId, int diveplaceId, int vote);
     }
 }

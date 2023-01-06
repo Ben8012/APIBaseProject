@@ -21,6 +21,12 @@ namespace BLL.Interfaces
          int? Delete(int id);
 
         UserBll Login(LoginFormBll form);
+        int? Enable(int id);
+
+        int? Disable(int id);
+
+        int? Like(int likerId, int likedId);
+        int? UnLike(int likerId, int likedId);
 
     }
 }

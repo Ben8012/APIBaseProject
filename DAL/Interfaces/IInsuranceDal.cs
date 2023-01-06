@@ -16,5 +16,8 @@ namespace DAL.Interfaces
         InsuranceDal? Update(UpdateInsuranceFormDal form);
 
         int? Delete(int id);
+
+        int? Enable(int id);
+        int? Disable(int id);
     }
 }

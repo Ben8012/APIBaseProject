@@ -42,6 +42,42 @@ namespace DAL.Services
             }
         }
 
+        public int? Disable(int id)
+        {
+            Command command = new Command("UPDATE [Organisation] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 0);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? Enable(int id)
+        {
+            Command command = new Command("UPDATE [Organisation] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 1);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IEnumerable<OrganisationDal> GetAll()
         {
             Command command = new Command("SELECT Id, name, picture, createdAt, updatedAt, isActive, adress_Id FROM [Organisation];", false);
@@ -94,6 +130,27 @@ namespace DAL.Services
                 {
                     throw new Exception("probleme de recuperation de l'id lors de l'insertion");
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? Participe(AddOrganisationParticipeFormDal form)
+        {
+            Command command = new Command("INSERT INTO [User_Organisation](user_Id, organisation_Id, level, refNumber, createdAt) VALUES(@user_Id, @organisation_Id, @level, @refNumber, @createdAt)", false);
+            command.AddParameter("user_Id", form.UserId);
+            command.AddParameter("organisation_Id", form.OrganisationId);
+            command.AddParameter("level", form.Level );
+            command.AddParameter("refNumber", form.Level);
+            command.AddParameter("createdAt", DateTime.Now);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
             }
             catch (Exception ex)
             {

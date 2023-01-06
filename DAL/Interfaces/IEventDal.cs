@@ -16,5 +16,14 @@ namespace DAL.Interfaces
         EventDal? Update(UpdateEventFormDal form);
 
         int? Delete(int id);
+        int? Enable(int id);
+        int? Disable(int id);
+
+        int? Participate(int userId, int eventId);
+
+        int? UnParticipate(int userId, int eventId);
+
+        int? Invite(int inviterId, int invitedId, int eventId);
+        int? UnInvite(int inviterId, int invitedId, int eventId);
     }
 }

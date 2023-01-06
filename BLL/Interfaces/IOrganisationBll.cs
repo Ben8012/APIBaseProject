@@ -20,5 +20,10 @@ namespace BLL.Interfaces
         OrganisationBll? Update(UpdateOrganisationFormBll form);
 
         int? Delete(int id);
+        int? Enable(int id);
+
+        int? Disable(int id);
+
+        int? Participe(AddOrganisationParticipeFormBll form);
     }
 }

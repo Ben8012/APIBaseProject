@@ -41,6 +41,42 @@ namespace DAL.Services
             }
         }
 
+        public int? Disable(int id)
+        {
+            Command command = new Command("UPDATE [Club] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 0);
+      
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? Enable(int id)
+        {
+            Command command = new Command("UPDATE [Club] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("isActive", 1);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IEnumerable<ClubDal> GetAll()
         {
             Command command = new Command("SELECT Id, name, createdAt, updatedAt, isActive, adress_Id, creator_Id FROM [Club];", false);
@@ -98,6 +134,45 @@ namespace DAL.Services
             }
         }
 
+        public int? Participate(int userId, int clubId)
+        {
+            Command command = new Command("INSERT INTO [User_Club]( user_Id, club_Id, createdAt) VALUES( @user_Id, @club_Id, @createdAt)", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("club_Id", clubId);
+            command.AddParameter("createdAt", DateTime.Now);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? UnParticipate(int userId, int clubId)
+        {
+            Command command = new Command("DELETE FROM [User_Club] WHERE user_Id = @user_Id AND club_Id = @club_Id", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("club_Id", clubId);
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+
         public ClubDal? Update(UpdateClubFormDal form)
         {
             Command command = new Command("UPDATE [Club] SET name = @name, adress_Id=@adress_Id, creator_Id=@creator_ID OUTPUT inserted.id WHERE Id=@Id ; ", false);
@@ -120,6 +195,8 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
+       
 
 
         private ClubDal? GetClubById(int id)

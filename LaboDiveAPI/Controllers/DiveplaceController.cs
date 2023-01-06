@@ -4,6 +4,7 @@ using API.Models.Forms.Diveplace;
 using API.Models.Forms.Insurance;
 using API.Tools;
 using BLL.Interfaces;
+using BLL.Models.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -103,6 +104,50 @@ namespace API.Controllers
             }
         }
 
+        [HttpPatch("Enable/{id}")]
+        public IActionResult Enable(int id)
+        {
+            try
+            {
+                return Ok(_diveplaceBll.Enable(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPatch("Disable/{id}")]
+        public IActionResult Disable(int id)
+        {
+            try
+            {
+                return Ok(_diveplaceBll.Disable(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPost("Vote")]
+        public IActionResult Vote([FromBody] AddDiveplaceVoteForm form)
+        {
+            try
+            {
+                int userId = form.UserId;
+                int diveplaceId = form.DiveplaceId;
+                int vote = form.Evalutation;
+                return Ok(_diveplaceBll.Vote(userId, diveplaceId, vote));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
 
     }
 }

@@ -20,5 +20,8 @@ namespace BLL.Interfaces
         TrainingBll? Update(UpdateTrainingFormBll form);
 
         int? Delete(int id);
+        int? Enable(int id);
+
+        int? Disable(int id);
     }
 }

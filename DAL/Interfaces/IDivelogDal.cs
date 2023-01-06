@@ -16,5 +16,8 @@ namespace DAL.Interfaces
         DivelogDal? Update(UpdateDivelogFormDal form);
 
         int? Delete(int id);
+
+        int? Enable(int id);
+        int? Disable(int id);
     }
 }

@@ -21,7 +21,10 @@ namespace DAL.Interfaces
         int? Delete(int id);
 
         UserDal Login(LoginFormDal form);
+        int? Enable(int id);
+        int? Disable(int id);
 
-
+        int? Like(int likerId, int likedId);
+        int? UnLike(int likerId, int likedId);
     }
 }

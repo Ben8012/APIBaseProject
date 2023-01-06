@@ -4,6 +4,7 @@ using API.Models.Forms.Organisation;
 using API.Models.Forms.Training;
 using API.Tools;
 using BLL.Interfaces;
+using BLL.Models.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -94,6 +95,34 @@ namespace API.Controllers
             try
             {
                 return Ok(_trainingBll.Delete(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPatch("Enable/{id}")]
+        public IActionResult Enable(int id)
+        {
+            try
+            {
+                return Ok(_trainingBll.Enable(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPatch("Disable/{id}")]
+        public IActionResult Disable(int id)
+        {
+            try
+            {
+                return Ok(_trainingBll.Disable(id));
 
             }
             catch (Exception ex)

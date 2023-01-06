@@ -44,5 +44,16 @@ namespace API.Mappers
                 AdressId = updateOrganisationForm.AdressId,
             };
         }
+
+        internal static AddOrganisationParticipeFormBll ToAddOrganisationParticipeFormBll(this AddOrganisationParticipeForm form)
+        {
+            return new AddOrganisationParticipeFormBll()
+            {
+                UserId = form.UserId,
+                OrganisationId = form.OrganisationId,
+                Level = form.Level,
+                RefNumber = form.RefNumber,
+            };
+        }
     }
 }

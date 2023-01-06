@@ -102,6 +102,67 @@ namespace API.Controllers
             }
         }
 
+        [HttpPatch("Enable/{id}")]
+        public IActionResult Enable(int id)
+        {
+            try
+            {
+                return Ok(_clubBll.Enable(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPatch("Disable/{id}")]
+        public IActionResult Disable(int id)
+        {
+            try
+            {
+                return Ok(_clubBll.Disable(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPost("Participate/{userId}/{clubId}")]
+        public IActionResult Participate(int userId, int clubId)
+        {
+
+            if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
+
+            try
+            {
+                return Ok(_clubBll.Participate(userId, clubId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'insertion a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+
+        }
+
+        [HttpDelete("UnParticipate/{userId}/{clubId}")]
+        public IActionResult UnParticipate(int userId, int clubId)
+        {
+            try
+            {
+                return Ok(_clubBll.UnParticipate( userId,  clubId));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+
+
 
     }
 }

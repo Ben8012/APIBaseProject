@@ -16,5 +16,11 @@ namespace DAL.Interfaces
         ClubDal? Update(UpdateClubFormDal form);
 
         int? Delete(int id);
+        int? Enable(int id);
+        int? Disable(int id);
+
+        int? Participate(int userId, int clubId);
+
+        int? UnParticipate(int userId, int clubId);
     }
 }
