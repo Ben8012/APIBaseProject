@@ -1,13 +1,32 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace API.Models.Forms.Diveplace
 {
     public class UpdateDiveplaceForm
     {
+        [Required]
         public int Id { get; set; }
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
         public string Name { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
         public string Picture { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
         public string Map { get; set; }
-        public string Description { get; set; }
+
+        [MinLength(1)]
+        [MaxLength(1000)]
+        public string? Description { get; set; }
+
+        [Required]
         public string AdressId { get; set; }
     }
 }

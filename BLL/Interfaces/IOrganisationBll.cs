@@ -25,5 +25,6 @@ namespace BLL.Interfaces
         int? Disable(int id);
 
         int? Participe(AddOrganisationParticipeFormBll form);
+        int? UnParticipe(int userId, int organisationId);
     }
 }

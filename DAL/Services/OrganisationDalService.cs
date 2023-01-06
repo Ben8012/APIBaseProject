@@ -158,6 +158,25 @@ namespace DAL.Services
             }
         }
 
+        public int? UnParticipe(int userId, int organisationId)
+        {
+            Command command = new Command("DELETE FROM [User_Organisation] WHERE user_Id=@user_Id AND organisation_Id = @organisation_Id", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("organisation_Id", organisationId);
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
         public OrganisationDal? Update(UpdateOrganisationFormDal form)
         {
             Command command = new Command("UPDATE [Organisation] SET  name = @name , picture = @picture , updatedAt = @updatedAt , adress_Id = @adress_Id   OUTPUT inserted.id WHERE Id=@Id ; ", false);

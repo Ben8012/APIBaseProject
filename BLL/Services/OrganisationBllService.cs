@@ -65,5 +65,10 @@ namespace BLL.Services
         {
             return _organisationDal.Participe(form.ToAddOrganisationParticipeFormDal());
         }
+
+        public int? UnParticipe(int userId, int organisationId)
+        {
+            return _organisationDal.UnParticipe(userId, organisationId);
+        }
     }
 }

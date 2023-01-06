@@ -20,8 +20,6 @@ namespace API.Models.Forms.UserAPI
         [MaxLength(384)]
         public string Email { get; set; }
 
-
-
         [Required]
         public DateTime Birthdate { get; set; }
 

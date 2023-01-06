@@ -19,5 +19,6 @@ namespace DAL.Interfaces
         int? Enable(int id);
         int? Disable(int id);
         int? Participe(AddOrganisationParticipeFormDal form);
+        int? UnParticipe(int userId, int organisationId);
     }
 }

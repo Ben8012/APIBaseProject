@@ -149,19 +149,19 @@ namespace API.Controllers
 
         }
 
-        //[HttpDelete("UnParticpe/{userId}/{organisationId}")]
-        //public IActionResult UnParticpe(int userId, int organisationId)
-        //{
-        //    try
-        //    {
-        //        return Ok(_organisationBll.UnParticpe(userId, organisationId));
+        [HttpDelete("UnParticpe/{userId}/{organisationId}")]
+        public IActionResult UnParticpe(int userId, int organisationId)
+        {
+            try
+            {
+                return Ok(_organisationBll.UnParticipe(userId, organisationId));
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
 
     }
 }
