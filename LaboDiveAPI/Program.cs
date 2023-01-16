@@ -13,49 +13,18 @@ using DAL.Models.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-
-//injection token
-builder.Services.AddScoped<ITokenManager, TokenManager>();
-
-//injection user
-builder.Services.AddScoped<IUserDal, UserDalService>();
-builder.Services.AddScoped<IUserBll, UserBllService>();
-//injection club
-builder.Services.AddScoped<IClubDal, ClubDalService>();
-builder.Services.AddScoped<IClubBll, ClubBllService>();
-//injection divelog
-builder.Services.AddScoped<IDivelogDal, DivelogDalService>();
-builder.Services.AddScoped<IDivelogBll, DivelogBllService>();
-//injection diveplace
-builder.Services.AddScoped<IDiveplaceDal, DiveplaceDalService>();
-builder.Services.AddScoped<IDiveplaceBll, DiveplaceBllService>();
-//injection event
-builder.Services.AddScoped<IEventDal, EventDalService>();
-builder.Services.AddScoped<IEventBll, EventBllService>();
-//injection insurance
-builder.Services.AddScoped<IInsuranceDal, InsuranceDalService>();
-builder.Services.AddScoped<IInsuranceBll, InsuranceBllService>();
-//injection message
-builder.Services.AddScoped<IMessageDal, MessageDalService>();
-builder.Services.AddScoped<IMessageBll, MessageBllService>();
-//injection organisation
-builder.Services.AddScoped<IOrganisationDal, OrganisationDalService>();
-builder.Services.AddScoped<IOrganisationBll, OrganisationBllService>();
-//injection organisation
-builder.Services.AddScoped<ITrainingDal, TrainingDalService>();
-builder.Services.AddScoped<ITrainingBll, TrainingBllService>();
-
-
-string connectionString = builder.Configuration.GetConnectionString("Labo");
-// service de connection a la base de donnée
-builder.Services.AddTransient<Connection>(sp => new Connection(SqlClientFactory.Instance, connectionString));// addTransient == une instance par demande
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+// service gestion cors
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.WithOrigins("http://localhost:4200")
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials();
+}));
+
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -99,11 +68,62 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-//builder.Services.AddAuthorization(options =>
-//{
-//options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-//options.AddPolicy("Auth", policy => policy.RequireAuthenticatedUser());
-//});
+// service gestion des autorisations
+builder.Services.AddAuthorization(options =>
+{
+    //options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Auth", policy => policy.RequireAuthenticatedUser());
+});
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+
+//injection token
+builder.Services.AddScoped<ITokenManager, TokenManager>();
+
+//injection user
+builder.Services.AddScoped<IUserDal, UserDalService>();
+builder.Services.AddScoped<IUserBll, UserBllService>();
+//injection club
+builder.Services.AddScoped<IClubDal, ClubDalService>();
+builder.Services.AddScoped<IClubBll, ClubBllService>();
+//injection divelog
+builder.Services.AddScoped<IDivelogDal, DivelogDalService>();
+builder.Services.AddScoped<IDivelogBll, DivelogBllService>();
+//injection diveplace
+builder.Services.AddScoped<IDiveplaceDal, DiveplaceDalService>();
+builder.Services.AddScoped<IDiveplaceBll, DiveplaceBllService>();
+//injection event
+builder.Services.AddScoped<IEventDal, EventDalService>();
+builder.Services.AddScoped<IEventBll, EventBllService>();
+//injection insurance
+builder.Services.AddScoped<IInsuranceDal, InsuranceDalService>();
+builder.Services.AddScoped<IInsuranceBll, InsuranceBllService>();
+//injection message
+builder.Services.AddScoped<IMessageDal, MessageDalService>();
+builder.Services.AddScoped<IMessageBll, MessageBllService>();
+//injection organisation
+builder.Services.AddScoped<IOrganisationDal, OrganisationDalService>();
+builder.Services.AddScoped<IOrganisationBll, OrganisationBllService>();
+//injection organisation
+builder.Services.AddScoped<ITrainingDal, TrainingDalService>();
+builder.Services.AddScoped<ITrainingBll, TrainingBllService>();
+
+
+string connectionString = builder.Configuration.GetConnectionString("Labo");
+// service de connection a la base de donnée
+builder.Services.AddTransient<Connection>(sp => new Connection(SqlClientFactory.Instance, connectionString));// addTransient == une instance par demande
+
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+
+
+
+
+
+
 
 var app = builder.Build();
 
@@ -116,7 +136,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors("MyPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 

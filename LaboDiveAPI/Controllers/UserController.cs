@@ -12,6 +12,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Auth")]
     public class UserController : ControllerBase
     {
 
@@ -58,14 +59,14 @@ namespace API.Controllers
         [HttpPost]
         public IActionResult Insert([FromBody]AddUserForm form)
         {
-            form.Password = "Test1234=";
-            form.Email = "benjamin@mail.com";
-            form.FirstName = "Benjamin";
-            form.LastName = "Sterckx";
-            form.Birthdate = new DateTime(1980,12,10);
-            form.AdressId = 1;
-            form.Phone = null;
-            form.InsuranceNumber = null;
+            //form.Password = "Test1234=";
+            //form.Email = "benjamin@mail.com";
+            //form.FirstName = "Benjamin";
+            //form.LastName = "Sterckx";
+            //form.Birthdate = new DateTime(1980,12,10);
+            //form.AdressId = 1;
+            //form.Phone = null;
+            //form.InsuranceNumber = null;
             
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
 
@@ -140,11 +141,11 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/api/Login")]
+        [HttpPost("/api/User/Login")]
         public IActionResult Login([FromBody]LoginForm form)
         {
-            form.Email = "benjamin@mail.com";
-            form.Password = "Test1234=";
+            //form.Email = "benjamin@mail.com";
+            //form.Password = "Test1234=";
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState Login est invalide" });
             try
             {
@@ -157,8 +158,8 @@ namespace API.Controllers
                 UserWithToken userWithToken = new UserWithToken()
                 {
                     Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    Firstname = user.FirstName,
+                    Lastname = user.LastName,
                     Email = user.Email,
                     Birthdate = user.Birthdate,
                     CreatedAt = user.CreatedAt,

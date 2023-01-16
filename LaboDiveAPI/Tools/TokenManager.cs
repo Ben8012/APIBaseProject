@@ -10,7 +10,7 @@ namespace API.Tools
     {
 
         public static string secret = "OfOuYD2nzPUfL/WLz8JYDJIlhmVA8IbuO2o1vWzY8UOTG/gaVOaNNBar7hdX59USWfK7AzElt2cU+3JSNCrGRWOe/Vj169O1yRbMskpf1xAoDDSneLhmfYMQQRD+1WT66REh55hpdKsJuoFivlsIQtwN9Aq39H7ATI791QNI7RY=";
-        public static string myIssuer = "https://localhost:7231/"; // qui genere le token
+        public static string myIssuer = "https://localhost:7022/"; // qui genere le token
         public static string myAudience = "http://localhost:4200/"; // qui utilise le token
 
 
