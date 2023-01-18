@@ -12,7 +12,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("Auth")]
+    //[Authorize("Auth")]
     public class UserController : ControllerBase
     {
 
@@ -57,17 +57,17 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Insert([FromBody]AddUserForm form)
+        public IActionResult Insert([FromBody] AddUserForm form)
         {
             //form.Password = "Test1234=";
             //form.Email = "benjamin@mail.com";
             //form.FirstName = "Benjamin";
             //form.LastName = "Sterckx";
             //form.Birthdate = new DateTime(1980,12,10);
-            //form.AdressId = 1;
+            form.AdressId = 1;
             //form.Phone = null;
             //form.InsuranceNumber = null;
-            
+
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
 
             form.Password = BCrypt.Net.BCrypt.HashPassword(form.Password);
@@ -142,7 +142,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("/api/User/Login")]
-        public IActionResult Login([FromBody]LoginForm form)
+        public IActionResult Login([FromBody] LoginForm form)
         {
             //form.Email = "benjamin@mail.com";
             //form.Password = "Test1234=";
@@ -175,15 +175,16 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("Like/{likerId}/{likedId}")]
-        public IActionResult Like(int likerId, int likedId)
+        [HttpPost("Like")]
+        public IActionResult Like([FromBody] LikeForm form)
         {
-
+             
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
 
             try
             {
-                return Ok(_userBll.Like(likerId, likedId));
+                int? valid = _userBll.Like(form.LikerId, form.LikedId);
+                return Ok();
             }
             catch (Exception ex)
             {

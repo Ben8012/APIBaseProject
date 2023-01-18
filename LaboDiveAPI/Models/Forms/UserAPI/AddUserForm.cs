@@ -33,7 +33,7 @@ namespace API.Models.Forms.UserAPI
 
         public string? Phone { get; set; }
 
-        [Required]
+
         public int AdressId { get; set; }
     }
 }
