@@ -12,6 +12,8 @@ namespace BLL.Interfaces
     {
          IEnumerable<UserBll> GetAll();
 
+        IEnumerable<UserBll> GetContactById(int id);
+
          UserBll? GetById(int id);
 
          UserBll? Insert(AddUserFormBll form);

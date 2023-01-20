@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using API.Models.Forms.UserAPI;
 using BLL.Models.DTO;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Principal;
+using Newtonsoft.Json;
 
 namespace API.Controllers
 {
@@ -47,6 +51,19 @@ namespace API.Controllers
             try
             {
                 return Ok(_userBll.GetById(id)?.ToUser());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("Friends/{id}")]
+        public IActionResult GetContactById(int id)
+        {
+            try
+            {
+                return Ok(_userBll.GetContactById(id)?.Select(u => u.ToUser()));
             }
             catch (Exception ex)
             {
@@ -158,8 +175,8 @@ namespace API.Controllers
                 UserWithToken userWithToken = new UserWithToken()
                 {
                     Id = user.Id,
-                    Firstname = user.FirstName,
-                    Lastname = user.LastName,
+                    Firstname = user.Firstname,
+                    Lastname = user.Lastname,
                     Email = user.Email,
                     Birthdate = user.Birthdate,
                     CreatedAt = user.CreatedAt,
@@ -184,7 +201,12 @@ namespace API.Controllers
             try
             {
                 int? valid = _userBll.Like(form.LikerId, form.LikedId);
-                return Ok();
+                if (valid > 0)
+                {
+                    return Ok(_userBll.GetContactById(form.LikerId)?.Select(u => u.ToUser()));
+                }
+                return Ok(null);
+               
             }
             catch (Exception ex)
             {
@@ -193,17 +215,41 @@ namespace API.Controllers
 
         }
 
-        [HttpDelete("UnLike/{likerId}/{likedId}")]
-        public IActionResult UnLike(int likerId, int likedId)
+        [HttpPost("UnLike") ]
+        public IActionResult UnLike([FromBody] LikeForm form)
         {
             try
             {
-                return Ok(_userBll.UnLike(likerId, likedId));
+                int? valid = _userBll.UnLike(form.LikerId, form.LikedId);
+                if (valid > 0)
+                {
+                    return Ok(_userBll.GetContactById(form.LikerId)?.Select(u => u.ToUser()));
+                }
+                return Ok(null);
 
             }
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPost("Token")]
+        public IActionResult GetUserByToken([FromBody] Token form)
+        {
+            if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
+
+            try
+            {
+
+                JwtSecurityToken token = new JwtSecurityToken(jwtEncodedString: form.TokenString);
+                int id = int.Parse( token.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid").Value);
+
+                return Ok(_userBll.GetById(id)?.ToUser());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'insertion a échoué, contactez l'admin", ErrorMessage = ex.Message });
             }
         }
     }

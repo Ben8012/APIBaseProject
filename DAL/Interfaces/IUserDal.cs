@@ -12,6 +12,8 @@ namespace DAL.Interfaces
     {
         IEnumerable<UserDal> GetAll();
 
+        IEnumerable<UserDal> GetContactById(int id);
+
         UserDal? GetById(int id);
 
         UserDal? Insert(AddUserFormDal form);

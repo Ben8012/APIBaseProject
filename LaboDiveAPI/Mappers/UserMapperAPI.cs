@@ -17,8 +17,8 @@ namespace API.Mappers
             return new User()
             {
                 Id = userBll.Id,
-                FirstName = userBll.FirstName,
-                LastName = userBll.LastName,
+                Firstname = userBll.FirstName,
+                Lastname = userBll.LastName,
                 Email = userBll.Email,
                 Phone = userBll.Phone,
                 Role = userBll.Role,

@@ -251,7 +251,7 @@ namespace DAL.Services
             try
             {
                 int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
-                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                if (nbLigne == 0) throw new Exception("erreur lors de la suppression");
                 return nbLigne;
 
             }
@@ -282,6 +282,27 @@ namespace DAL.Services
             }
         }
 
-
+        public IEnumerable<UserDal> GetContactById(int id)
+        {
+            Command command = new Command(
+                @"SELECT Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id
+                    FROM [User]
+                    WHERE [User].Id In ( SELECT [Like].liked_Id 
+                                            FROM[User] 
+                                            JOIN dbo.[Like] ON dbo.[Like].liker_Id = [User].Id 
+                                            WHERE dbo.[like].liker_Id = @id )"
+                ,false
+            );
+            command.AddParameter("id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
     }
 }

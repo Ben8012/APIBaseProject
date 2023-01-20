@@ -75,5 +75,10 @@ namespace BLL.Services
         {
             return _userDal.UnLike( likerId, likedId);
         }
+
+        public IEnumerable<UserBll> GetContactById(int id)
+        {
+            return _userDal.GetContactById(id).Select(u => u.ToUserBll());
+        }
     }
 }
