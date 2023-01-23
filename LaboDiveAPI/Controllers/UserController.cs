@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Principal;
 using Newtonsoft.Json;
+using Tools;
 
 namespace API.Controllers
 {
@@ -23,12 +24,14 @@ namespace API.Controllers
         private readonly IUserBll _userBll;
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
+        private readonly Connection _connection;
 
-        public UserController(ILogger<UserController> logger, IUserBll userBll, ITokenManager token)
+        public UserController(ILogger<UserController> logger, IUserBll userBll, ITokenManager token, Connection connection)
         {
             _userBll = userBll;
             _logger = logger;
             _token = token;
+            _connection = connection;
         }
 
 
@@ -250,6 +253,31 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "l'insertion a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("Organisation")]
+        public IActionResult GetOrganistionByUserId()
+        {
+
+            if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
+
+            Command command = new Command(
+                   @"SELECT [user_id] , [name], [level], refNumber, picture, User_Organisation.createdAt 
+                    FROM Organisation  
+                    JOIN User_Organisation ON Organisation.Id = organisation_id; "
+                   , false
+                );
+         
+           
+            try
+            {
+                return Ok(_connection.ExecuteReader(command, dr => dr.ToOrganisation()));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
             }
         }
     }

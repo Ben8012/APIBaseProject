@@ -6,6 +6,9 @@ using DAL.Models;
 using BLL.Interfaces;
 using API.Models.Forms.UserAPI;
 using BLL.Models.DTO;
+using DAL.Models.DTO;
+using System.Data.Common;
+using API.Models.DTO;
 
 namespace API.Mappers
 {
@@ -74,6 +77,20 @@ namespace API.Mappers
                 Email = loginForm.Email,
                 Password = loginForm.Password
             };
+        }
+
+        internal static OrganisationByUser ToOrganisation(this DbDataReader reader)
+        {
+            return new OrganisationByUser()
+            {
+                UserId = (int)reader["user_id"],
+                Name = (string)reader["name"],
+                Level = (string)reader["level"],
+                RefNunber = (string)reader["refNumber"],
+                CreatedAt = (DateTime)reader["createdAt"],
+                Picture = (string)reader["picture"]
+            };
+
         }
 
     }
