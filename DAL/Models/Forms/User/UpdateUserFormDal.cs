@@ -9,9 +9,11 @@ namespace DAL.Models.Forms
         public string FirstName { get; set; }
         public string Email { get; set; }
         public DateTime Birthdate { get; set; }
-        public string? InsuranceNumber { get; set; }
-        public int? InsuranceId { get; set; }
-        public string? Phone { get; set; }
-        public int AdressId { get; set; }
+        //public string? InsuranceNumber { get; set; }
+        //public int? InsuranceId { get; set; }
+        //public string? Phone { get; set; }
+        //public int AdressId { get; set; }
+
+        public string Photo { get; set; }
     }
 }

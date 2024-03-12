@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Mappers
 {
-    internal static class UserMapperBll
+    public static class UserMapperBll
     {
 
         // vers la BLL
@@ -32,10 +32,25 @@ namespace BLL.Mappers
                 IsActive = userDal.IsActive,
                 InsuranceId = userDal.InsuranceId,
                 AdressId = userDal.AdressId
+                
             };
         }
 
-    
+        internal static AdressBll ToAdressBll(this AdressDal adressDal)
+        {
+            return new AdressBll()
+            {
+                Id = adressDal.Id,
+                Number = adressDal.Number,
+                Street = adressDal.Street,
+                PostCode = adressDal.PostCode,
+                City = adressDal.City,
+                Country = adressDal.Country
+            };
+
+        }
+
+
         // vers la DAL
 
         internal static AddUserFormDal ToAddUserFromDal(this AddUserFormBll addUserFromBll)
@@ -64,11 +79,11 @@ namespace BLL.Mappers
                 FirstName = updateUserFromBll.FirstName,
                 LastName = updateUserFromBll.LastName,
                 Email = updateUserFromBll.Email,
-                Phone = updateUserFromBll.Phone,
+                //Phone = updateUserFromBll.Phone,
                 Birthdate = updateUserFromBll.Birthdate,
-                InsuranceId = updateUserFromBll.InsuranceId,
-                InsuranceNumber = updateUserFromBll.InsuranceNumber,
-                AdressId = updateUserFromBll.AdressId,
+                //InsuranceId = updateUserFromBll.InsuranceId,
+                //InsuranceNumber = updateUserFromBll.InsuranceNumber,
+                //AdressId = updateUserFromBll.AdressId,
             };
         }
 
@@ -81,6 +96,8 @@ namespace BLL.Mappers
                 Password = loginFormBll.Password
             };
         }
+
+       
 
     }
 }

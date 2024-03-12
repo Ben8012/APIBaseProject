@@ -15,6 +15,20 @@ namespace API.Mappers
     public static class UserMapperAPI
     {
 
+        internal static Adress ToAdress(this AdressBll adressBll)
+        {
+            return new Adress()
+            {
+                Id = adressBll.Id,
+                Number = adressBll.Number,
+                Street = adressBll.Street,
+                PostCode = adressBll.PostCode,
+                City = adressBll.City,
+                Country = adressBll.Country
+            };
+
+        }
+
         internal static User ToUser(this UserBll userBll)
         {
             return new User()
@@ -29,8 +43,14 @@ namespace API.Mappers
                 CreatedAt = userBll.CreatedAt,
                 UpdatedAt = userBll.UpdatedAt,
                 IsActive = userBll.IsActive,
-                InsuranceId = userBll.InsuranceId,
-                AdressId = userBll.AdressId
+                Insurance = userBll.Insurance.ToInsurance(),
+                Adress = userBll.Adress.ToAdress(),
+                Organisations = userBll.Organisations.Select(o => o.ToOrganisation()).ToList(),
+                Divelogs = userBll.Divelogs.Select(d => d.ToDivelog()).ToList(),
+                Diveplaces = userBll.Diveplaces.Select(p => p.ToDiveplace()).ToList(),
+                Friends = userBll.Friends.Select(f => f.ToUser()).ToList(),
+                Clubs = userBll.Clubs.Select(c => c.ToClub()).ToList(),
+                Events = userBll.Events.Select(e => e.ToEvent()).ToList()
 
             };
         }
@@ -61,11 +81,12 @@ namespace API.Mappers
                 FirstName = updateUserForm.FirstName,
                 LastName = updateUserForm.LastName,
                 Email = updateUserForm.Email,
-                Phone = updateUserForm.Phone,
+                //Phone = updateUserForm.Phone,
                 Birthdate = updateUserForm.Birthdate,
-                InsuranceId = updateUserForm.InsuranceId,
-                InsuranceNumber = updateUserForm.InsuranceNumber,
-                AdressId = updateUserForm.AdressId,
+                Photo = updateUserForm.Photo,
+                //InsuranceId = updateUserForm.InsuranceId,
+                //InsuranceNumber = updateUserForm.InsuranceNumber,
+               // AdressId = updateUserForm.AdressId,
 
             };
         }

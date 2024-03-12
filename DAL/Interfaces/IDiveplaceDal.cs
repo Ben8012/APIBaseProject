@@ -19,5 +19,7 @@ namespace DAL.Interfaces
         int? Enable(int id);
         int? Disable(int id);
         int? Vote(int userId, int diveplaceId, int vote);
+
+        IEnumerable<DiveplaceDal>? GetDiveplaceByUserId(int id);
     }
 }

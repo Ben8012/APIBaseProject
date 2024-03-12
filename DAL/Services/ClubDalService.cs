@@ -196,7 +196,25 @@ namespace DAL.Services
             }
         }
 
-       
+
+        public IEnumerable<ClubDal>? GetClubsByUserId(int id)
+        {
+            Command command = new Command(@"SELECT Club.Id, [name], Club.createdAt as createdAt, Club.updatedAt as updatedAt , Club.isActive as isActive,  Club.adress_id as adress_id , Club.creator_id as creator_id 
+                                            FROM [Club]
+                                            JOIN User_Club ON Club.Id = User_Club.club_Id
+                                            JOIN [User] ON [User].Id = User_Club.user_Id
+                                            WHERE [User].Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToClubDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
 
 
         private ClubDal? GetClubById(int id)

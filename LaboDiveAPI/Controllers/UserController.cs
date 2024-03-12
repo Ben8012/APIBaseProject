@@ -15,7 +15,7 @@ using Tools;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     //[Authorize("Auth")]
     public class UserController : ControllerBase
@@ -161,7 +161,7 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/api/User/Login")]
+        [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginForm form)
         {
             //form.Email = "benjamin@mail.com";
@@ -248,7 +248,20 @@ namespace API.Controllers
                 JwtSecurityToken token = new JwtSecurityToken(jwtEncodedString: form.TokenString);
                 int id = int.Parse( token.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid").Value);
 
-                return Ok(_userBll.GetById(id)?.ToUser());
+                User? user = _userBll.GetById(id)?.ToUser();
+
+                UserWithToken userWithToken = new UserWithToken()
+                {
+                    Id = user.Id,
+                    Firstname = user.Firstname,
+                    Lastname = user.Lastname,
+                    Email = user.Email,
+                    Birthdate = user.Birthdate,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt,
+                    Token = form.TokenString
+                };
+                return Ok(userWithToken);
             }
             catch (Exception ex)
             {

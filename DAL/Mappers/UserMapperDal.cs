@@ -24,8 +24,22 @@ namespace DAL.Mappers
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 IsActive = (bool)reader["isActive"],
-                InsuranceId = reader["insurance_id"] is DBNull ? null : (int)reader["insurance_id"],
+                InsuranceId = reader["insurance_id"] is DBNull ? 0 : (int)reader["insurance_id"],
                 AdressId = (int)reader["adress_id"]
+            };
+
+        }
+
+        internal static AdressDal ToAdressDal(this DbDataReader reader)
+        {
+            return new AdressDal()
+            {
+                Id = (int)reader["Id"],
+                Number= (int)reader["number"],
+                Street = (string)reader["street"],
+                PostCode= (string)reader["postCode"],
+                City= (string)reader["city"],
+                Country= (string)reader["country"]
             };
 
         }

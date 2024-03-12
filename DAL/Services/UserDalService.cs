@@ -103,12 +103,12 @@ namespace DAL.Services
             command.AddParameter("lastname", form.LastName);
             command.AddParameter("firstname", form.FirstName);
             command.AddParameter("email", form.Email);
-            command.AddParameter("phone", form.Phone == null ? DBNull.Value : form.Phone);
+            //command.AddParameter("phone", form.Phone == null ? DBNull.Value : form.Phone);
             command.AddParameter("birthDate", form.Birthdate);
             command.AddParameter("updatedAt", DateTime.Now);
-            command.AddParameter("insuranceNumber", form.InsuranceNumber == null ? DBNull.Value : form.InsuranceNumber);
-            command.AddParameter("insurance_Id", form.InsuranceId == 0 ? DBNull.Value : form.InsuranceId);
-            command.AddParameter("adress_Id", form.AdressId);
+           // command.AddParameter("insuranceNumber", form.InsuranceNumber == null ? DBNull.Value : form.InsuranceNumber);
+            //command.AddParameter("insurance_Id", form.InsuranceId == 0 ? DBNull.Value : form.InsuranceId);
+            //command.AddParameter("adress_Id", form.AdressId);
 
             try
             {
@@ -282,7 +282,7 @@ namespace DAL.Services
             }
         }
 
-        public IEnumerable<UserDal> GetContactById(int id)
+        public IEnumerable<UserDal> GetContactByUserId(int id)
         {
             Command command = new Command(
                 @"SELECT Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id
@@ -297,6 +297,26 @@ namespace DAL.Services
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public AdressDal GetAdressById(int id)
+        {
+            Command command = new Command(
+            @"SELECT Adress.Id, street, number, City.name as city, postCode, Country.name as country From Adress
+                JOIN City ON City.Id = Adress.city_Id
+                JOIN Country ON Country.Id = City.country_Id
+                WHERE Adress.Id = @id", false);
+            command.AddParameter("id", id);
+
+            try
+            {
+               return _connection.ExecuteReader(command, dr => dr.ToAdressDal()).SingleOrDefault();
             }
             catch (Exception ex)
             {

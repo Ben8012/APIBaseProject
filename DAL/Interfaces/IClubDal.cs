@@ -22,5 +22,7 @@ namespace DAL.Interfaces
         int? Participate(int userId, int clubId);
 
         int? UnParticipate(int userId, int clubId);
+
+        IEnumerable<ClubDal>? GetClubsByUserId(int id);
     }
 }

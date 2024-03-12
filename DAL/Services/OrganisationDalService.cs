@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Tools;
 
 namespace DAL.Services
@@ -209,6 +210,25 @@ namespace DAL.Services
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToOrganisationDal()).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public IEnumerable<OrganisationDal>? GetOrganisationByUserId(int id)
+        {
+            Command command = new Command(@"SELECT[Organisation].Id, [Organisation].[name], picture, [Organisation].createdAt, [Organisation].updatedAt, [Organisation].isActive, [Organisation].adress_Id
+                                            FROM[Organisation]
+                                            JOIN User_Organisation ON User_Organisation.organisation_Id = Organisation.Id
+                                            JOIN[User] ON[User].Id = User_Organisation.user_Id
+                                            WHERE[User].Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToOrganisationDal());
             }
             catch (Exception ex)
             {

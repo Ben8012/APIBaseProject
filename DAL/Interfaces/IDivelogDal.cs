@@ -19,5 +19,7 @@ namespace DAL.Interfaces
 
         int? Enable(int id);
         int? Disable(int id);
+
+        IEnumerable<DivelogDal> GetDivelogByUserId(int id);
     }
 }

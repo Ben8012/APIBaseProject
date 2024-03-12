@@ -4,7 +4,7 @@ namespace API.Models.Forms.UserAPI
 {
     public class UpdateUserForm
     {
-        [Required]
+        //[Required]
         public int Id { get; set; }
 
         [Required]
@@ -26,17 +26,16 @@ namespace API.Models.Forms.UserAPI
         [Required]
         public DateTime Birthdate { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        //public string? InsuranceNumber { get; set; }
 
-        public string? InsuranceNumber { get; set; }
+        //public int? InsuranceId { get; set; }
 
-        public int? InsuranceId { get; set; }
+        //public string? Phone { get; set; }
 
-        public string? Phone { get; set; }
+        //public int? AdressId { get; set; }
 
-        [Required]
-        public int AdressId { get; set; }
+        public string? Photo { get; set; }
+
+
     }
 }

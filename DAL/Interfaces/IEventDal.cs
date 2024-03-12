@@ -25,5 +25,7 @@ namespace DAL.Interfaces
 
         int? Invite(int inviterId, int invitedId, int eventId);
         int? UnInvite(int inviterId, int invitedId, int eventId);
+
+        IEnumerable<EventDal> GetEventByUserId(int id);
     }
 }

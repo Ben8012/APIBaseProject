@@ -12,7 +12,7 @@ namespace DAL.Interfaces
     {
         IEnumerable<UserDal> GetAll();
 
-        IEnumerable<UserDal> GetContactById(int id);
+        IEnumerable<UserDal> GetContactByUserId(int id);
 
         UserDal? GetById(int id);
 
@@ -28,5 +28,7 @@ namespace DAL.Interfaces
 
         int? Like(int likerId, int likedId);
         int? UnLike(int likerId, int likedId);
+
+        AdressDal? GetAdressById(int id);
     }
 }

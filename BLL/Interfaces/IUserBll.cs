@@ -1,5 +1,6 @@
 ﻿using BLL.Models.DTO;
 using BLL.Models.Forms;
+using DAL.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace BLL.Interfaces
 
         int? Like(int likerId, int likedId);
         int? UnLike(int likerId, int likedId);
+
+        AdressBll? GetAdressById(int id);
 
     }
 }

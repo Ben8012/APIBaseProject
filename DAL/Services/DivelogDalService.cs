@@ -190,5 +190,23 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
+        public IEnumerable<DivelogDal> GetDivelogByUserId(int id)
+        {
+            Command command = new Command(@"SELECT [Divelog].Id, diveType, [Divelog].[description], duration, maxDeep, airTemperature, waterTemperature, diveDate, [Divelog].createdAt, [Divelog].updatedAt, [Divelog].isActive, user_Id, event_Id 
+                                            FROM [Divelog] 
+                                            JOIN [User] ON [User].Id = DiveLog.user_Id
+                                            WHERE [User].Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToDivelogDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
     }
 }

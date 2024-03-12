@@ -12,8 +12,10 @@
     [updatedAt] DATETIME2 NULL,
     [isActive] BIT NOT NULL,
     [insuranceNumber] NVARCHAR(50) NULL,
+    [insuranceDateValidation] DATETIME2 NULL,
+    [medicalDateValidation] DATETIME2 NULL,
     [insurance_Id] INT NULL,
-    [adress_Id] INT NOT NULL, 
+    [adress_Id] INT NULL, 
     CONSTRAINT [FK_User_Insurance] FOREIGN KEY ([insurance_Id]) REFERENCES [Insurance]([Id]), 
     CONSTRAINT [FK_User_ToTable] FOREIGN KEY ([adress_Id]) REFERENCES [Adress]([Id])
    

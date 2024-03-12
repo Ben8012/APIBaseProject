@@ -20,5 +20,6 @@ namespace DAL.Interfaces
         int? Disable(int id);
         int? Participe(AddOrganisationParticipeFormDal form);
         int? UnParticipe(int userId, int organisationId);
+        IEnumerable<OrganisationDal>? GetOrganisationByUserId(int id);
     }
 }

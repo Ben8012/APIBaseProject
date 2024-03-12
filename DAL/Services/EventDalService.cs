@@ -263,5 +263,24 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
+        public IEnumerable<EventDal> GetEventByUserId(int id)
+        {
+            Command command = new Command(@"SELECT [Event].Id, [name], startDate, endDate, [Event].createdAt, [Event].updatedAt, [Event].isActive, diveplace_Id,creator_Id, training_Id ,club_Id 
+                                            FROM [Event]
+                                            JOIN Participe ON Participe.event_Id = [Event].Id
+                                            JOIN [User] ON [User].Id = Participe.user_Id
+                                            WHERE [User].Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToEventDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
     }
 }

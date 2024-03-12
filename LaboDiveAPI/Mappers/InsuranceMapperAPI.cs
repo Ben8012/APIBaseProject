@@ -11,17 +11,22 @@ namespace API.Mappers
     {
         internal static Insurance ToInsurance(this InsuranceBll insuranceBll)
         {
-            return new Insurance()
+            if (insuranceBll is not null)
             {
-                Id= insuranceBll.Id,
-                Name= insuranceBll.Name,
-                Picture = insuranceBll.Picture,
-                CreatedAt= insuranceBll.CreatedAt,
-                UpdatedAt= insuranceBll.UpdatedAt,
-                IsActive= insuranceBll.IsActive,
-                AdressId = insuranceBll.AdressId,
+                return new Insurance()
+                {
+                    Id= insuranceBll.Id,
+                    Name= insuranceBll.Name,
+                    Picture = insuranceBll.Picture,
+                    CreatedAt= insuranceBll.CreatedAt,
+                    UpdatedAt= insuranceBll.UpdatedAt,
+                    IsActive= insuranceBll.IsActive,
+                    AdressId = insuranceBll.AdressId,
                
-            };
+                };
+
+            }
+            return null;
         }
 
         internal static AddInsuranceFormBll ToAddInsuranceFromBll(this AddInsuranceForm addInsuranceFrom)

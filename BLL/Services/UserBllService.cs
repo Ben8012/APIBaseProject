@@ -19,11 +19,21 @@ namespace BLL.Services
     {
         private readonly ILogger _logger;
         private readonly IUserDal _userDal;
+        private readonly IClubDal _clubDal;
+        private readonly IDivelogDal _diveLogDal;
+        private readonly IEventDal _eventDal;
+        private readonly IOrganisationDal _organisationDal;
+        private readonly IDiveplaceDal _diveplaceDal;
 
-        public UserBllService(ILogger<UserBllService> logger, IUserDal userDal)
+        public UserBllService(ILogger<UserBllService> logger, IUserDal userDal, IClubDal clubDal, IDivelogDal diveLogDal, IEventDal eventDal, IOrganisationDal organisationDal, IDiveplaceDal diveplaceDal)
         {
             _userDal = userDal;
             _logger = logger;
+            _clubDal = clubDal;
+            _diveLogDal = diveLogDal;
+            _eventDal = eventDal;
+            _organisationDal = organisationDal;
+            _diveplaceDal = diveplaceDal;
         }
 
         public int? Delete(int id)
@@ -33,12 +43,25 @@ namespace BLL.Services
 
         public IEnumerable<UserBll> GetAll()
         {
-            return _userDal.GetAll().Select(u => u.ToUserBll());
+            List<UserBll> users = _userDal.GetAll().Select(u => u.ToUserBll()).ToList();
+            foreach (UserBll user in users)
+            {
+                user.Adress = GetAdressById(user.AdressId);
+                user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
+                user.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
+                user.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
+                user.Friends = _userDal.GetContactByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
+                user.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
+                user.Diveplaces = _diveplaceDal.GetDiveplaceByUserId(user.Id).Select(d => d.ToDiveplaceBll()).ToList();
+            }
+            return users;
         }
 
         public UserBll? GetById(int id)
         {
-            return _userDal.GetById(id)?.ToUserBll();
+            UserBll? user = _userDal.GetById(id)?.ToUserBll();
+            user.Adress = GetAdressById(user.AdressId);
+            return user;
         }
 
         public UserBll? Insert(AddUserFormBll form)
@@ -78,7 +101,12 @@ namespace BLL.Services
 
         public IEnumerable<UserBll> GetContactById(int id)
         {
-            return _userDal.GetContactById(id).Select(u => u.ToUserBll());
+            return _userDal.GetContactByUserId(id).Select(u => u.ToUserBll());
+        }
+
+        public AdressBll GetAdressById(int id)
+        {
+            return _userDal.GetAdressById(id).ToAdressBll();
         }
     }
 }
