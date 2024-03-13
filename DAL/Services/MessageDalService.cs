@@ -177,5 +177,39 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
+        public IEnumerable<MessageDal>? GetMessagesBySenderId(int id)
+        {
+            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive 
+                                            FROM [Message] 
+                                            WHERE sender_Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToMessageDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public IEnumerable<MessageDal>? GetMessagesByRecieverId(int id)
+        {
+            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive 
+                                            FROM [Message] 
+                                            WHERE reciever_Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToMessageDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
     }
 }

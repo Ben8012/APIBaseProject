@@ -19,11 +19,15 @@ namespace BLL.Services
 
         private readonly ILogger _logger;
         private readonly IMessageDal _messageDal;
+        private readonly IUserBll _userBll;
+        private readonly IUserDal _userDal;
 
-        public MessageBllService(ILogger<MessageBllService> logger, IMessageDal messageDal)
+        public MessageBllService(ILogger<MessageBllService> logger, IMessageDal messageDal, IUserBll userBll, IUserDal userDal)
         {
             _messageDal = messageDal;
             _logger = logger;
+            _userBll = userBll;
+            _userDal = userDal;
         }
 
         public int? Delete(int id)
@@ -33,12 +37,22 @@ namespace BLL.Services
 
         public IEnumerable<MessageBll> GetAll()
         {
-            return _messageDal.GetAll().Select(u => u.ToMessageBll());
+            List<MessageBll> messages = _messageDal.GetAll().Select(u => u.ToMessageBll()).ToList();
+            foreach (var message in messages)
+            {
+                message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+            }
+            return messages;
         }
+    
 
         public MessageBll? GetById(int id)
         {
-            return _messageDal.GetById(id)?.ToMessageBll();
+            MessageBll message = _messageDal.GetById(id)?.ToMessageBll();
+            message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+            message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+            return message;
         }
 
         public MessageBll? Insert(AddMessageFormBll form)
@@ -60,5 +74,30 @@ namespace BLL.Services
         {
             return _messageDal.Enable(id); ;
         }
+
+        public IEnumerable<MessageBll>? GetMessagesBySenderId(int id)
+        {
+            List<MessageBll> messages = _messageDal.GetMessagesBySenderId(id).Select(u => u.ToMessageBll()).ToList();
+            foreach (var message in messages)
+            {
+                //message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+            }
+            return messages;
+        }
+
+        public IEnumerable<MessageBll>? GetMessagesByRecieverId(int id)
+        {
+            List<MessageBll> messages = _messageDal.GetMessagesByRecieverId(id).Select(u => u.ToMessageBll()).ToList();
+            foreach (var message in messages)
+            {
+                message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                //message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+            }
+
+            return messages;
+        }
+
+      
     }
 }

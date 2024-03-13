@@ -249,3 +249,33 @@ INSERT INTO [Like](liker_Id,liked_Id,createdAt)VALUES
    (3,2,GETDATE()),
    (4,2,GETDATE()),
    (4,3,GETDATE());
+
+INSERT INTO [Message](sender_Id, reciever_Id, content,createdAt,isActive)VALUES
+   (1,2,'coucou',GETDATE(),1),    
+   (1,3,'coucou',GETDATE(),1),    
+   (1,4,'coucou',GETDATE(),1), 
+   (2,1,'coucou',GETDATE(),1), 
+   (2,3,'coucou',GETDATE(),1), 
+   (2,4,'coucou',GETDATE(),1), 
+   (3,1,'coucou',GETDATE(),1), 
+   (3,2,'coucou',GETDATE(),1), 
+   (3,4,'coucou',GETDATE(),1), 
+   (4,1,'coucou',GETDATE(),1), 
+   (4,2,'coucou',GETDATE(),1), 
+   (4,3,'coucou',GETDATE(),1), 
+   (4,3,'coucou',GETDATE(),1), 
+   (1,2,'coucou',GETDATE(),1),    
+   (1,3,'coucou',GETDATE(),1),    
+   (1,4,'coucou',GETDATE(),1), 
+   (2,1,'coucou',GETDATE(),1), 
+   (2,3,'coucou',GETDATE(),1), 
+   (2,4,'coucou',GETDATE(),1), 
+   (3,1,'coucou',GETDATE(),1), 
+   (3,2,'coucou',GETDATE(),1), 
+   (3,4,'coucou',GETDATE(),1), 
+   (4,1,'coucou',GETDATE(),1), 
+   (4,2,'coucou',GETDATE(),1), 
+   (4,3,'coucou',GETDATE(),1), 
+   (4,3,'coucou',GETDATE(),1);
+   
+ 

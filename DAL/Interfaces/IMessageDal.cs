@@ -14,9 +14,10 @@ namespace DAL.Interfaces
         MessageDal? GetById(int id);
         MessageDal? Insert(AddMessageFormDal form);
         MessageDal? Update(UpdateMessageFormDal form);
-
         int? Delete(int id);
         int? Enable(int id);
         int? Disable(int id);
+        IEnumerable<MessageDal>? GetMessagesBySenderId(int id); 
+        IEnumerable<MessageDal>? GetMessagesByRecieverId(int id);
     }
 }

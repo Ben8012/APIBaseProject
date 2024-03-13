@@ -1,4 +1,6 @@
-﻿namespace API.Models.DTO
+﻿using API.Models.DTO.UserAPI;
+
+namespace API.Models.DTO
 {
     public class Event
     {
@@ -6,10 +8,10 @@
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int DiveplaceId { get; set; }
-        public int CreatorId { get; set; }
-        public int TrainingId { get; set; }
-        public int ClubId { get; set; }
+        public User? Creator { get; set; }
+        public Training? Training { get; set; }
+        public Club? Club { get; set; }
+        public Diveplace? Diveplace { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }

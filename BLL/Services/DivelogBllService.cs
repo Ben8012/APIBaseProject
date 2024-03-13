@@ -19,11 +19,15 @@ namespace BLL.Services
 
         private readonly ILogger _logger;
         private readonly IDivelogDal _divelogDal;
+        private readonly IEventBll _eventBll;
+        private readonly IUserBll _userBll;
 
-        public DivelogBllService(ILogger<DivelogBllService> logger, IDivelogDal divelogDal)
+        public DivelogBllService(ILogger<DivelogBllService> logger, IDivelogDal divelogDal, IEventBll eventBll, IUserBll userBll)
         {
             _divelogDal = divelogDal;
             _logger = logger;
+            _eventBll = eventBll;
+            _userBll = userBll;
         }
 
         public int? Delete(int id)
@@ -33,12 +37,22 @@ namespace BLL.Services
 
         public IEnumerable<DivelogBll> GetAll()
         {
-            return _divelogDal.GetAll().Select(u => u.ToDivelogBll());
+            List<DivelogBll> divelogs = _divelogDal.GetAll().Select(u => u.ToDivelogBll()).ToList();
+            foreach (var d in divelogs)
+            {
+                d.Event = d.EventId == 0 ? null : _eventBll.GetById(d.EventId);
+                d.User = d.UserId == 0 ? null : _userBll.GetById(d.UserId);
+            }
+            return divelogs;
         }
 
         public DivelogBll? GetById(int id)
         {
-            return _divelogDal.GetById(id)?.ToDivelogBll();
+            DivelogBll divelog = _divelogDal.GetById(id)?.ToDivelogBll();
+            divelog.Event = divelog.EventId == 0 ? null : _eventBll.GetById(divelog.EventId);
+            divelog.User = divelog.UserId == 0 ? null : _userBll.GetById(divelog.UserId);
+
+            return divelog;
         }
 
         public DivelogBll? Insert(AddDivelogFormBll form)

@@ -19,11 +19,19 @@ namespace BLL.Services
 
         private readonly ILogger _logger;
         private readonly IEventDal _eventDal;
+        private readonly IDiveplaceBll _diveplaceBll;
+        private readonly IClubBll _clubBll;
+        private readonly IUserBll _userBll;
+        private readonly ITrainingBll _trainingBll;
 
-        public EventBllService(ILogger<EventBllService> logger, IEventDal eventDal)
+        public EventBllService(ILogger<EventBllService> logger, IEventDal eventDal, IDiveplaceBll diveplaceBll, IClubBll clubBll, IUserBll userBll, ITrainingBll trainingBll)
         {
             _eventDal = eventDal;
             _logger = logger;
+            _diveplaceBll = diveplaceBll;   
+            _clubBll= clubBll;
+            _userBll = userBll;
+            _trainingBll = trainingBll;
         }
 
         public int? Delete(int id)
@@ -33,12 +41,25 @@ namespace BLL.Services
 
         public IEnumerable<EventBll> GetAll()
         {
-            return _eventDal.GetAll().Select(u => u.ToEventBll());
+            List<EventBll> events = _eventDal.GetAll().Select(u => u.ToEventBll()).ToList();
+            foreach (var e in events)
+            {
+                e.Diveplace = e.DiveplaceId == 0 ? null : _diveplaceBll.GetById(e.DiveplaceId);
+                e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
+                e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
+                e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+            }
+            return events;
         }
 
         public EventBll? GetById(int id)
         {
-            return _eventDal.GetById(id)?.ToEventBll();
+            EventBll e = _eventDal.GetById(id)?.ToEventBll();
+            e.Diveplace = e.DiveplaceId == 0 ? null : _diveplaceBll.GetById(e.DiveplaceId);
+            e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
+            e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
+            e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+            return e;
         }
 
         public EventBll? Insert(AddEventFormBll form)

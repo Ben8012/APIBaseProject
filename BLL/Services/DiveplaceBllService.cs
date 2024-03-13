@@ -19,11 +19,13 @@ namespace BLL.Services
 
         private readonly ILogger _logger;
         private readonly IDiveplaceDal _diveplaceDal;
+        private readonly IUserBll _userBll;
 
-        public DiveplaceBllService(ILogger<DiveplaceBllService> logger, IDiveplaceDal diveplaceDal)
+        public DiveplaceBllService(ILogger<DiveplaceBllService> logger, IDiveplaceDal diveplaceDal, IUserBll userBll)
         {
             _diveplaceDal = diveplaceDal;
             _logger = logger;
+            _userBll = userBll;
         }
 
         public int? Delete(int id)
@@ -33,12 +35,19 @@ namespace BLL.Services
 
         public IEnumerable<DiveplaceBll> GetAll()
         {
-            return _diveplaceDal.GetAll().Select(u => u.ToDiveplaceBll());
+            List<DiveplaceBll> diveplaces = _diveplaceDal.GetAll().Select(u => u.ToDiveplaceBll()).ToList();
+            foreach (var diveplace in diveplaces)
+            {
+                diveplace.Adress = diveplace.AdressId == 0 ? null : _userBll.GetAdressById(diveplace.AdressId);
+            }
+            return diveplaces;
         }
 
         public DiveplaceBll? GetById(int id)
         {
-            return _diveplaceDal.GetById(id)?.ToDiveplaceBll();
+            DiveplaceBll diveplace = _diveplaceDal.GetById(id)?.ToDiveplaceBll();
+            diveplace.Adress = diveplace.AdressId == 0 ? null : _userBll.GetAdressById(diveplace.AdressId);
+            return diveplace;
         }
 
         public DiveplaceBll? Insert(AddDiveplaceFormBll form)

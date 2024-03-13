@@ -19,8 +19,7 @@ namespace API.Mappers
                 CreatedAt= insuranceBll.CreatedAt,
                 UpdatedAt= insuranceBll.UpdatedAt,
                 IsActive= insuranceBll.IsActive,
-                AdressId = insuranceBll.AdressId,
-               
+                Adress = insuranceBll.Adress is null ? null : insuranceBll.Adress.ToAdress(),
             };
          
         }

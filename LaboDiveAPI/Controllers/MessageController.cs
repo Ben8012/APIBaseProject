@@ -1,4 +1,5 @@
 ﻿using API.Mappers;
+using API.Models.DTO;
 using API.Models.Forms.Insurance;
 using API.Models.Forms.Message;
 using API.Tools;
@@ -127,6 +128,32 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("SenderMessages/{id}")]
+        public IActionResult GetMessagesBySenderId(int id)
+        {
+            try
+            {
+                return Ok(_messageBll.GetMessagesBySenderId(id).Select(u => u.ToMessage()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("RecieverMessages{id}")]
+        public IActionResult GetMessagesByRecieverId(int id)
+        {
+            try
+            {
+                return Ok(_messageBll.GetMessagesByRecieverId(id).Select(u => u.ToMessage()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
             }
         }
 

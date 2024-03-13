@@ -18,7 +18,6 @@ namespace DAL.Mappers
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 IsActive = (bool)reader["isActive"],
                 AdressId = (int)reader["adress_id"],
-                Evaluation = (int)reader["evaluation"]
             };
 
         }

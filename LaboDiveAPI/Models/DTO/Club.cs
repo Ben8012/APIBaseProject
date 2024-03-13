@@ -1,5 +1,4 @@
-﻿using BLL.Models.DTO;
-
+﻿using API.Models.DTO.UserAPI;
 namespace API.Models.DTO
 {
     public class Club
@@ -9,7 +8,7 @@ namespace API.Models.DTO
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
-        public AdressBll? Adress { get; set; }
-        public int CreatorId { get; set; }
+        public Adress? Adress { get; set; }
+        public User? Creator { get; set; }
     }
 }

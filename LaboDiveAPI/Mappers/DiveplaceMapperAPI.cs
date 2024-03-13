@@ -22,8 +22,6 @@ namespace API.Mappers
                UpdatedAt= diveplaceBll.UpdatedAt,
                IsActive= diveplaceBll.IsActive,
                Adress = diveplaceBll.Adress is null ? null : diveplaceBll.Adress.ToAdress(),
-               Evaluation = diveplaceBll.Evaluation,
-
             };
         }
 

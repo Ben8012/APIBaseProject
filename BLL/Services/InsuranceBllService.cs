@@ -19,21 +19,24 @@ namespace BLL.Services
 
         private readonly ILogger _logger;
         private readonly IInsuranceDal _insuranceDal;
+        private readonly IUserBll _userBll;
 
-        public InsuranceBllService(ILogger<InsuranceBllService> logger, IInsuranceDal insuranceDal)
+        public InsuranceBllService(ILogger<InsuranceBllService> logger, IInsuranceDal insuranceDal, IUserBll userBll)
         {
             _insuranceDal = insuranceDal;
             _logger = logger;
+            _userBll = userBll; 
         }
 
-        public int? Delete(int id)
-        {
-            return _insuranceDal.Delete(id);
-        }
-
+    
         public IEnumerable<InsuranceBll> GetAll()
         {
-            return _insuranceDal.GetAll().Select(u => u.ToInsuranceBll());
+            List<InsuranceBll> insurances = _insuranceDal.GetAll().Select(u => u.ToInsuranceBll()).ToList();
+            foreach (var insurance in insurances)
+            {
+                insurance.Adress = _userBll.GetAdressById(insurance.AdressId);
+            }
+            return insurances;
         }
 
         public InsuranceBll? GetById(int id)
@@ -60,5 +63,10 @@ namespace BLL.Services
         {
             return _insuranceDal.Enable(id); ;
         }
+        public int? Delete(int id)
+        {
+            return _insuranceDal.Delete(id);
+        }
+
     }
 }

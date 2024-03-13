@@ -21,10 +21,10 @@ namespace API.Mappers
                 CreatedAt = eventBll.CreatedAt,
                 UpdatedAt = eventBll.UpdatedAt,
                 IsActive = eventBll.IsActive,
-                DiveplaceId = eventBll.DiveplaceId,
-                CreatorId = eventBll.CreatorId,
-                TrainingId = eventBll.TrainingId,
-                ClubId = eventBll.ClubId
+                Diveplace = eventBll.Diveplace is null ? null : eventBll.Diveplace.ToDiveplace(),
+                Creator = eventBll.Creator is null ? null : eventBll.Creator.ToUser(),
+                Training = eventBll.Training is null ? null : eventBll.Training.ToTraining(),
+                Club = eventBll.Club is null ? null : eventBll.Club.ToClub(),
             };
         }
 

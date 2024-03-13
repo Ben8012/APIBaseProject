@@ -24,8 +24,8 @@ namespace API.Mappers
                 CreatedAt= divelogBll.CreatedAt,
                 UpdatedAt= divelogBll.UpdatedAt,
                 IsActive= divelogBll.IsActive,
-                User= divelogBll.User is null ? null : divelogBll.User,
-                Event= divelogBll.Event is null ? null : divelogBll.Event,      
+                User= divelogBll.User is null ? null : divelogBll.User.ToUser(),
+                Event= divelogBll.Event is null ? null : divelogBll.Event.ToEvent(),      
 
             };
         }

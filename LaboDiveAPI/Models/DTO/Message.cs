@@ -1,10 +1,13 @@
-﻿namespace API.Models.DTO
+﻿using API.Models.DTO.UserAPI;
+using BLL.Models.DTO;
+
+namespace API.Models.DTO
 {
     public class Message
     {
         public int Id { get; set; }
-        public int SenderId { get; set; }
-        public int RecieverId { get; set; }
+        public User? Sender { get; set; }
+        public User? Reciever { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

@@ -20,8 +20,6 @@ namespace BLL.Mappers
                 UpdatedAt = diveplaceDal.UpdatedAt,
                 IsActive = diveplaceDal.IsActive,
                 AdressId = diveplaceDal.AdressId,
-                Evaluation = diveplaceDal.Evaluation,
-
             };
         }
 

@@ -17,11 +17,13 @@ namespace BLL.Services
     {
         private readonly ILogger _logger;
         private readonly IClubDal _clubDal;
+        private readonly IUserBll _userBll;
 
-        public ClubBllService(ILogger<ClubBllService> logger, IClubDal clubDal)
+        public ClubBllService(ILogger<ClubBllService> logger, IClubDal clubDal, IUserBll userBll)
         {
             _clubDal = clubDal;
             _logger = logger;
+            _userBll = userBll;
         }
 
         public int? Delete(int id)
@@ -31,12 +33,21 @@ namespace BLL.Services
 
         public IEnumerable<ClubBll> GetAll()
         {
-            return _clubDal.GetAll().Select(u => u.ToClubBll());
+            List<ClubBll> clubs = _clubDal.GetAll().Select(u => u.ToClubBll()).ToList();
+            foreach (var club in clubs)
+            {
+                club.Adress = club.AdressId == 0 ? null : _userBll.GetAdressById(club.AdressId);
+                club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
+            }
+            return clubs;
         }
 
         public ClubBll? GetById(int id)
         {
-            return _clubDal.GetById(id)?.ToClubBll();
+            ClubBll club = _clubDal.GetById(id)?.ToClubBll();
+            club.Adress = club.AdressId == 0 ? null : _userBll.GetAdressById(club.AdressId);
+            club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
+            return club;
         }
 
         public ClubBll? Insert(AddClubFormBll form)

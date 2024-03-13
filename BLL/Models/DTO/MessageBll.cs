@@ -9,5 +9,8 @@
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
+
+        public UserBll? Sender { get; set; }
+        public UserBll? Reciever { get; set; }
     }
 }

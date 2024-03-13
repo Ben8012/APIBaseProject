@@ -14,8 +14,8 @@ namespace API.Mappers
             return new Message()
             {
                 Id= messageBll.Id,
-                RecieverId= messageBll.RecieverId,
-                SenderId= messageBll.SenderId,
+                Reciever= messageBll.Reciever is null ? null : messageBll.Reciever.ToUser(),
+                Sender= messageBll.Sender is null ? null : messageBll.Sender.ToUser(),
                 CreatedAt= messageBll.CreatedAt,
                 Content= messageBll.Content,
                 UpdatedAt= messageBll.UpdatedAt,
