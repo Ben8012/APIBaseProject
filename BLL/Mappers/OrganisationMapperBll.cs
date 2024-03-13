@@ -18,6 +18,8 @@ namespace BLL.Mappers
                 UpdatedAt = organisationDal.UpdatedAt,
                 IsActive = organisationDal.IsActive,
                 AdressId = organisationDal.AdressId,
+                Level = organisationDal.Level,
+                RefNumber = organisationDal.RefNumber,
 
             };
         }

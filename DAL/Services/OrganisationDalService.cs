@@ -220,7 +220,7 @@ namespace DAL.Services
 
         public IEnumerable<OrganisationDal>? GetOrganisationByUserId(int id)
         {
-            Command command = new Command(@"SELECT[Organisation].Id, [Organisation].[name], picture, [Organisation].createdAt, [Organisation].updatedAt, [Organisation].isActive, [Organisation].adress_Id
+            Command command = new Command(@"SELECT[Organisation].Id, [Level],[refNumber], [Organisation].[name], picture, [Organisation].createdAt, [Organisation].updatedAt, [Organisation].isActive, [Organisation].adress_Id
                                             FROM[Organisation]
                                             JOIN User_Organisation ON User_Organisation.organisation_Id = Organisation.Id
                                             JOIN[User] ON[User].Id = User_Organisation.user_Id

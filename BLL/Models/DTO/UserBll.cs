@@ -19,7 +19,7 @@ namespace BLL.Models.DTO
         public int AdressId { get; set; }
 
 
-        public AdressBll Adress { get; set; }
+        public AdressBll? Adress { get; set; }
         public List<OrganisationBll>? Organisations { get; set; }
         public InsuranceBll? Insurance { get; set; }
         public List<DivelogBll>? Divelogs { get; set; }

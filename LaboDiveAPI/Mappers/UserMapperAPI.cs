@@ -31,28 +31,28 @@ namespace API.Mappers
 
         internal static User ToUser(this UserBll userBll)
         {
-            return new User()
-            {
-                Id = userBll.Id,
-                Firstname = userBll.FirstName,
-                Lastname = userBll.LastName,
-                Email = userBll.Email,
-                Phone = userBll.Phone,
-                Role = userBll.Role,
-                Birthdate = userBll.Birthdate,
-                CreatedAt = userBll.CreatedAt,
-                UpdatedAt = userBll.UpdatedAt,
-                IsActive = userBll.IsActive,
-                Insurance = userBll.Insurance.ToInsurance(),
-                Adress = userBll.Adress.ToAdress(),
-                Organisations = userBll.Organisations.Select(o => o.ToOrganisation()).ToList(),
-                Divelogs = userBll.Divelogs.Select(d => d.ToDivelog()).ToList(),
-                Diveplaces = userBll.Diveplaces.Select(p => p.ToDiveplace()).ToList(),
-                Friends = userBll.Friends.Select(f => f.ToUser()).ToList(),
-                Clubs = userBll.Clubs.Select(c => c.ToClub()).ToList(),
-                Events = userBll.Events.Select(e => e.ToEvent()).ToList()
+                return new User()
+                {
+                    Id = userBll.Id,
+                    Firstname = userBll.FirstName,
+                    Lastname = userBll.LastName,
+                    Email = userBll.Email,
+                    Phone = userBll.Phone,
+                    Role = userBll.Role,
+                    Birthdate = userBll.Birthdate,
+                    CreatedAt = userBll.CreatedAt,
+                    UpdatedAt = userBll.UpdatedAt,
+                    IsActive = userBll.IsActive,
+                    Insurance = userBll.Insurance is null ? null : userBll.Insurance.ToInsurance(),
+                    Adress = userBll.Adress is null ? null : userBll.Adress.ToAdress(),
+                    Organisations = userBll.Organisations is null ? null : userBll.Organisations.Select(o => o.ToOrganisation()).ToList(),
+                    Divelogs = userBll.Divelogs is null ? null : userBll.Divelogs.Select(d => d.ToDivelog()).ToList(),
+                    Diveplaces = userBll.Diveplaces is null ? null : userBll.Diveplaces.Select(p => p.ToDiveplace()).ToList(),
+                    Friends = userBll.Friends is null ? null :  userBll.Friends .Select(f => f.ToUser()).ToList(),
+                    Clubs = userBll.Clubs is null ? null : userBll.Clubs.Select(c => c.ToClub()).ToList(),
+                    Events = userBll.Events is null ? null : userBll.Events.Select(e => e.ToEvent()).ToList()
 
-            };
+                };
         }
 
 

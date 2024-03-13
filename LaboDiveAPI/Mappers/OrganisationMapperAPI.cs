@@ -4,6 +4,7 @@ using API.Models.Forms.Organisation;
 using BLL.Models.DTO;
 using BLL.Models.Forms.Message;
 using BLL.Models.Forms.Organisation;
+using DAL.Models.DTO;
 
 namespace API.Mappers
 {
@@ -19,8 +20,9 @@ namespace API.Mappers
                 CreatedAt= organisationBll.CreatedAt,
                 UpdatedAt= organisationBll.UpdatedAt,
                 IsActive= organisationBll.IsActive,
-                AdressId = organisationBll.AdressId,
-
+                Adress = organisationBll.Adress is null ? null : organisationBll.Adress.ToAdress(),
+                Level = organisationBll.Level,
+                RefNumber = organisationBll.RefNumber,
             };
         }
 

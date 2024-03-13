@@ -1,4 +1,6 @@
-﻿namespace API.Models.DTO
+﻿using BLL.Models.DTO;
+
+namespace API.Models.DTO
 {
     public class Divelog
     {
@@ -13,8 +15,8 @@
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
-        public int UserId { get; set; }
-        public int EventId { get; set; }
+        public EventBll? Event { get; set; }
+        public UserBll? User { get; set; }
 
     }
 }

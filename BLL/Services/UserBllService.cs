@@ -61,6 +61,41 @@ namespace BLL.Services
         {
             UserBll? user = _userDal.GetById(id)?.ToUserBll();
             user.Adress = GetAdressById(user.AdressId);
+            user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
+            user.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
+            foreach (var divelog in user.Divelogs)
+            {
+                //divelog.User = _userDal.GetById(divelog.UserId)?.ToUserBll();
+                divelog.Event = divelog.EventId == 0 ? null : _eventDal.GetById(divelog.EventId)?.ToEventBll();
+            }
+            user.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
+            user.Friends = _userDal.GetContactByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
+            foreach (var friend in user.Friends)
+            {
+                friend.Adress = GetAdressById(friend.AdressId);
+                friend.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
+                foreach(var club in friend.Clubs)
+                {
+                    club.Adress = club.AdressId == 0 ? null : GetAdressById(user.AdressId);
+                }
+                friend.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
+                friend.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
+              
+
+                friend.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
+               
+                friend.Friends = null;
+            }
+            user.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
+            foreach(var organisation in user.Organisations)
+            {
+                organisation.Adress = GetAdressById(organisation.AdressId);
+            }
+            //user.Diveplaces = _diveplaceDal.GetDiveplaceByUserId(user.Id).Select(d => d.ToDiveplaceBll()).ToList();
+            //foreach (var diveplace in user.Diveplaces)
+            //{
+            //    diveplace.Adress = diveplace.AdressId == 0 ? null : _userDal.GetAdressById(diveplace.AdressId).ToAdressBll();
+            //}
             return user;
         }
 

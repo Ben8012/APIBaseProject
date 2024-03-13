@@ -205,7 +205,7 @@ namespace DAL.Services
 
         public IEnumerable<DiveplaceDal>? GetDiveplaceByUserId(int id)
         {
-            Command command = new Command(@"SELECT [Diveplace].Id, [name], picture, map, description, [Diveplace].createdAt, [Diveplace].updatedAt, [Diveplace].isActive, [Diveplace].adress_Id 
+            Command command = new Command(@"SELECT [Diveplace].Id, [name],evaluation, picture, map, description, [Diveplace].createdAt, [Diveplace].updatedAt, [Diveplace].isActive, [Diveplace].adress_Id 
                                             FROM [Diveplace] 
                                             JOIN User_Diveplace ON User_Diveplace.diveplace_Id = Diveplace.Id
                                             JOIN [User] ON [User].Id = User_Diveplace.user_Id

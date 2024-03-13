@@ -15,7 +15,7 @@ namespace API.Mappers
                 Name = clubBll.Name,
                 UpdatedAt = clubBll.UpdatedAt,
                 IsActive = clubBll.IsActive,
-                AdressId = clubBll.AdressId,
+                Adress = clubBll.Adress is null ? null : clubBll.Adress,
                 CreatorId = clubBll.CreatorId
 
             };

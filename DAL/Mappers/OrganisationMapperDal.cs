@@ -1,5 +1,6 @@
 ﻿using DAL.Models.DTO;
 using System.Data.Common;
+using System.Security.Cryptography;
 
 namespace DAL.Mappers
 {
@@ -16,6 +17,8 @@ namespace DAL.Mappers
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 IsActive = (bool)reader["isActive"],
                 AdressId = (int)reader["adress_Id"],
+                Level= (string)reader["level"],
+                RefNumber = (string)reader["refNumber"]
 
             };
 
