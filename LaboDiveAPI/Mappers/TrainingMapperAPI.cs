@@ -21,7 +21,7 @@ namespace API.Mappers
                CreatedAt=trainingBll.CreatedAt,
                UpdatedAt=trainingBll.UpdatedAt,
                IsActive=trainingBll.IsActive,
-               OrganisationId=trainingBll.OrganisationId,
+               Organisation = trainingBll.Organisation is null ? null : trainingBll.Organisation.ToOrganisation(),
 
             };
         }

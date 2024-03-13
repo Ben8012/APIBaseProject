@@ -1,4 +1,6 @@
-﻿namespace API.Models.DTO
+﻿using BLL.Models.DTO;
+
+namespace API.Models.DTO
 {
     public class Training
     {
@@ -7,7 +9,7 @@
         public string Prerequisite { get; set; }
         public string Picture { get; set; }
         public bool IsSpeciality { get; set; }
-        public int OrganisationId { get; set; }
+        public Organisation? Organisation { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }

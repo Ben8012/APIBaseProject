@@ -19,11 +19,13 @@ namespace BLL.Services
 
         private readonly ILogger _logger;
         private readonly ITrainingDal _trainingDal;
+        private readonly IOrganisationBll _organisationBll;
 
-        public TrainingBllService(ILogger<TrainingBllService> logger, ITrainingDal trainingDal)
+        public TrainingBllService(ILogger<TrainingBllService> logger, ITrainingDal trainingDal, IOrganisationBll organisationBll)
         {
             _trainingDal = trainingDal;
             _logger = logger;
+            _organisationBll = organisationBll;
         }
 
         public int? Delete(int id)
@@ -33,12 +35,19 @@ namespace BLL.Services
 
         public IEnumerable<TrainingBll> GetAll()
         {
-            return _trainingDal.GetAll().Select(u => u.ToTrainingBll());
+            List<TrainingBll> trainings = _trainingDal.GetAll().Select(u => u.ToTrainingBll()).ToList();
+            foreach (var training in trainings)
+            {
+                training.Organisation = _organisationBll.GetById(training.OrganisationId);
+            }
+            return trainings;
         }
 
         public TrainingBll? GetById(int id)
         {
-            return _trainingDal.GetById(id)?.ToTrainingBll();
+            TrainingBll training = _trainingDal.GetById(id)?.ToTrainingBll();
+            training.Organisation = _organisationBll.GetById(training.OrganisationId);
+            return training;
         }
 
         public TrainingBll? Insert(AddTrainingFormBll form)
