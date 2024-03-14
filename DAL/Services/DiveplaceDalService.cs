@@ -78,10 +78,10 @@ namespace DAL.Services
             }
         }
 
-
+  
         public IEnumerable<DiveplaceDal> GetAll()
         {
-            Command command = new Command("SELECT Id, name, picture, map, description, createdAt, updatedAt, isActive, adress_Id FROM [Diveplace];", false);
+            Command command = new Command("SELECT Id, name, picture, map, description, gps, maxDepp, price, compressor, restoration,  createdAt, updatedAt, isActive, adress_Id FROM [Diveplace];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToDiveplaceDal());
@@ -112,7 +112,7 @@ namespace DAL.Services
         public DiveplaceDal? Insert(AddDiveplaceFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Diveplace]( name, picture, map, description, createdAt, isActive, adress_Id ) OUTPUT inserted.id VALUES( @name, @picture, @map, @description, @createdAt, @isActive, @adress_Id )", false);
+            Command command = new Command("INSERT INTO [Diveplace]( name, picture, map, description, gps, maxDepp, price, compressor, restoration, createdAt, isActive, adress_Id ) OUTPUT inserted.id VALUES( @name, @picture, @map, @description, @gps, @maxDepp, @price, @compressor, @restoration, @createdAt, @isActive, @adress_Id )", false);
             command.AddParameter("name", form.Name);
             command.AddParameter("picture", form.Picture);
             command.AddParameter("map", form.Map);
@@ -120,6 +120,11 @@ namespace DAL.Services
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive", 1);
             command.AddParameter("adress_Id", form.AdressId);     
+            command.AddParameter("gps", form.AdressId);     
+            command.AddParameter("maxDepp", form.AdressId);     
+            command.AddParameter("price", form.AdressId);     
+            command.AddParameter("compressor", form.AdressId);
+            command.AddParameter("restoration", form.AdressId);
 
             try
             {
@@ -142,7 +147,7 @@ namespace DAL.Services
 
         public DiveplaceDal? Update(UpdateDiveplaceFormDal form)
         {
-            Command command = new Command("UPDATE [Diveplace] SET [name] = @name , picture = @picture , map = @map , description = @description , updatedAt = @updatedAt , adress_Id = @adress_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Diveplace] SET [name] = @name , picture = @picture , map = @map , description = @description ,gps = @gps,= @maxDepp,price @price,compressor = @compressor,restoration = @restoration, updatedAt = @updatedAt , adress_Id = @adress_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
             command.AddParameter("picture", form.Picture);
@@ -150,7 +155,12 @@ namespace DAL.Services
             command.AddParameter("description", form.Description);
             command.AddParameter("updatedAt", DateTime.Now);
             command.AddParameter("adress_Id", form.AdressId);
-         
+            command.AddParameter("gps", form.AdressId);
+            command.AddParameter("maxDepp", form.AdressId);
+            command.AddParameter("price", form.AdressId);
+            command.AddParameter("compressor", form.AdressId);
+            command.AddParameter("restoration", form.AdressId);
+
 
 
             try
@@ -190,7 +200,7 @@ namespace DAL.Services
 
         private DiveplaceDal? GetDiveplaceById(int id)
         {
-            Command command = new Command("SELECT Id, [name], picture, map, description, createdAt, updatedAt, isActive, adress_Id FROM [Diveplace] WHERE Id = @Id;", false);
+            Command command = new Command("SELECT Id, [name], picture, map, description, gps, maxDepp, price, compressor, restoration, createdAt, updatedAt, isActive, adress_Id FROM [Diveplace] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -205,7 +215,7 @@ namespace DAL.Services
 
         public IEnumerable<DiveplaceDal>? GetDiveplaceByUserId(int id)
         {
-            Command command = new Command(@"SELECT [Diveplace].Id, [name],evaluation, picture, map, description, [Diveplace].createdAt, [Diveplace].updatedAt, [Diveplace].isActive, [Diveplace].adress_Id 
+            Command command = new Command(@"SELECT [Diveplace].Id, [name],evaluation, picture, map, description, gps, maxDepp, price, compressor, restoration, [Diveplace].createdAt, [Diveplace].updatedAt, [Diveplace].isActive, [Diveplace].adress_Id 
                                             FROM [Diveplace] 
                                             JOIN User_Diveplace ON User_Diveplace.diveplace_Id = Diveplace.Id
                                             JOIN [User] ON [User].Id = User_Diveplace.user_Id

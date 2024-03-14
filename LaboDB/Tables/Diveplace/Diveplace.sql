@@ -9,5 +9,11 @@
     [updatedAt] DATETIME2 NULL,
     [isActive] BIT NOT NULL,
     [adress_Id] INT NOT NULL, 
+    [gps] NVARCHAR(50) NULL, 
+    [url] NVARCHAR(100) NULL,
+    [maxDepp] INT NOT NULL,
+    [price] INT NOT NULL,
+    [compressor] BIT NOT NULL,
+    [restoration] bIT NOT NULL
     CONSTRAINT [FK_Diveplace_ToAdress] FOREIGN KEY ([adress_Id]) REFERENCES [Adress]([Id]),
 )

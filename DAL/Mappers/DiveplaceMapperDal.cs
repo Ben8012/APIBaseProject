@@ -18,6 +18,11 @@ namespace DAL.Mappers
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 IsActive = (bool)reader["isActive"],
                 AdressId = (int)reader["adress_id"],
+                Gps = (string)reader["gps"],
+                MaxDepp = (int)reader["maxDepp"],
+                Price = (int)reader["price"],
+                Compressor = (bool)reader["compressor"],
+                Restoration = (bool)reader["restoration"],
             };
 
         }

@@ -11,5 +11,10 @@
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
+        public string Gps { get; set; }
+        public int MaxDepp { get; set; }
+        public int Price { get; set; }
+        public bool Compressor { get; set; }
+        public bool Restoration { get; set; }
     }
 }

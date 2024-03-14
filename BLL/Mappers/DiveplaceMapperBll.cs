@@ -20,6 +20,11 @@ namespace BLL.Mappers
                 UpdatedAt = diveplaceDal.UpdatedAt,
                 IsActive = diveplaceDal.IsActive,
                 AdressId = diveplaceDal.AdressId,
+                Gps = diveplaceDal.Gps,
+                MaxDepp = diveplaceDal.MaxDepp,
+                Price = diveplaceDal.Price,
+                Compressor = diveplaceDal.Compressor,
+                Restoration = diveplaceDal.Restoration,
             };
         }
 
