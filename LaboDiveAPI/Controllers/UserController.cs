@@ -12,6 +12,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Principal;
 using Newtonsoft.Json;
 using Tools;
+using System.Data;
+using System.Xml;
+using System.Data.SqlClient;
 
 namespace API.Controllers
 {
@@ -84,7 +87,7 @@ namespace API.Controllers
             //form.FirstName = "Benjamin";
             //form.LastName = "Sterckx";
             //form.Birthdate = new DateTime(1980,12,10);
-            form.AdressId = 1;
+            //form.AdressId = 1;
             //form.Phone = null;
             //form.InsuranceNumber = null;
 
@@ -93,10 +96,20 @@ namespace API.Controllers
             form.Password = BCrypt.Net.BCrypt.HashPassword(form.Password);
             try
             {
-                return Ok(_userBll.Insert(form.ToAddUserFromBll())?.ToUser());
+                User user = _userBll.Insert(form.ToAddUserFromBll())?.ToUser();
+                if (user is null)
+                {
+                    return BadRequest(new { Message = "L'utilisateur n'a pas été trouvé " });
+                }
+                user.Token = _token.GenerateJWTUser(user);
+                return Ok(user);
             }
             catch (Exception ex)
             {
+               if(ex is SqlException sqlEx )
+                {
+                    return BadRequest(new { Message = "Email deja prit", ErrorMessage = sqlEx.Message });
+                }
                 return BadRequest(new { Message = "l'insertion a échoué, contactez l'admin", ErrorMessage = ex.Message });
             }
 
@@ -170,24 +183,12 @@ namespace API.Controllers
             try
             {
                 User? user = _userBll.Login(form.ToLoginFormBll()).ToUser();
-
                 if (user is null)
                 {
                     return BadRequest(new { Message = "L'utilisateur n'a pas été trouvé " });
                 }
-                UserWithToken userWithToken = new UserWithToken()
-                {
-                    Id = user.Id,
-                    Firstname = user.Firstname,
-                    Lastname = user.Lastname,
-                    Email = user.Email,
-                    Birthdate = user.Birthdate,
-                    CreatedAt = user.CreatedAt,
-                    UpdatedAt = user.UpdatedAt,
-                    Token = _token.GenerateJWTUser(user)
-                };
-
-                return Ok(userWithToken);
+                user.Token = _token.GenerateJWTUser(user);
+                return Ok(user);
             }
             catch (Exception ex)
             {
@@ -249,19 +250,12 @@ namespace API.Controllers
                 int id = int.Parse( token.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid").Value);
 
                 User? user = _userBll.GetById(id)?.ToUser();
-
-                UserWithToken userWithToken = new UserWithToken()
+                if (user is null)
                 {
-                    Id = user.Id,
-                    Firstname = user.Firstname,
-                    Lastname = user.Lastname,
-                    Email = user.Email,
-                    Birthdate = user.Birthdate,
-                    CreatedAt = user.CreatedAt,
-                    UpdatedAt = user.UpdatedAt,
-                    Token = form.TokenString
-                };
-                return Ok(userWithToken);
+                    return BadRequest(new { Message = "L'utilisateur n'a pas été trouvé " });
+                }
+                user.Token = form.TokenString;
+                return Ok(user);
             }
             catch (Exception ex)
             {
@@ -292,6 +286,21 @@ namespace API.Controllers
                 _logger.LogError(ex, ex.Message);
                 throw ex;
             }
+        }
+
+        private UserWithToken GetUserWithToken(User user)
+        {
+            return new UserWithToken()
+            {
+                Id = user.Id,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Email = user.Email,
+                Birthdate = user.Birthdate,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt,
+                Token = _token.GenerateJWTUser(user)
+            };
         }
     }
 }

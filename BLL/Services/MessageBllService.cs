@@ -98,6 +98,14 @@ namespace BLL.Services
             return messages;
         }
 
-      
+        public IEnumerable<MessageBll>? GetMessagesBetween(int sender, int reciever)
+        {
+            List<MessageBll> messages = _messageDal.GetMessagesBetween(sender, reciever).Select(u => u.ToMessageBll()).ToList();
+            
+            return messages;
+        }
+
+
+
     }
 }

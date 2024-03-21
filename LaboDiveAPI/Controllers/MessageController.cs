@@ -144,6 +144,21 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("MessagesBetween/{sender}/{reciever}")]
+        public IActionResult GetMessagesBetween(int sender, int reciever)
+        {
+            try
+            {
+                return Ok(_messageBll.GetMessagesBetween(sender, reciever).Select(u => u.ToMessage()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+
+
         [HttpGet("RecieverMessages{id}")]
         public IActionResult GetMessagesByRecieverId(int id)
         {

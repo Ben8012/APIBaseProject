@@ -63,11 +63,7 @@ namespace API.Mappers
                 FirstName = addUserFrom.FirstName,
                 LastName = addUserFrom.LastName,
                 Email = addUserFrom.Email,
-                Phone = addUserFrom.Phone,
                 Birthdate = addUserFrom.Birthdate,
-                InsuranceId = addUserFrom.InsuranceId,
-                InsuranceNumber= addUserFrom.InsuranceNumber,
-                AdressId = addUserFrom.AdressId,
                 Password= addUserFrom.Password,
             };
         }

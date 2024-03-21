@@ -21,5 +21,6 @@ namespace BLL.Interfaces
         int? Disable(int id);
         IEnumerable<MessageBll>? GetMessagesBySenderId(int id);
         IEnumerable<MessageBll>? GetMessagesByRecieverId(int id);
+        IEnumerable<MessageBll>? GetMessagesBetween(int sender, int reciever);
     }
 }

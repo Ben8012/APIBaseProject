@@ -60,15 +60,15 @@ namespace BLL.Services
         public UserBll? GetById(int id)
         {
             UserBll? user = _userDal.GetById(id)?.ToUserBll();
-            user.Adress = GetAdressById(user.AdressId);
-            user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
-            user.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
-            foreach (var divelog in user.Divelogs)
-            {
-                //divelog.User = _userDal.GetById(divelog.UserId)?.ToUserBll();
-                divelog.Event = divelog.EventId == 0 ? null : _eventDal.GetById(divelog.EventId)?.ToEventBll();
-            }
-            user.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
+            user.Adress = user.AdressId == 0 ? null : GetAdressById(user.AdressId);
+            //user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
+            //user.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
+            //foreach (var divelog in user.Divelogs)
+            //{
+            //    divelog.User = _userDal.GetById(divelog.UserId)?.ToUserBll();
+            //    divelog.Event = divelog.EventId == 0 ? null : _eventDal.GetById(divelog.EventId)?.ToEventBll();
+            //}
+            //user.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
             user.Friends = _userDal.GetContactByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
             foreach (var friend in user.Friends)
             {
@@ -101,7 +101,9 @@ namespace BLL.Services
 
         public UserBll? Insert(AddUserFormBll form)
         {
-            return _userDal.Insert(form.ToAddUserFromDal())?.ToUserBll();
+            UserBll? user = _userDal.Insert(form.ToAddUserFromDal())?.ToUserBll();
+            user = GetById(user.Id);
+            return user;
         }
 
         public UserBll? Update(UpdateUserFormBll form)
@@ -111,7 +113,9 @@ namespace BLL.Services
 
         public UserBll Login(LoginFormBll form)
         {
-            return _userDal.Login(form.ToLoginFormDal()).ToUserBll();
+            UserBll? user = _userDal.Login(form.ToLoginFormDal()).ToUserBll();
+            user = GetById(user.Id);
+            return user;
         }
 
         public int? Disable(int id)

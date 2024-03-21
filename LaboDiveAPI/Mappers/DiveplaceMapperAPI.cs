@@ -23,11 +23,11 @@ namespace API.Mappers
                UpdatedAt= diveplaceBll.UpdatedAt,
                IsActive= diveplaceBll.IsActive,
                Adress = diveplaceBll.Adress is null ? null : diveplaceBll.Adress.ToAdress(),
-                Gps = diveplaceBll.Gps,
-                MaxDepp = diveplaceBll.MaxDepp,
-                Price = diveplaceBll.Price,
-                Compressor = diveplaceBll.Compressor,
-                Restoration = diveplaceBll.Restoration,
+               Gps = diveplaceBll.Gps,
+               MaxDepp = diveplaceBll.MaxDepp,
+               Price = diveplaceBll.Price,
+               Compressor = diveplaceBll.Compressor,
+               Restoration = diveplaceBll.Restoration,
             };
         }
 

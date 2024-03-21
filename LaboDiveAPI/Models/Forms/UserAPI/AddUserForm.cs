@@ -27,14 +27,7 @@ namespace API.Models.Forms.UserAPI
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public string? InsuranceNumber { get; set; }
 
-        public int? InsuranceId { get; set; }
-
-        public string? Phone { get; set; }
-
-
-        public int AdressId { get; set; }
     }
 }
 

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Tools;
@@ -184,6 +185,24 @@ namespace DAL.Services
                                             FROM [Message] 
                                             WHERE sender_Id = @Id;", false);
             command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToMessageDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public IEnumerable<MessageDal>? GetMessagesBetween(int sender, int reciever)
+        {
+            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive 
+                                            FROM [Message] 
+                                            WHERE sender_Id = @sender AND reciever_Id = @reciever", false);
+            command.AddParameter("sender", sender);
+            command.AddParameter("reciever", reciever);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToMessageDal());

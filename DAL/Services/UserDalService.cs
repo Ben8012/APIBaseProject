@@ -59,19 +59,20 @@ namespace DAL.Services
 
         public UserDal? Insert(AddUserFormDal form)
         {
-            Command command = new Command("INSERT INTO [User](firstname, lastname, email, passwd, phone, role, birthDate, createdAt, isActive, insuranceNumber, insurance_Id,adress_Id) OUTPUT inserted.id VALUES(@firstname, @lastname, @email,@passwd , @phone , @role, @birthDate, @createdAt, @isActive,@insuranceNumber,@insurance_Id,@adress_Id)", false);
+            Command command = new Command("INSERT INTO [User](firstname, lastname, email, passwd, role, birthDate, createdAt, isActive) OUTPUT inserted.id VALUES(@firstname, @lastname, @email,@passwd, @role, @birthDate, @createdAt, @isActive)", false);
             command.AddParameter("lastname", form.LastName);
             command.AddParameter("firstname", form.FirstName);
             command.AddParameter("email", form.Email);
             command.AddParameter("passwd", form.Password);
-            command.AddParameter("phone", form.Phone == null ? DBNull.Value : form.Phone);
             command.AddParameter("role", "user");
             command.AddParameter("birthDate", form.Birthdate);
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive",1);
-            command.AddParameter("insuranceNumber", form.InsuranceNumber == null ? DBNull.Value : form.InsuranceNumber);
-            command.AddParameter("insurance_Id", form.InsuranceId == 0 ? DBNull.Value :form.InsuranceId);
-            command.AddParameter("adress_Id", form.AdressId);
+
+            //command.AddParameter("phone", form.Phone == null ? DBNull.Value : form.Phone);
+            //command.AddParameter("insuranceNumber", form.InsuranceNumber == null ? DBNull.Value : form.InsuranceNumber);
+            //command.AddParameter("insurance_Id", form.InsuranceId == 0 ? DBNull.Value :form.InsuranceId);
+            //command.AddParameter("adress_Id", form.AdressId == 0 ? DBNull.Value : form.AdressId);
 
 
             try
@@ -91,7 +92,6 @@ namespace DAL.Services
             {
                 throw ex;
             }
-  
         }
 
 

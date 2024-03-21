@@ -12,7 +12,9 @@
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
-   
+
+        public string Token { get; set; }
+
         public Adress? Adress { get; set; }
 
         public List<Organisation>? Organisations { get; set;}
@@ -29,6 +31,6 @@
 
         public List<Event>? Events { get; set; }
 
-       
+      
     }
 }

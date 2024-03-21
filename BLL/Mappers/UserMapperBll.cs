@@ -61,11 +61,7 @@ namespace BLL.Mappers
                 FirstName = addUserFromBll.FirstName,
                 LastName = addUserFromBll.LastName,
                 Email = addUserFromBll.Email,
-                Phone = addUserFromBll.Phone,
                 Birthdate = addUserFromBll.Birthdate,
-                InsuranceId = addUserFromBll.InsuranceId,
-                InsuranceNumber = addUserFromBll.InsuranceNumber,
-                AdressId = addUserFromBll.AdressId,
                 Password = addUserFromBll.Password,
             };
         }

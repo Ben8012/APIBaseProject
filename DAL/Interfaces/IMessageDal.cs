@@ -19,5 +19,7 @@ namespace DAL.Interfaces
         int? Disable(int id);
         IEnumerable<MessageDal>? GetMessagesBySenderId(int id); 
         IEnumerable<MessageDal>? GetMessagesByRecieverId(int id);
+
+        IEnumerable<MessageDal>? GetMessagesBetween(int sender, int reciever);
     }
 }
