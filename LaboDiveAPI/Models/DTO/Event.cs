@@ -1,4 +1,5 @@
 ﻿using API.Models.DTO.UserAPI;
+using BLL.Models.DTO;
 
 namespace API.Models.DTO
 {
@@ -15,5 +16,7 @@ namespace API.Models.DTO
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
+
+        public List<User>? Participes { get; set; }
     }
 }

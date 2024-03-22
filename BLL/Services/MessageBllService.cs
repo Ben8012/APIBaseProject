@@ -101,7 +101,11 @@ namespace BLL.Services
         public IEnumerable<MessageBll>? GetMessagesBetween(int sender, int reciever)
         {
             List<MessageBll> messages = _messageDal.GetMessagesBetween(sender, reciever).Select(u => u.ToMessageBll()).ToList();
-            
+            foreach (var message in messages)
+            {
+                message.Reciever = _userDal.GetById(message.RecieverId).ToUserBll();
+                message.Sender = _userDal.GetById(message.SenderId).ToUserBll();
+            }
             return messages;
         }
 

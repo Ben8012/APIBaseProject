@@ -1,6 +1,7 @@
 ﻿using BLL.Models.DTO;
 using BLL.Models.Forms.Diveplace;
 using BLL.Models.Forms.Event;
+using DAL.Models.DTO;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -31,5 +32,7 @@ namespace BLL.Interfaces
 
         int? Invite(int inviterId, int invitedId, int eventId);
         int? UnInvite(int inviterId, int invitedId, int eventId);
+
+        IEnumerable<UserBll> GetAllParticipeByEventId(int id);
     }
 }

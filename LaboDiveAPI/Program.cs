@@ -9,21 +9,16 @@ using Microsoft.OpenApi.Models;
 using System.Data.SqlClient;
 using System.Text;
 using Tools;
-using DAL.Models.DTO;
+using Microsoft.AspNetCore.Http.Connections;
+using API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add services to the container.
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
-// service gestion cors
-builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-{
-    builder.WithOrigins("http://localhost:4200")
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .AllowCredentials();
-}));
-
+builder.Services.AddSignalR();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -52,6 +47,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
 // service gestion Token
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -75,9 +71,17 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Auth", policy => policy.RequireAuthenticatedUser());
 });
 
-// Add services to the container.
 
-builder.Services.AddControllers();
+// service gestion cors
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.WithOrigins("http://localhost:4200")
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials();
+}));
+
+
 
 //injection token
 builder.Services.AddScoped<ITokenManager, TokenManager>();
@@ -119,12 +123,6 @@ builder.Services.AddTransient<Connection>(sp => new Connection(SqlClientFactory.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 
-
-
-
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -139,7 +137,12 @@ app.UseHttpsRedirection();
 app.UseCors("MyPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+app.MapHub<ChatHub>("/chat", options =>
+{
+    options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+});
+
+
 
 app.Run();

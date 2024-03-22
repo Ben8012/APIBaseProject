@@ -11,7 +11,7 @@
         public bool IsActive { get; set; }
         public AdressBll? Adress { get; set; }
 
-        public string RefNumber { get; set; }
-        public string Level { get; set; }
+        public string? RefNumber { get; set; }
+        public string? Level { get; set; }
     }
 }

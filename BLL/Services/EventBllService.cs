@@ -48,6 +48,7 @@ namespace BLL.Services
                 e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
                 e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+                e.Participes = GetAllParticipeByEventId(e.Id).ToList();
             }
             return events;
         }
@@ -59,6 +60,7 @@ namespace BLL.Services
             e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
             e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
             e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+            e.Participes = GetAllParticipeByEventId(e.Id).ToList();
             return e;
         }
 
@@ -100,6 +102,11 @@ namespace BLL.Services
         public int? UnInvite(int inviterId, int invitedId, int eventId)
         {
             return _eventDal.UnInvite(inviterId, invitedId, eventId);
+        }
+
+        public IEnumerable<UserBll> GetAllParticipeByEventId(int id)
+        {
+            return _eventDal.GetAllParticipeByEventId(id).Select(u => u.ToUserBll());
         }
     }
 }

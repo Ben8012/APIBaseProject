@@ -205,7 +205,11 @@ namespace DAL.Services
 
         private OrganisationDal? GetOrganisationById(int id)
         {
-            Command command = new Command("SELECT Id, name, picture, createdAt, updatedAt, isActive, adress_Id FROM [Organisation] WHERE Id = @Id;", false);
+            Command command = new Command(@"SELECT[Organisation].Id, [Level],[refNumber], [Organisation].[name], picture, [Organisation].createdAt, [Organisation].updatedAt, [Organisation].isActive, [Organisation].adress_Id
+                                            FROM[Organisation]
+                                            JOIN User_Organisation ON User_Organisation.organisation_Id = Organisation.Id
+                                            JOIN[User] ON[User].Id = User_Organisation.user_Id
+                                            WHERE[User].Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {

@@ -56,7 +56,9 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_userBll.GetById(id)?.ToUser());
+                User user = _userBll.GetById(id)?.ToUser();
+                user.Token = _token.GenerateJWTUser(user);
+                return Ok(user);
             }
             catch (Exception ex)
             {

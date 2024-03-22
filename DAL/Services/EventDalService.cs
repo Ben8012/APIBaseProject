@@ -282,5 +282,24 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
+        public IEnumerable<UserDal> GetAllParticipeByEventId(int id)
+        {
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id 
+                                            FROM [User]
+                                            JOIN Participe ON Participe.[user_Id] = [User].Id
+                                            JOIN [Event] ON [Participe].[event_Id] = [Event].Id
+                                            WHERE [Event].Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
     }
 }

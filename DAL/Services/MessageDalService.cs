@@ -200,7 +200,8 @@ namespace DAL.Services
         {
             Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive 
                                             FROM [Message] 
-                                            WHERE sender_Id = @sender AND reciever_Id = @reciever", false);
+                                            WHERE sender_Id = @sender AND reciever_Id = @reciever
+                                            OR sender_Id = @reciever AND reciever_Id = @sender", false);
             command.AddParameter("sender", sender);
             command.AddParameter("reciever", reciever);
             try
