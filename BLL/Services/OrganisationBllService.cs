@@ -20,12 +20,14 @@ namespace BLL.Services
         private readonly ILogger _logger;
         private readonly IOrganisationDal _organisationDal;
         private readonly IUserBll _userBll;
+        private readonly IAdressBll _adressBll;
 
-        public OrganisationBllService(ILogger<OrganisationBllService> logger, IOrganisationDal organisationDal, IUserBll userBll)
+        public OrganisationBllService(ILogger<OrganisationBllService> logger, IOrganisationDal organisationDal, IUserBll userBll, IAdressBll adressBll)
         {
             _organisationDal = organisationDal;
             _logger = logger;
             _userBll = userBll;
+            _adressBll = adressBll;
         }
 
         public int? Delete(int id)
@@ -38,7 +40,7 @@ namespace BLL.Services
             List<OrganisationBll> organisations = _organisationDal.GetAll().Select(u => u.ToOrganisationBll()).ToList();
             foreach (var organisation in organisations)
             {
-                organisation.Adress = organisation.AdressId == 0 ? null : _userBll.GetAdressById(organisation.AdressId);
+                organisation.Adress = organisation.AdressId == 0 ? null : _adressBll.GetById(organisation.AdressId);
             }
             return organisations;
         }
@@ -46,7 +48,7 @@ namespace BLL.Services
         public OrganisationBll? GetById(int id)
         {
             OrganisationBll organisation = _organisationDal.GetById(id)?.ToOrganisationBll();
-            organisation.Adress = organisation.AdressId == 0 ? null : _userBll.GetAdressById(organisation.AdressId);
+            organisation.Adress = organisation.AdressId == 0 ? null : _adressBll.GetById(organisation.AdressId);
             return organisation;
         }
 

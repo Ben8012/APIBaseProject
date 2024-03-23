@@ -15,20 +15,6 @@ namespace API.Mappers
     public static class UserMapperAPI
     {
 
-        internal static Adress ToAdress(this AdressBll adressBll)
-        {
-            return new Adress()
-            {
-                Id = adressBll.Id,
-                Number = adressBll.Number,
-                Street = adressBll.Street,
-                PostCode = adressBll.PostCode,
-                City = adressBll.City,
-                Country = adressBll.Country
-            };
-
-        }
-
         internal static User ToUser(this UserBll userBll)
         {
                 return new User()

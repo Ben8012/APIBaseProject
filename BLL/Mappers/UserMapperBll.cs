@@ -36,21 +36,6 @@ namespace BLL.Mappers
             };
         }
 
-        internal static AdressBll ToAdressBll(this AdressDal adressDal)
-        {
-            return new AdressBll()
-            {
-                Id = adressDal.Id,
-                Number = adressDal.Number,
-                Street = adressDal.Street,
-                PostCode = adressDal.PostCode,
-                City = adressDal.City,
-                Country = adressDal.Country
-            };
-
-        }
-
-
         // vers la DAL
 
         internal static AddUserFormDal ToAddUserFromDal(this AddUserFormBll addUserFromBll)

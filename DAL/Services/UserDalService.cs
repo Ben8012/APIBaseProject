@@ -305,24 +305,5 @@ namespace DAL.Services
             }
         }
 
-        public AdressDal GetAdressById(int id)
-        {
-            Command command = new Command(
-            @"SELECT Adress.Id, street, number, City.name as city, postCode, Country.name as country From Adress
-                JOIN City ON City.Id = Adress.city_Id
-                JOIN Country ON Country.Id = City.country_Id
-                WHERE Adress.Id = @id", false);
-            command.AddParameter("id", id);
-
-            try
-            {
-               return _connection.ExecuteReader(command, dr => dr.ToAdressDal()).SingleOrDefault();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw ex;
-            }
-        }
     }
 }

@@ -25,8 +25,9 @@ namespace BLL.Services
         private readonly IEventDal _eventDal;
         private readonly IOrganisationDal _organisationDal;
         private readonly IDiveplaceDal _diveplaceDal;
+        private readonly IAdressBll _adressBll;
 
-        public UserBllService(ILogger<UserBllService> logger, IUserDal userDal, IClubDal clubDal, IDivelogDal diveLogDal, IEventDal eventDal, IOrganisationDal organisationDal, IDiveplaceDal diveplaceDal)
+        public UserBllService(ILogger<UserBllService> logger, IUserDal userDal, IClubDal clubDal, IDivelogDal diveLogDal, IEventDal eventDal, IOrganisationDal organisationDal, IDiveplaceDal diveplaceDal, IAdressBll adressBll)
         {
             _userDal = userDal;
             _logger = logger;
@@ -35,6 +36,7 @@ namespace BLL.Services
             _eventDal = eventDal;
             _organisationDal = organisationDal;
             _diveplaceDal = diveplaceDal;
+            _adressBll = adressBll;
         }
 
         public int? Delete(int id)
@@ -47,11 +49,11 @@ namespace BLL.Services
             List<UserBll> users = _userDal.GetAll().Select(u => u.ToUserBll()).ToList();
             foreach (UserBll user in users)
             {
-                user.Adress = GetAdressById(user.AdressId);
+                user.Adress = _adressBll.GetById(user.AdressId);
                 user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
                 foreach (var club in user.Clubs)
                 {
-                    club.Adress = club.AdressId == 0 ? null : GetAdressById(club.AdressId);
+                    club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
                 }
                 //user.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
                 //user.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
@@ -65,11 +67,11 @@ namespace BLL.Services
         public UserBll? GetById(int id)
         {
             UserBll? user = _userDal.GetById(id)?.ToUserBll();
-            user.Adress = user.AdressId == 0 ? null : GetAdressById(user.AdressId);
+            user.Adress = user.AdressId == 0 ? null : _adressBll.GetById(user.AdressId);
             user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
             foreach (var club in user.Clubs)
             {
-                club.Adress = club.AdressId == 0 ? null : GetAdressById(club.AdressId);
+                club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
             }
             //user.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
             //foreach (var divelog in user.Divelogs)
@@ -81,11 +83,11 @@ namespace BLL.Services
             user.Friends = _userDal.GetContactByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
             foreach (var friend in user.Friends)
             {
-                friend.Adress = GetAdressById(friend.AdressId);
+                friend.Adress = _adressBll.GetById(friend.AdressId);
                 friend.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
                 foreach(var club in friend.Clubs)
                 {
-                    club.Adress = club.AdressId == 0 ? null : GetAdressById(user.AdressId);
+                    club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(user.AdressId);
                 }
                 friend.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
                 friend.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
@@ -98,7 +100,7 @@ namespace BLL.Services
             user.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
             foreach(var organisation in user.Organisations)
             {
-                organisation.Adress = GetAdressById(organisation.AdressId);
+                organisation.Adress = _adressBll.GetById(organisation.AdressId);
             }
             //user.Diveplaces = _diveplaceDal.GetDiveplaceByUserId(user.Id).Select(d => d.ToDiveplaceBll()).ToList();
             //foreach (var diveplace in user.Diveplaces)
@@ -152,9 +154,5 @@ namespace BLL.Services
             return _userDal.GetContactByUserId(id).Select(u => u.ToUserBll());
         }
 
-        public AdressBll GetAdressById(int id)
-        {
-            return _userDal.GetAdressById(id).ToAdressBll();
-        }
     }
 }

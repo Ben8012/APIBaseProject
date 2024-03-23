@@ -113,7 +113,9 @@ builder.Services.AddScoped<IOrganisationBll, OrganisationBllService>();
 //injection organisation
 builder.Services.AddScoped<ITrainingDal, TrainingDalService>();
 builder.Services.AddScoped<ITrainingBll, TrainingBllService>();
-
+//injection adress
+builder.Services.AddScoped<IAdressDal, AdressDalService>();
+builder.Services.AddScoped<IAdressBll, AdressBllService>();
 
 string connectionString = builder.Configuration.GetConnectionString("Labo");
 // service de connection a la base de donnée

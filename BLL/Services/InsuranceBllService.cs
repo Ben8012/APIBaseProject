@@ -20,12 +20,14 @@ namespace BLL.Services
         private readonly ILogger _logger;
         private readonly IInsuranceDal _insuranceDal;
         private readonly IUserBll _userBll;
+        private readonly IAdressBll _adressBll;
 
-        public InsuranceBllService(ILogger<InsuranceBllService> logger, IInsuranceDal insuranceDal, IUserBll userBll)
+        public InsuranceBllService(ILogger<InsuranceBllService> logger, IInsuranceDal insuranceDal, IUserBll userBll, IAdressBll adressBll)
         {
             _insuranceDal = insuranceDal;
             _logger = logger;
             _userBll = userBll; 
+            _adressBll= adressBll;
         }
 
     
@@ -34,7 +36,7 @@ namespace BLL.Services
             List<InsuranceBll> insurances = _insuranceDal.GetAll().Select(u => u.ToInsuranceBll()).ToList();
             foreach (var insurance in insurances)
             {
-                insurance.Adress = _userBll.GetAdressById(insurance.AdressId);
+                insurance.Adress = _adressBll.GetById(insurance.AdressId);
             }
             return insurances;
         }

@@ -29,20 +29,6 @@ namespace DAL.Mappers
             };
 
         }
-
-        internal static AdressDal ToAdressDal(this DbDataReader reader)
-        {
-            return new AdressDal()
-            {
-                Id = (int)reader["Id"],
-                Number= (int)reader["number"],
-                Street = (string)reader["street"],
-                PostCode= (string)reader["postCode"],
-                City= (string)reader["city"],
-                Country= (string)reader["country"]
-            };
-
-        }
     }
 }
 

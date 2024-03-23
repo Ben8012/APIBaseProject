@@ -20,12 +20,14 @@ namespace BLL.Services
         private readonly ILogger _logger;
         private readonly IDiveplaceDal _diveplaceDal;
         private readonly IUserBll _userBll;
+        private readonly IAdressBll _adressBll;
 
-        public DiveplaceBllService(ILogger<DiveplaceBllService> logger, IDiveplaceDal diveplaceDal, IUserBll userBll)
+        public DiveplaceBllService(ILogger<DiveplaceBllService> logger, IDiveplaceDal diveplaceDal, IUserBll userBll, IAdressBll adressBll)
         {
             _diveplaceDal = diveplaceDal;
             _logger = logger;
             _userBll = userBll;
+            _adressBll = adressBll;
         }
 
         public int? Delete(int id)
@@ -38,7 +40,7 @@ namespace BLL.Services
             List<DiveplaceBll> diveplaces = _diveplaceDal.GetAll().Select(u => u.ToDiveplaceBll()).ToList();
             foreach (var diveplace in diveplaces)
             {
-                diveplace.Adress = diveplace.AdressId == 0 ? null : _userBll.GetAdressById(diveplace.AdressId);
+                diveplace.Adress = diveplace.AdressId == 0 ? null : _adressBll.GetById(diveplace.AdressId);
             }
             return diveplaces;
         }
@@ -46,7 +48,7 @@ namespace BLL.Services
         public DiveplaceBll? GetById(int id)
         {
             DiveplaceBll diveplace = _diveplaceDal.GetById(id)?.ToDiveplaceBll();
-            diveplace.Adress = diveplace.AdressId == 0 ? null : _userBll.GetAdressById(diveplace.AdressId);
+            diveplace.Adress = diveplace.AdressId == 0 ? null : _adressBll.GetById(diveplace.AdressId);
             return diveplace;
         }
 

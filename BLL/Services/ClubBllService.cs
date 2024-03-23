@@ -18,12 +18,14 @@ namespace BLL.Services
         private readonly ILogger _logger;
         private readonly IClubDal _clubDal;
         private readonly IUserBll _userBll;
+        private readonly IAdressBll _adressBll;
 
-        public ClubBllService(ILogger<ClubBllService> logger, IClubDal clubDal, IUserBll userBll)
+        public ClubBllService(ILogger<ClubBllService> logger, IClubDal clubDal, IUserBll userBll, IAdressBll adressBll)
         {
             _clubDal = clubDal;
             _logger = logger;
             _userBll = userBll;
+            _adressBll = adressBll;
         }
 
         public int? Delete(int id)
@@ -36,7 +38,7 @@ namespace BLL.Services
             List<ClubBll> clubs = _clubDal.GetAll().Select(u => u.ToClubBll()).ToList();
             foreach (var club in clubs)
             {
-                club.Adress = club.AdressId == 0 ? null : _userBll.GetAdressById(club.AdressId);
+                club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
                 club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
             }
             return clubs;
@@ -45,7 +47,7 @@ namespace BLL.Services
         public ClubBll? GetById(int id)
         {
             ClubBll club = _clubDal.GetById(id)?.ToClubBll();
-            club.Adress = club.AdressId == 0 ? null : _userBll.GetAdressById(club.AdressId);
+            club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
             club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
             return club;
         }

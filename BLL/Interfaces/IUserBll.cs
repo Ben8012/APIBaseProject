@@ -31,7 +31,5 @@ namespace BLL.Interfaces
         int? Like(int likerId, int likedId);
         int? UnLike(int likerId, int likedId);
 
-        AdressBll? GetAdressById(int id);
-
     }
 }
