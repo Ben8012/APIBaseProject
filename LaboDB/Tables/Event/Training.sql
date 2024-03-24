@@ -3,6 +3,7 @@
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
 	[name] NVARCHAR(50) NOT NULL,
 	[prerequis] NVARCHAR(50) NOT NULL,
+	[description] NVARCHAR(1000) NOT NULL,
 	[picture] NVARCHAR(50) NOT NULL,
 	[isSpeciality] BIT NOT NULL,
 	[createdAt] DATETIME2 NOT NULL,

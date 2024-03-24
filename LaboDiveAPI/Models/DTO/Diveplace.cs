@@ -16,5 +16,8 @@
         public int Price { get; set; }
         public bool Compressor { get; set; }
         public bool Restoration { get; set; }
+        public int AvgVote { get; set; }
+        public string Url { get; set; }
+        public int UserVote { get; set; }
     }
 }

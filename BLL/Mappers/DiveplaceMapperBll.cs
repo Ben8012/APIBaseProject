@@ -25,6 +25,7 @@ namespace BLL.Mappers
                 Price = diveplaceDal.Price,
                 Compressor = diveplaceDal.Compressor,
                 Restoration = diveplaceDal.Restoration,
+                Url= diveplaceDal.Url,
             };
         }
 

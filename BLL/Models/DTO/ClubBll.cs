@@ -11,5 +11,7 @@
         public int CreatorId { get; set; }
         public UserBll? Creator { get; set; }
         public AdressBll? Adress { get; set; }
+
+        public List<UserBll>? Participes { get; set; }
     }
 }

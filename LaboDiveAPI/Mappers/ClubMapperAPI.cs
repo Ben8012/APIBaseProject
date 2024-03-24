@@ -17,6 +17,7 @@ namespace API.Mappers
                 IsActive = clubBll.IsActive,
                 Adress = clubBll.Adress is null ? null : clubBll.Adress.ToAdress(),
                 Creator = clubBll.Creator is null ? null : clubBll.Creator.ToUser(),
+                Participes = clubBll.Participes is null ? null : clubBll.Participes.Select(p => p.ToUser()).ToList(),
 
             };
         }

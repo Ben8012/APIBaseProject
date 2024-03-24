@@ -18,8 +18,12 @@ namespace DAL.Interfaces
         int? Delete(int id);
         int? Enable(int id);
         int? Disable(int id);
-        int? Vote(int userId, int diveplaceId, int vote);
+        List<DiveplaceDal> Vote(int userId, int diveplaceId, int vote);
 
         IEnumerable<DiveplaceDal>? GetDiveplaceByUserId(int id);
+
+        int GetVoteAverageByDiveplaceId(int diveplaceId);
+
+        int GetVoteByUserIdAndDiveplaceId(int userId, int diveplaceId);
     }
 }

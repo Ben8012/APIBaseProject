@@ -28,6 +28,9 @@ namespace API.Mappers
                Price = diveplaceBll.Price,
                Compressor = diveplaceBll.Compressor,
                Restoration = diveplaceBll.Restoration,
+               AvgVote= diveplaceBll.AvgVote,
+               Url = diveplaceBll.Url,
+               UserVote= diveplaceBll.UserVote,
             };
         }
 

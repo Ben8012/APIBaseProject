@@ -1,6 +1,7 @@
 ﻿using BLL.Models.DTO;
 using BLL.Models.Forms;
 using BLL.Models.Forms.Club;
+using DAL.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,5 +29,9 @@ namespace BLL.Interfaces
         int? Participate(int userId, int clubId);
 
         int? UnParticipate(int userId,int clubId);
+
+        IEnumerable<ClubBll> GetClubsByUserId(int id);
+
+        IEnumerable<UserBll> GetAllParticipeByClubId(int id);
     }
 }

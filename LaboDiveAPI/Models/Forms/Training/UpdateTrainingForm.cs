@@ -29,5 +29,7 @@ namespace API.Models.Forms.Training
 
         [Required]
         public int OrganisationId { get; set; }
+
+        public string Description { get; set; }
     }
 }

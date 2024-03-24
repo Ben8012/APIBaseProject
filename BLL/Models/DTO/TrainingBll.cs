@@ -13,5 +13,7 @@
         public bool IsActive { get; set; }
 
         public OrganisationBll? Organisation { get; set; }
+
+        public string Description { get; set; }
     }
 }

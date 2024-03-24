@@ -40,6 +40,7 @@ namespace BLL.Services
             {
                 club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
                 club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
+                club.Participes = GetAllParticipeByClubId(club.Id).ToList();
             }
             return clubs;
         }
@@ -49,6 +50,7 @@ namespace BLL.Services
             ClubBll club = _clubDal.GetById(id)?.ToClubBll();
             club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
             club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
+            club.Participes = GetAllParticipeByClubId(club.Id).ToList();
             return club;
         }
 
@@ -80,6 +82,16 @@ namespace BLL.Services
         public int? UnParticipate(int userId, int clubId)
         {
             return _clubDal.UnParticipate(userId, clubId);
+        }
+
+        public IEnumerable<ClubBll> GetClubsByUserId(int id)
+        {
+            return _clubDal.GetClubsByUserId(id).Select(c => c.ToClubBll()).ToList();
+        }
+
+        public IEnumerable<UserBll> GetAllParticipeByClubId(int id)
+        {
+            return _clubDal.GetAllParticipeByClubId(id).Select(c => c.ToUserBll()).ToList();
         }
     }
 }

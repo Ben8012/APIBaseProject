@@ -35,12 +35,15 @@ namespace BLL.Services
             return _diveplaceDal.Delete(id);
         }
 
-        public IEnumerable<DiveplaceBll> GetAll()
+        public IEnumerable<DiveplaceBll> GetAll(int userId)
         {
             List<DiveplaceBll> diveplaces = _diveplaceDal.GetAll().Select(u => u.ToDiveplaceBll()).ToList();
             foreach (var diveplace in diveplaces)
             {
                 diveplace.Adress = diveplace.AdressId == 0 ? null : _adressBll.GetById(diveplace.AdressId);
+                diveplace.AvgVote = GetVoteAverageByDiveplaceId(diveplace.Id);
+                diveplace.UserVote = GetVoteByUserIdAndDiveplaceId(userId, diveplace.Id);
+
             }
             return diveplaces;
         }
@@ -49,6 +52,8 @@ namespace BLL.Services
         {
             DiveplaceBll diveplace = _diveplaceDal.GetById(id)?.ToDiveplaceBll();
             diveplace.Adress = diveplace.AdressId == 0 ? null : _adressBll.GetById(diveplace.AdressId);
+            diveplace.AvgVote = GetVoteAverageByDiveplaceId(id);
+            diveplace.UserVote = GetVoteByUserIdAndDiveplaceId(id, diveplace.Id);
             return diveplace;
         }
 
@@ -72,9 +77,26 @@ namespace BLL.Services
             return _diveplaceDal.Enable(id); 
         }
 
-        public int? Vote(int userId, int diveplaceId, int vote)
+        public List<DiveplaceBll> Vote(int userId, int diveplaceId, int vote)
         {
-            return _diveplaceDal.Vote( userId, diveplaceId, vote);
+            List<DiveplaceBll> diveplaces = _diveplaceDal.Vote(userId, diveplaceId, vote).Select(d => d.ToDiveplaceBll()).ToList();
+            foreach (var diveplace in diveplaces)
+            {
+                diveplace.Adress = diveplace.AdressId == 0 ? null : _adressBll.GetById(diveplace.AdressId);
+                diveplace.AvgVote = GetVoteAverageByDiveplaceId(diveplace.Id);
+                diveplace.UserVote = GetVoteByUserIdAndDiveplaceId(userId, diveplace.Id);
+            }
+            return diveplaces;
+        }
+
+        public int GetVoteAverageByDiveplaceId(int diveplaceId)
+        {
+            return _diveplaceDal.GetVoteAverageByDiveplaceId(diveplaceId);
+        }
+
+        public int GetVoteByUserIdAndDiveplaceId(int userId, int diveplaceId)
+        {
+            return _diveplaceDal.GetVoteByUserIdAndDiveplaceId(userId, diveplaceId);
         }
     }
 }

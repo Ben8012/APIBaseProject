@@ -1,4 +1,6 @@
 ﻿using API.Models.DTO.UserAPI;
+using BLL.Models.DTO;
+
 namespace API.Models.DTO
 {
     public class Club
@@ -10,5 +12,7 @@ namespace API.Models.DTO
         public bool IsActive { get; set; }
         public Adress? Adress { get; set; }
         public User? Creator { get; set; }
+
+        public List<User>? Participes { get; set; }
     }
 }

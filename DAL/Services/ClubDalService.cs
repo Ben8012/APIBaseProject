@@ -232,5 +232,24 @@ namespace DAL.Services
             }
         }
 
+        public IEnumerable<UserDal> GetAllParticipeByClubId(int id)
+        {
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id 
+                                            FROM [User]
+                                            JOIN [User_Club] ON [User_Club].[user_Id] = [User].Id
+                                            JOIN [Club] ON [User_Club].[club_Id] = [Club].Id
+                                            WHERE [Club].Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
     }
 }

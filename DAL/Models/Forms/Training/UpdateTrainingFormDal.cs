@@ -8,5 +8,6 @@
         public string Picture { get; set; }
         public bool IsSpeciality { get; set; }
         public int OrganisationId { get; set; }
+        public string Description { get; set; }
     }
 }

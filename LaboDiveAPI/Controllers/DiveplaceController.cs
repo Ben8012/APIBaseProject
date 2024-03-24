@@ -27,12 +27,12 @@ namespace API.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("All/{userId}")]
+        public IActionResult GetAll(int userId)
         {
             try
             {
-                return Ok(_diveplaceBll.GetAll().Select(u => u.ToDiveplace()));
+                return Ok(_diveplaceBll.GetAll(userId).Select(u => u.ToDiveplace()));
             }
             catch (Exception ex)
             {

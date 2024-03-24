@@ -1,6 +1,7 @@
 ﻿using BLL.Models.DTO;
 using BLL.Models.Forms.Divelog;
 using BLL.Models.Forms.Diveplace;
+using DAL.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BLL.Interfaces
 {
     public interface IDiveplaceBll
     {
-        IEnumerable<DiveplaceBll> GetAll();
+        IEnumerable<DiveplaceBll> GetAll(int userId);
 
         DiveplaceBll? GetById(int id);
 
@@ -24,6 +25,10 @@ namespace BLL.Interfaces
 
         int? Disable(int id);
 
-        int? Vote(int userId, int diveplaceId, int vote);
+        List<DiveplaceBll> Vote(int userId, int diveplaceId, int vote);
+
+        int GetVoteByUserIdAndDiveplaceId(int userId, int diveplaceId);
+
+        int GetVoteAverageByDiveplaceId(int diveplaceId);
     }
 }

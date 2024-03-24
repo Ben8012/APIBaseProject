@@ -22,7 +22,7 @@ namespace API.Mappers
                UpdatedAt=trainingBll.UpdatedAt,
                IsActive=trainingBll.IsActive,
                Organisation = trainingBll.Organisation is null ? null : trainingBll.Organisation.ToOrganisation(),
-
+               Description = trainingBll.Description,
             };
         }
 
@@ -35,6 +35,7 @@ namespace API.Mappers
                 Picture = addTrainingFrom.Picture,
                 IsSpeciality = addTrainingFrom.IsSpeciality,
                 OrganisationId = addTrainingFrom.OrganisationId,
+                Description = addTrainingFrom.Description,
             };
         }
 
@@ -48,6 +49,7 @@ namespace API.Mappers
                 Picture = updateTrainingForm.Picture,
                 IsSpeciality = updateTrainingForm.IsSpeciality,
                 OrganisationId = updateTrainingForm.OrganisationId,
+                Description = updateTrainingForm.Description,
             };
         }
     }

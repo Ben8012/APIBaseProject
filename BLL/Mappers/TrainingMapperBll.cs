@@ -20,7 +20,7 @@ namespace BLL.Mappers
                 UpdatedAt = trainingDal.UpdatedAt,
                 IsActive = trainingDal.IsActive,
                 OrganisationId = trainingDal.OrganisationId,
-
+                Description = trainingDal.Description,
             };
         }
 
@@ -33,6 +33,7 @@ namespace BLL.Mappers
                 Picture = addTrainingFromBll.Picture,
                 IsSpeciality = addTrainingFromBll.IsSpeciality,
                 OrganisationId = addTrainingFromBll.OrganisationId,
+                Description = addTrainingFromBll.Description,
             };
         }
 
@@ -46,6 +47,7 @@ namespace BLL.Mappers
                 Picture = updateTrainingFormBll.Picture,
                 IsSpeciality = updateTrainingFormBll.IsSpeciality,
                 OrganisationId = updateTrainingFormBll.OrganisationId,
+                Description = updateTrainingFormBll.Description,
             };
         }
     }

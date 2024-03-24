@@ -82,7 +82,7 @@ namespace DAL.Services
 
         public IEnumerable<TrainingDal> GetAll()
         {
-            Command command = new Command("SELECT Id, name, prerequis, picture, isSpeciality, createdAt, updatedAt, isActive, organisation_Id FROM [Training];", false);
+            Command command = new Command("SELECT Id, name, prerequis, picture, isSpeciality,[description], createdAt, updatedAt, isActive, organisation_Id FROM [Training];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToTrainingDal());
@@ -113,7 +113,7 @@ namespace DAL.Services
         public TrainingDal? Insert(AddTrainingFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Training](name, prerequis, picture, isSpeciality, createdAt, isActive, organisation_Id) OUTPUT inserted.id VALUES(@name, @prerequis, @picture, @isSpeciality, @createdAt, @isActive, @organisation_Id)", false);
+            Command command = new Command("INSERT INTO [Training](name, prerequis, picture, isSpeciality,[description], createdAt, isActive, organisation_Id) OUTPUT inserted.id VALUES(@name, @prerequis, @picture, @isSpeciality, @createdAt, @isActive, @organisation_Id)", false);
             command.AddParameter("name", form.Name);
             command.AddParameter("prerequis", form.Prerequisite);
             command.AddParameter("picture", form.Picture);
@@ -143,7 +143,7 @@ namespace DAL.Services
 
         public TrainingDal? Update(UpdateTrainingFormDal form)
         {
-            Command command = new Command("UPDATE [Training] SET name = @name , prerequis = @prerequis , picture = @picture , isSpeciality = @isSpeciality, updatedAt = @updatedAt , organisation_Id = @organisation_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Training] SET name = @name , [description] = @description, prerequis = @prerequis , picture = @picture , isSpeciality = @isSpeciality, updatedAt = @updatedAt , organisation_Id = @organisation_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
             command.AddParameter("prerequis", form.Prerequisite);
@@ -151,6 +151,7 @@ namespace DAL.Services
             command.AddParameter("isSpeciality", form.IsSpeciality);
             command.AddParameter("updatedAt", DateTime.Now);
             command.AddParameter("organisation_Id", form.OrganisationId);
+            command.AddParameter("description", form.Description);
 
             try
             {
@@ -170,7 +171,7 @@ namespace DAL.Services
 
         private TrainingDal? GetTrainingById(int id)
         {
-            Command command = new Command("SELECT Id, name, prerequis, picture, isSpeciality, createdAt, updatedAt, isActive, organisation_Id  FROM [Training] WHERE Id = @Id;", false);
+            Command command = new Command("SELECT Id, name, prerequis, picture, isSpeciality, [description], createdAt, updatedAt, isActive, organisation_Id  FROM [Training] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {

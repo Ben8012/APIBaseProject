@@ -23,6 +23,8 @@ namespace DAL.Mappers
                 Price = (int)reader["price"],
                 Compressor = (bool)reader["compressor"],
                 Restoration = (bool)reader["restoration"],
+                Url = (string)reader["url"],
+                
             };
 
         }

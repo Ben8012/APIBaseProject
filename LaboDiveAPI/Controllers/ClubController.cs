@@ -130,7 +130,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("Participate/{userId}/{clubId}")]
+        [HttpGet("Participate/{userId}/{clubId}")]
         public IActionResult Participate(int userId, int clubId)
         {
 
@@ -147,7 +147,7 @@ namespace API.Controllers
 
         }
 
-        [HttpDelete("UnParticipate/{userId}/{clubId}")]
+        [HttpGet("UnParticipate/{userId}/{clubId}")]
         public IActionResult UnParticipate(int userId, int clubId)
         {
             try
