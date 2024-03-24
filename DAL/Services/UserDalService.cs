@@ -98,18 +98,20 @@ namespace DAL.Services
 
         public UserDal? Update(UpdateUserFormDal form)
         {
-            Command command = new Command("UPDATE [User] SET firstname = @firstname, lastname=@lastname, email=@email, phone=@phone, birthDate=@birthDate, updatedAt=@updatedAt, insuranceNumber=@insuranceNumber, insurance_Id=@insurance_Id, adress_Id=@adress_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command(@"UPDATE [User] SET 
+                                            firstname = @firstname, 
+                                            lastname=@lastname, 
+                                            email=@email, 
+                                            birthDate=@birthDate, 
+                                            updatedAt=@updatedAt
+                                        OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("lastname", form.LastName);
             command.AddParameter("firstname", form.FirstName);
             command.AddParameter("email", form.Email);
-            //command.AddParameter("phone", form.Phone == null ? DBNull.Value : form.Phone);
             command.AddParameter("birthDate", form.Birthdate);
             command.AddParameter("updatedAt", DateTime.Now);
-           // command.AddParameter("insuranceNumber", form.InsuranceNumber == null ? DBNull.Value : form.InsuranceNumber);
-            //command.AddParameter("insurance_Id", form.InsuranceId == 0 ? DBNull.Value : form.InsuranceId);
-            //command.AddParameter("adress_Id", form.AdressId);
-
+      
             try
             {
                 int? resultid = (int?)_connection.ExecuteScalar(command);

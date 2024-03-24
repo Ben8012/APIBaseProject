@@ -63,13 +63,7 @@ namespace API.Mappers
                 FirstName = updateUserForm.FirstName,
                 LastName = updateUserForm.LastName,
                 Email = updateUserForm.Email,
-                //Phone = updateUserForm.Phone,
                 Birthdate = updateUserForm.Birthdate,
-                Photo = updateUserForm.Photo,
-                //InsuranceId = updateUserForm.InsuranceId,
-                //InsuranceNumber = updateUserForm.InsuranceNumber,
-               // AdressId = updateUserForm.AdressId,
-
             };
         }
 

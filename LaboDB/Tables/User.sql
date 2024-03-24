@@ -16,5 +16,6 @@
     [medicalDateValidation] DATETIME2 NULL,
     [insurance_Id] INT NULL,
     [adress_Id] INT NULL, 
+    [ProfilImage] VarBinary(Max) NULL,
     CONSTRAINT [FK_User_Insurance] FOREIGN KEY ([insurance_Id]) REFERENCES [Insurance]([Id]),  
 )

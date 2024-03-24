@@ -14,5 +14,6 @@
         public bool IsActive { get; set; }
         public int InsuranceId { get; set; }
         public int AdressId { get; set; }
+
     }
 }

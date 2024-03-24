@@ -31,6 +31,6 @@
 
         public List<Event>? Events { get; set; }
 
-      
+
     }
 }

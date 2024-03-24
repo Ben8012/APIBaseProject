@@ -60,11 +60,8 @@ namespace BLL.Mappers
                 FirstName = updateUserFromBll.FirstName,
                 LastName = updateUserFromBll.LastName,
                 Email = updateUserFromBll.Email,
-                //Phone = updateUserFromBll.Phone,
+                ProfilImage= updateUserFromBll.ProfilImage,
                 Birthdate = updateUserFromBll.Birthdate,
-                //InsuranceId = updateUserFromBll.InsuranceId,
-                //InsuranceNumber = updateUserFromBll.InsuranceNumber,
-                //AdressId = updateUserFromBll.AdressId,
             };
         }
 

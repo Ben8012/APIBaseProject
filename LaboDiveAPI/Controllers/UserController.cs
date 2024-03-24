@@ -15,6 +15,8 @@ using Tools;
 using System.Data;
 using System.Xml;
 using System.Data.SqlClient;
+using DAL.Interfaces;
+using DAL.Models.DTO;
 
 namespace API.Controllers
 {
@@ -28,6 +30,7 @@ namespace API.Controllers
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
         private readonly Connection _connection;
+        
 
         public UserController(ILogger<UserController> logger, IUserBll userBll, ITokenManager token, Connection connection)
         {
@@ -122,6 +125,7 @@ namespace API.Controllers
         public IActionResult Update(int id, [FromBody] UpdateUserForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
+            form.Id = id;
             try
             {
                 return Ok(_userBll.Update(form.ToUpdateUserFormBll())?.ToUser());
@@ -130,7 +134,46 @@ namespace API.Controllers
             {
                 return BadRequest(new { Message = "la modification a échoué, contactez l'admin", ErrorMessage = ex.Message });
             }
+        }
 
+        [HttpPut("ImageProfil/{id}")]
+        public IActionResult UpdateImageProfil(int id)
+        {
+            var file = Request.Form.Files[0];
+                
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Aucun fichier sélectionné");
+            }
+
+            byte[] imageData;
+            using (var stream = new MemoryStream())
+            {
+                 file.CopyToAsync(stream);
+                imageData = stream.ToArray();
+            }
+
+            // Enregistrer l'image dans la base de données ou effectuer d'autres opérations
+            Command command = new Command(@"UPDATE [User] SET 
+                                        profilImage=@profilImage
+                                        OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            command.AddParameter("profilImage", imageData);
+            command.AddParameter("Id", id);
+
+
+            try
+            {
+                int? resultid = (int?)_connection.ExecuteScalar(command);
+                if (!resultid.HasValue) throw new Exception("probleme de recuperation de l'id lors de la mise a jour");
+                User newuser = _userBll.GetById(resultid.Value).ToUser();
+                if (newuser is null) throw new Exception("probleme de recuperation de l'utilisateur lors de la mise a jour");
+                return Ok(newuser);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         [HttpDelete("{id}")]
