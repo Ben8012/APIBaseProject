@@ -108,5 +108,19 @@ namespace BLL.Services
         {
             return _eventDal.GetAllParticipeByEventId(id).Select(u => u.ToUserBll());
         }
+        public IEnumerable<EventBll> GetEventByUserId(int id)
+        {
+            List<EventBll> events = _eventDal.GetEventByUserId(id).Select(u => u.ToEventBll()).ToList();
+            foreach (var e in events)
+            {
+                e.Diveplace = e.DiveplaceId == 0 ? null : _diveplaceBll.GetById(e.DiveplaceId);
+                e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
+                e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
+                e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+                e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+            }
+            return events;
+          
+        }
     }
 }

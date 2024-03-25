@@ -34,5 +34,7 @@ namespace BLL.Interfaces
         int? UnInvite(int inviterId, int invitedId, int eventId);
 
         IEnumerable<UserBll> GetAllParticipeByEventId(int id);
+
+        IEnumerable<EventBll> GetEventByUserId(int id);
     }
 }

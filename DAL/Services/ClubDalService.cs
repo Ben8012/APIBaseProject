@@ -219,7 +219,9 @@ namespace DAL.Services
 
         private ClubDal? GetClubById(int id)
         {
-            Command command = new Command("SELECT Id, name, createdAt, updatedAt, isActive,  adress_id, creator_id FROM [Club] WHERE Id = @Id;", false);
+            Command command = new Command(@"SELECT Id, name, createdAt, updatedAt, isActive,  adress_id, creator_id 
+                                            FROM [Club] 
+                                            WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -234,7 +236,7 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAllParticipeByClubId(int id)
         {
-            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id 
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id,guidImage, guidInsurance, guidLevel, guidCertificat 
                                             FROM [User]
                                             JOIN [User_Club] ON [User_Club].[user_Id] = [User].Id
                                             JOIN [Club] ON [User_Club].[club_Id] = [Club].Id

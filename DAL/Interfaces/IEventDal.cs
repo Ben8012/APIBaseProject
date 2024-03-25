@@ -28,5 +28,6 @@ namespace DAL.Interfaces
 
         IEnumerable<EventDal> GetEventByUserId(int id);
         IEnumerable<UserDal> GetAllParticipeByEventId(int id);
+
     }
 }

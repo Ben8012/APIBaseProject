@@ -53,6 +53,19 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetEventByUserId/{id}")]
+        public IActionResult GetEventByUserId(int id)
+        {
+            try
+            {
+                return Ok(_eventBll.GetEventByUserId(id).Select(u => u.ToEvent()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
 
 
         [HttpPost]

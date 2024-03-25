@@ -285,7 +285,7 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAllParticipeByEventId(int id)
         {
-            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id 
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id ,guidImage, guidInsurance, guidLevel, guidCertificat 
                                             FROM [User]
                                             JOIN Participe ON Participe.[user_Id] = [User].Id
                                             JOIN [Event] ON [Participe].[event_Id] = [Event].Id
@@ -301,5 +301,6 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
     }
 }
