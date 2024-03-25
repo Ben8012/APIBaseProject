@@ -31,8 +31,12 @@ namespace BLL.Mappers
                 UpdatedAt = userDal.UpdatedAt,
                 IsActive = userDal.IsActive,
                 InsuranceId = userDal.InsuranceId,
-                AdressId = userDal.AdressId
-                
+                AdressId = userDal.AdressId,
+                GuidImage = userDal.GuidImage,
+                GuidInsurance = userDal.GuidInsurance,
+                GuidLevel = userDal.GuidLevel,
+                GuidCertificat = userDal.GuidCertificat,
+
             };
         }
 

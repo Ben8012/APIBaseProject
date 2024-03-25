@@ -25,7 +25,12 @@ namespace DAL.Mappers
                 Phone = reader["phone"] is DBNull ? null : (string)reader["phone"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 InsuranceId = reader["insurance_id"] is DBNull ? 0 : (int)reader["insurance_id"],
-                AdressId = reader["adress_id"] is DBNull ? 0 : (int)reader["adress_id"]
+                AdressId = reader["adress_id"] is DBNull ? 0 : (int)reader["adress_id"],
+                GuidImage = reader["guidImage"] is DBNull ? "" : (string)reader["guidImage"],
+                GuidInsurance = reader["guidInsurance"] is DBNull ? "" : (string)reader["guidInsurance"],
+                GuidLevel = reader["guidLevel"] is DBNull ? "" : (string)reader["guidLevel"],
+                GuidCertificat = reader["guidCertificat"] is DBNull ? "" : (string)reader["guidCertificat"],
+                  
             };
 
         }

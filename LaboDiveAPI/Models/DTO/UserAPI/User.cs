@@ -12,6 +12,11 @@
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
+        public string GuidImage { get; set; }
+        public string GuidInsurance { get; set; }
+        public string GuidLevel { get; set; }
+        public string GuidCertificat { get; set; }
+
 
         public string Token { get; set; }
 

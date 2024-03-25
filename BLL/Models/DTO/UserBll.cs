@@ -17,6 +17,10 @@ namespace BLL.Models.DTO
 
         public int InsuranceId { get; set; }
         public int AdressId { get; set; }
+        public string GuidImage { get; set; }
+        public string GuidInsurance { get; set; }
+        public string GuidLevel { get; set; }
+        public string GuidCertificat { get; set; }
 
 
         public AdressBll? Adress { get; set; }

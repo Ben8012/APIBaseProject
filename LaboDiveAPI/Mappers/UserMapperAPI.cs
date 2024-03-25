@@ -9,6 +9,7 @@ using BLL.Models.DTO;
 using DAL.Models.DTO;
 using System.Data.Common;
 using API.Models.DTO;
+using DAL.Interfaces;
 
 namespace API.Mappers
 {
@@ -29,6 +30,10 @@ namespace API.Mappers
                     CreatedAt = userBll.CreatedAt,
                     UpdatedAt = userBll.UpdatedAt,
                     IsActive = userBll.IsActive,
+                    GuidImage= userBll.GuidImage,
+                    GuidInsurance = userBll.GuidInsurance,
+                    GuidLevel = userBll.GuidLevel,
+                    GuidCertificat = userBll.GuidCertificat,
                     Insurance = userBll.Insurance is null ? null : userBll.Insurance.ToInsurance(),
                     Adress = userBll.Adress is null ? null : userBll.Adress.ToAdress(),
                     Organisations = userBll.Organisations is null ? null : userBll.Organisations.Select(o => o.ToOrganisation()).ToList(),

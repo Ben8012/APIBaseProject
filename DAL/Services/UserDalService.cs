@@ -28,7 +28,7 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAll()
         {
-            Command command = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id FROM [User];", false);
+            Command command = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id,guidImage, guidInsurance, guidLevel, guidCertificat FROM [User];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToUserDal());
@@ -39,6 +39,7 @@ namespace DAL.Services
                 throw ex;
             }
         }
+       
 
       
         public UserDal? GetById(int id)
@@ -149,7 +150,7 @@ namespace DAL.Services
 
         private UserDal? GetUserById(int id)
         {
-            Command command = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id FROM [User] WHERE Id = @Id;", false);
+            Command command = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id,guidImage, guidInsurance, guidLevel, guidCertificat FROM [User] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -188,7 +189,7 @@ namespace DAL.Services
                 throw ex;
             }
             
-            Command command2 = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id FROM [User] WHERE Email = @Email", false);
+            Command command2 = new Command("SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat FROM [User] WHERE Email = @Email", false);
             command2.AddParameter("Email", form.Email);
 
             try
@@ -287,13 +288,13 @@ namespace DAL.Services
         public IEnumerable<UserDal> GetContactByUserId(int id)
         {
             Command command = new Command(
-                @"SELECT Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id
+                @"SELECT Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat
                     FROM [User]
                     WHERE [User].Id In ( SELECT [Like].liked_Id 
                                             FROM[User] 
                                             JOIN dbo.[Like] ON dbo.[Like].liker_Id = [User].Id 
                                             WHERE dbo.[like].liker_Id = @id )"
-                ,false
+                , false
             );
             command.AddParameter("id", id);
             try
