@@ -14,6 +14,7 @@
     [insuranceNumber] NVARCHAR(50) NULL,
     [insuranceDateValidation] DATETIME2 NULL,
     [medicalDateValidation] DATETIME2 NULL,
+    [isLevelValid] BIT NOT NULL,
     [insurance_Id] INT NULL,
     [adress_Id] INT NULL, 
     [guidImage] NVARCHAR(100) NULL,

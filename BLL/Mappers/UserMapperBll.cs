@@ -36,6 +36,9 @@ namespace BLL.Mappers
                 GuidInsurance = userDal.GuidInsurance,
                 GuidLevel = userDal.GuidLevel,
                 GuidCertificat = userDal.GuidCertificat,
+                MedicalDateValidation= userDal.MedicalDateValidation,
+                InsuranceDateValidation =  userDal.InsuranceDateValidation,
+                IsLevelValid= userDal.IsLevelValid,
 
             };
         }

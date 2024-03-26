@@ -75,11 +75,11 @@ INSERT INTO Insurance([name],picture,createdAt,isActive,adress_Id) VALUES
     ('DAN','logo_DAN.png',GETDATE(),1,8);
 
 
-INSERT INTO [User]( firstname,lastname, email, passwd, phone, [role], birthDate, createdAt, isActive, adress_Id,insuranceNumber, insurance_Id) VALUES
-    ('Benjamin','Sterckx','ben@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','0471/000000','super admin','1980-12-10', GETDATE(), 1, 1, '8484', 1),
-    ('Tom','Tom','tom@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','0471/000000','admin','1980-12-10',GETDATE(),1,2,'999',1),
-    ('Jean','Jean','jean@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','0471/000000','user','1980-12-10',GETDATE(),1,3,'666',1),
-    ('Paul','Paul','paul@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','0471/000000','user','1980-12-10',GETDATE(),1,3,'666',1);
+INSERT INTO [User]( firstname,lastname, email, passwd, phone, [role], birthDate, createdAt, isActive, adress_Id,insuranceNumber, insurance_Id, isLevelValid, medicalDateValidation, insuranceDateValidation) VALUES
+    ('Benjamin','Sterckx','ben@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','0471/000000','super admin','1980-12-10', GETDATE(), 1, 1, '8484', 1,1,'2024-12-10','2024-12-10'),
+    ('Tom','Tom','tom@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','0471/000000','admin','1980-12-10',GETDATE(),1,2,'999',1,1,'2024-10-10','2024-11-10'),
+    ('Jean','Jean','jean@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','0471/000000','user','1980-12-10',GETDATE(),1,3,'666',1,1,'2024-04-10','2023-02-10'),
+    ('Paul','Paul','paul@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','0471/000000','user','1980-12-10',GETDATE(),1,3,'666',1,1,'2023-03-10','2023-05-10');
     
 
 INSERT INTO Organisation([name],picture,createdAt,isActive,adress_Id) VALUES

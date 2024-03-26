@@ -276,7 +276,7 @@ namespace DAL.Services
                                             FROM [Event]
                                             JOIN Participe ON Participe.event_Id = [Event].Id
                                             JOIN [User] ON [User].Id = Participe.user_Id
-                                            WHERE [User].Id = @Id AND isActive=1;", false);
+                                            WHERE [User].Id = @Id AND [Event].isActive=1;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -291,11 +291,11 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAllParticipeByEventId(int id)
         {
-            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id ,guidImage, guidInsurance, guidLevel, guidCertificat 
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id ,guidImage, guidInsurance, guidLevel, guidCertificat , isLevelValid, medicalDateValidation, insuranceDateValidation
                                             FROM [User]
                                             JOIN Participe ON Participe.[user_Id] = [User].Id
                                             JOIN [Event] ON [Participe].[event_Id] = [Event].Id
-                                            WHERE [Event].Id = @Id AND isActive=1;", false);
+                                            WHERE [Event].Id = @Id AND [User].isActive=1;", false);
             command.AddParameter("Id", id);
             try
             {

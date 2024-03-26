@@ -30,7 +30,9 @@ namespace DAL.Mappers
                 GuidInsurance = reader["guidInsurance"] is DBNull ? "" : (string)reader["guidInsurance"],
                 GuidLevel = reader["guidLevel"] is DBNull ? "" : (string)reader["guidLevel"],
                 GuidCertificat = reader["guidCertificat"] is DBNull ? "" : (string)reader["guidCertificat"],
-                  
+                MedicalDateValidation = reader["medicalDateValidation"] is DBNull ? null : (DateTime)reader["medicalDateValidation"],
+                InsuranceDateValidation = reader["insuranceDateValidation"] is DBNull ? null : (DateTime)reader["insuranceDateValidation"],
+                IsLevelValid = (bool)reader["isLevelValid"],
             };
 
         }

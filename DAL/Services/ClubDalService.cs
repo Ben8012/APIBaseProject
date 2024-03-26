@@ -236,7 +236,7 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAllParticipeByClubId(int id)
         {
-            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id,guidImage, guidInsurance, guidLevel, guidCertificat 
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id,guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation 
                                             FROM [User]
                                             JOIN [User_Club] ON [User_Club].[user_Id] = [User].Id
                                             JOIN [Club] ON [User_Club].[club_Id] = [Club].Id

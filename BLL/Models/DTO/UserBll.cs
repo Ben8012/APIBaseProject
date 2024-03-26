@@ -21,7 +21,9 @@ namespace BLL.Models.DTO
         public string GuidInsurance { get; set; }
         public string GuidLevel { get; set; }
         public string GuidCertificat { get; set; }
-
+        public bool IsLevelValid { get; set; }
+        public DateTime? MedicalDateValidation { get; set; }
+        public DateTime? InsuranceDateValidation { get; set; }
 
         public AdressBll? Adress { get; set; }
         public List<OrganisationBll>? Organisations { get; set; }
