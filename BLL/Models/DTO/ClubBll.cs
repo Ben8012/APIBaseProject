@@ -13,5 +13,6 @@
         public AdressBll? Adress { get; set; }
 
         public List<UserBll>? Participes { get; set; }
+
     }
 }

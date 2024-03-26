@@ -24,7 +24,7 @@ namespace API.Models.Forms.Event
         [Required]
         public int CreatorId { get; set; }
 
-        public int TrainingId { get; set; }
-        public int ClubId { get; set; }
+        public int? TrainingId { get; set; }
+        public int? ClubId { get; set; }
     }
 }

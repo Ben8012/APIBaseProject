@@ -8,7 +8,7 @@
         public DateTime EndDate { get; set; }
         public int DiveplaceId { get; set; }
         public int CreatorId { get; set; }
-        public int TrainingId { get; set; }
-        public int ClubId { get; set; }
+        public int? TrainingId { get; set; }
+        public int? ClubId { get; set; }
     }
 }

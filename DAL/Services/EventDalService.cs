@@ -44,9 +44,10 @@ namespace DAL.Services
 
         public int? Disable(int id)
         {
-            Command command = new Command("UPDATE [Event] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Event] SET isActive = @isActive, updatedAt = @updatedAt WHERE Id=@Id ; ", false);
             command.AddParameter("Id", id);
             command.AddParameter("isActive", 0);
+            command.AddParameter("updatedAt", DateTime.Now);
 
             try
             {
@@ -62,9 +63,10 @@ namespace DAL.Services
 
         public int? Enable(int id)
         {
-            Command command = new Command("UPDATE [Event] SET isActive = @isActive WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Event] SET isActive = @isActive, updatedAt = @updatedAt WHERE Id=@Id ; ", false);
             command.AddParameter("Id", id);
             command.AddParameter("isActive", 1);
+            command.AddParameter("updatedAt", DateTime.Now);
 
             try
             {
@@ -80,7 +82,9 @@ namespace DAL.Services
 
         public IEnumerable<EventDal> GetAll()
         {
-            Command command = new Command("SELECT Id, [name], startDate, endDate, createdAt, updatedAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id FROM [Event];", false);
+            Command command = new Command(@"SELECT Id, [name], startDate, endDate, createdAt, updatedAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id 
+                                            FROM [Event]
+                                            WHERE isActive=1;", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToEventDal());
@@ -151,8 +155,8 @@ namespace DAL.Services
             command.AddParameter("updatedAt", DateTime.Now);
             command.AddParameter("diveplace_Id", form.DiveplaceId);
             command.AddParameter("creator_Id", form.CreatorId);
-            command.AddParameter("training_Id", form.TrainingId);
-            command.AddParameter("club_Id", form.ClubId);
+            command.AddParameter("training_Id", form.TrainingId == 0 ? null : form.TrainingId);
+            command.AddParameter("club_Id", form.ClubId == 0 ? null : form.ClubId);
 
             try
             {
@@ -251,7 +255,9 @@ namespace DAL.Services
 
         private EventDal? GetEventById(int id)
         {
-            Command command = new Command("SELECT Id, [name], startDate, endDate, createdAt, updatedAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id FROM [Event] WHERE Id = @Id;", false);
+            Command command = new Command(@"SELECT Id, [name], startDate, endDate, createdAt, updatedAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id 
+                                            FROM [Event] 
+                                            WHERE Id = @Id AND isActive=1;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -270,7 +276,7 @@ namespace DAL.Services
                                             FROM [Event]
                                             JOIN Participe ON Participe.event_Id = [Event].Id
                                             JOIN [User] ON [User].Id = Participe.user_Id
-                                            WHERE [User].Id = @Id;", false);
+                                            WHERE [User].Id = @Id AND isActive=1;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -289,7 +295,7 @@ namespace DAL.Services
                                             FROM [User]
                                             JOIN Participe ON Participe.[user_Id] = [User].Id
                                             JOIN [Event] ON [Participe].[event_Id] = [Event].Id
-                                            WHERE [Event].Id = @Id;", false);
+                                            WHERE [Event].Id = @Id AND isActive=1;", false);
             command.AddParameter("Id", id);
             try
             {
