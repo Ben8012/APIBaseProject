@@ -203,7 +203,8 @@ namespace DAL.Services
                                             FROM [Club]
                                             JOIN User_Club ON Club.Id = User_Club.club_Id
                                             JOIN [User] ON [User].Id = User_Club.user_Id
-                                            WHERE [User].Id = @Id;", false);
+                                                OR [User].Id = [Club].creator_Id
+                                            WHERE [User].Id = @Id AND [Club].isActive = 1 OR [Club].creator_Id = @Id AND [Club].isActive=1;", false);
             command.AddParameter("Id", id);
             try
             {

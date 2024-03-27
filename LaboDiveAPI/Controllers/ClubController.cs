@@ -51,6 +51,19 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetClubByUserId/{id}")]
+        public IActionResult GetClubByUserId(int id)
+        {
+            try
+            {
+                return Ok(_clubBll.GetClubsByUserId(id).Select(c => c.ToClub()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
 
 
         [HttpPost]

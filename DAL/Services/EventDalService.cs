@@ -286,7 +286,7 @@ namespace DAL.Services
                                             JOIN Participe ON Participe.event_Id = [Event].Id
                                             JOIN [User] ON [User].Id = Participe.user_Id
                                                 OR [User].Id = [Event].creator_Id
-                                            WHERE [User].Id = @Id OR [Event].creator_Id = @Id AND [Event].isActive=1;", false);
+                                            WHERE [User].Id = @Id AND [Event].isActive = 1 OR [Event].creator_Id = @Id AND [Event].isActive=1;", false);
             command.AddParameter("Id", id);
             try
             {

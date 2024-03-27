@@ -86,7 +86,14 @@ namespace BLL.Services
 
         public IEnumerable<ClubBll> GetClubsByUserId(int id)
         {
-            return _clubDal.GetClubsByUserId(id).Select(c => c.ToClubBll()).ToList();
+            List<ClubBll> clubs = _clubDal.GetClubsByUserId(id).Select(c => c.ToClubBll()).ToList();
+            foreach (var club in clubs)
+            {
+                club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
+                club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
+                club.Participes = GetAllParticipeByClubId(club.Id).ToList();
+            }
+            return clubs;
         }
 
         public IEnumerable<UserBll> GetAllParticipeByClubId(int id)
