@@ -114,7 +114,7 @@ namespace DAL.Services
 
         public EventDal? Insert(AddEventFormDal form)
         {
-
+            int id;
             Command command = new Command("INSERT INTO [Event]( name, startDate, endDate, createdAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id ) OUTPUT inserted.id VALUES( @name, @startDate, @endDate, @createdAt, @isActive, @diveplace_Id, @creator_Id, @training_Id, @club_Id )", false);
             command.AddParameter("name", form.Name);
             command.AddParameter("startDate", form.StartDate);
@@ -123,26 +123,35 @@ namespace DAL.Services
             command.AddParameter("isActive", 1);
             command.AddParameter("diveplace_Id", form.DiveplaceId);
             command.AddParameter("creator_Id", form.CreatorId);
-            command.AddParameter("training_Id", form.TrainingId);
-            command.AddParameter("club_Id", form.ClubId);
+            command.AddParameter("training_Id", form.TrainingId == 0 ? null : form.TrainingId);
+            command.AddParameter("club_Id", form.ClubId == 0 ? null : form.ClubId);
 
             try
             {
-                int? id = (int?)_connection.ExecuteScalar(command); // recuperer l'id du contact inseré
-                if (id.HasValue)
-                {
-                    EventDal? eventD = GetEventById(id.Value);
-                    return eventD;
-                }
-                else
-                {
-                    throw new Exception("probleme de recuperation de l'id lors de l'insertion");
-                }
+                id = (int)_connection.ExecuteScalar(command); 
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+
+            Command command1 = new Command("INSERT INTO [Participe]( user_Id, event_Id, createdAt) VALUES( @user_Id, @event_Id, @createdAt)", false);
+            command1.AddParameter("user_Id", form.CreatorId);
+            command1.AddParameter("event_Id", id);
+            command1.AddParameter("createdAt", DateTime.Now);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command1);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                EventDal? eventD = GetEventById(id);
+                return eventD;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
         public EventDal? Update(UpdateEventFormDal form)
@@ -276,7 +285,8 @@ namespace DAL.Services
                                             FROM [Event]
                                             JOIN Participe ON Participe.event_Id = [Event].Id
                                             JOIN [User] ON [User].Id = Participe.user_Id
-                                            WHERE [User].Id = @Id AND [Event].isActive=1;", false);
+                                                OR [User].Id = [Event].creator_Id
+                                            WHERE [User].Id = @Id OR [Event].creator_Id = @Id AND [Event].isActive=1;", false);
             command.AddParameter("Id", id);
             try
             {

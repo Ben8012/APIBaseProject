@@ -72,9 +72,7 @@ namespace API.Controllers
         public IActionResult Insert([FromBody] AddEventForm form)
         {
 
-
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
-
 
             try
             {
