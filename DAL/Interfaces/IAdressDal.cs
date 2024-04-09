@@ -12,7 +12,7 @@ namespace DAL.Interfaces
     public interface IAdressDal
     {
         IEnumerable<AdressDal> GetAll();
-        AdressDal GetById(int id);
+        AdressDal GetById(int? id);
         AdressDal Insert(AdressFormDal form);
         AdressDal Update(AdressFormDal form);
     }

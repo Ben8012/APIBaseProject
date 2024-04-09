@@ -16,9 +16,9 @@ namespace BLL.Interfaces
 
         ClubBll? GetById(int id);
 
-        ClubBll? Insert(AddClubFormBll form);
+        ClubBll? Insert(ClubFormBll form);
 
-        ClubBll? Update(UpdateClubFormBll form);
+        ClubBll? Update(ClubFormBll form);
 
         int? Delete(int id);
 

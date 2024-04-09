@@ -41,7 +41,7 @@ namespace DAL.Services
             }
         }
 
-        public AdressDal GetById(int id)
+        public AdressDal GetById(int? id)
         {
             Command command = new Command(
             @"SELECT Adress.Id, street, number, City.name as city, postCode, Country.name as country From Adress
@@ -91,7 +91,7 @@ namespace DAL.Services
             int adressId;
             Command command3 = new Command(@"INSERT INTO[Adress](street,number,city_Id) OUTPUT inserted.id VALUES(@street,@number,@cityId)", false);
             command3.AddParameter("street", form.Street);
-            command3.AddParameter("number", form.PostCode);
+            command3.AddParameter("number", form.Number);
             command3.AddParameter("cityId", cityId);
             try
             {

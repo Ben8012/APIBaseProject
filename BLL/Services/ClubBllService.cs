@@ -54,14 +54,39 @@ namespace BLL.Services
             return club;
         }
 
-        public ClubBll? Insert(AddClubFormBll form)
+        public ClubBll? Insert(ClubFormBll form)
         {
-            return _clubDal.Insert(form.ToAddClubFromDal())?.ToClubBll(); 
+            if (form.Adress is not null)
+            {
+                AdressBll adress = _adressBll.Insert(form.Adress);
+                form.AdressId = adress.Id;
+            }
+            else
+            {
+                form.AdressId = null;
+            }
+            ClubBll club = _clubDal.Insert(form.ToClubFormDal()).ToClubBll();
+            return club; 
         }
 
-        public ClubBll? Update(UpdateClubFormBll form)
+        public ClubBll? Update(ClubFormBll form)
         {
-            return _clubDal.Update(form.ToUpdateClubFormDal())?.ToClubBll();
+            if (form.Adress is not null && form.Adress.Id is not null)
+            {
+                AdressBll adress = _adressBll.Update(form.Adress);
+                form.AdressId = adress.Id;
+            }
+            else if(form.Adress is not null && form.Adress.Id is null)
+            {
+                AdressBll adress = _adressBll.Insert(form.Adress);
+                form.AdressId = adress.Id;
+            }
+            else
+            {
+                form.AdressId = null;
+            }
+            ClubBll club = _clubDal.Update(form.ToClubFormDal()).ToClubBll();
+            return club;
         }
 
         public int? Disable(int id)

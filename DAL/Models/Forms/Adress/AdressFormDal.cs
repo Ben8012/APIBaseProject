@@ -8,7 +8,7 @@ namespace DAL.Models.Forms.Adress
 {
     public class AdressFormDal
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Street { get; set; }
         public int Number { get; set; }
         public string PostCode { get; set; }

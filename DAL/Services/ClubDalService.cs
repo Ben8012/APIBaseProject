@@ -107,20 +107,23 @@ namespace DAL.Services
             }
         }
 
-        public ClubDal? Insert(AddClubFormDal form)
+        public ClubDal? Insert(ClubFormDal form)
         {
-
+           
             Command command = new Command("INSERT INTO [Club](name, createdAt, isActive,creator_Id, adress_Id) OUTPUT inserted.id VALUES(@name, GETDATE(), 1,@creator_Id , @adress_Id )", false);
             command.AddParameter("name", form.Name);
             command.AddParameter("adress_Id", form.AdressId);
             command.AddParameter("creator_Id", form.CreatorId);
-           
+            command.AddParameter("createdAt", DateTime.Now);
+            command.AddParameter("isActive", 1);
+
             try
             {
                 int? id = (int?)_connection.ExecuteScalar(command); // recuperer l'id du contact inseré
                 if (id.HasValue)
                 {
                     ClubDal? club = GetClubById(id.Value);
+                    Participate(form.CreatorId, club.Id);
                     return club;
                 }
                 else
@@ -173,14 +176,22 @@ namespace DAL.Services
         }
 
 
-        public ClubDal? Update(UpdateClubFormDal form)
+        public ClubDal? Update(ClubFormDal form)
         {
-            Command command = new Command("UPDATE [Club] SET name = @name, adress_Id=@adress_Id, creator_Id=@creator_ID OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            //adress_Id=@adress_Id, 
+            Command command = new Command(@"UPDATE [Club] SET 
+                                            name = @name, 
+                                            creator_Id = @creator_Id,
+                                            updatedAt = @updatedAt,
+                                            adress_Id = @adress_Id
+                                            OUTPUT inserted.id 
+                                            WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
             command.AddParameter("adress_Id", form.AdressId);
             command.AddParameter("creator_Id", form.CreatorId);
-           
+            command.AddParameter("updatedAt", DateTime.Now);
+
             try
             {
                 int? resultid = (int?)_connection.ExecuteScalar(command);

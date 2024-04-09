@@ -22,26 +22,16 @@ namespace API.Mappers
             };
         }
 
-        internal static AddClubFormBll ToAddClubFromBll(this AddClubForm addClubFrom)
+        internal static ClubFormBll ToClubFormBll(this ClubForm clubForm)
         {
-            return new AddClubFormBll()
+            return new ClubFormBll()
             {
-                Name= addClubFrom.Name,
-                CreatorId= addClubFrom.CreatorId,
-                AdressId= addClubFrom.AdressId,
+                Id = clubForm.Id,
+                Name = clubForm.Name,
+                CreatorId= clubForm.CreatorId,
+                Adress = clubForm.Adress is null ? null : clubForm.Adress.ToAdressBll(),
             };
         }
 
-        internal static UpdateClubFormBll ToUpdateClubFormBll(this UpdateClubForm updateClubForm)
-        {
-            return new UpdateClubFormBll()
-            {
-                Id = updateClubForm.Id,
-                Name = updateClubForm.Name,
-                CreatorId = updateClubForm.CreatorId,
-                AdressId = updateClubForm.AdressId,
-
-            };
-        }
     }
 }

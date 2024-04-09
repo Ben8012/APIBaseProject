@@ -12,8 +12,8 @@ namespace DAL.Interfaces
     {
         IEnumerable<ClubDal> GetAll();
         ClubDal? GetById(int id);
-        ClubDal? Insert(AddClubFormDal form);
-        ClubDal? Update(UpdateClubFormDal form);
+        ClubDal? Insert(ClubFormDal form);
+        ClubDal? Update(ClubFormDal form);
 
         int? Delete(int id);
         int? Enable(int id);

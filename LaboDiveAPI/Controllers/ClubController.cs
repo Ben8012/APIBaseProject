@@ -67,16 +67,13 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public IActionResult Insert([FromBody] AddClubForm form)
+        public IActionResult Insert([FromBody] ClubForm form)
         {
-
-
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
-
 
             try
             {
-                return Ok(_clubBll.Insert(form.ToAddClubFromBll())?.ToClub());
+                return Ok(_clubBll.Insert(form.ToClubFormBll())?.ToClub());
             }
             catch (Exception ex)
             {
@@ -86,13 +83,13 @@ namespace API.Controllers
         }
 
 
-        [HttpPut]
-        public IActionResult Update([FromBody] UpdateClubForm form)
+        [HttpPut("{id}")]
+        public IActionResult Update(int id,[FromBody] ClubForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok(_clubBll.Update(form.ToUpdateClubFormBll())?.ToClub());
+                return Ok(_clubBll.Update(form.ToClubFormBll())?.ToClub());
             }
             catch (Exception ex)
             {

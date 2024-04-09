@@ -25,26 +25,17 @@ namespace BLL.Mappers
             };
         }
 
-        internal static AddClubFormDal ToAddClubFromDal(this AddClubFormBll addClubFromBll)
+        internal static ClubFormDal ToClubFormDal(this ClubFormBll clubFormBll)
         {
-            return new AddClubFormDal()
+            return new ClubFormDal()
             {
-                Name = addClubFromBll.Name,
-                CreatorId = addClubFromBll.CreatorId,
-                AdressId = addClubFromBll.AdressId,
+                Id = clubFormBll.Id,
+                Name = clubFormBll.Name,
+                CreatorId = clubFormBll.CreatorId,
+                AdressId = clubFormBll.AdressId,
             };
         }
 
-        internal static UpdateClubFormDal ToUpdateClubFormDal(this UpdateClubFormBll updateClubFormBll)
-        {
-            return new UpdateClubFormDal()
-            {
-                Id = updateClubFormBll.Id,
-                Name = updateClubFormBll.Name,
-                CreatorId = updateClubFormBll.CreatorId,
-                AdressId = updateClubFormBll.AdressId,
-
-            };
-        }
+ 
     }
 }
