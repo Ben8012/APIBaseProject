@@ -79,7 +79,8 @@ namespace DAL.Services
 
         public IEnumerable<ClubDal> GetAll()
         {
-            Command command = new Command("SELECT Id, name, createdAt, updatedAt, isActive, adress_Id, creator_Id FROM [Club];", false);
+            Command command = new Command(@"SELECT Id, name, createdAt, updatedAt, isActive, adress_Id, creator_Id 
+                                            FROM [Club];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToClubDal());
