@@ -57,14 +57,39 @@ namespace BLL.Services
             return diveplace;
         }
 
-        public DiveplaceBll? Insert(AddDiveplaceFormBll form)
+        public DiveplaceBll? Insert(DiveplaceFormBll form)
         {
-            return _diveplaceDal.Insert(form.ToAddDiveplaceFromDal())?.ToDiveplaceBll();
+            if (form.Adress is not null)
+            {
+                AdressBll adress = _adressBll.Insert(form.Adress);
+                form.AdressId = adress.Id;
+            }
+            else
+            {
+                form.AdressId = null;
+            }
+            DiveplaceBll diveplace = _diveplaceDal.Insert(form.ToDiveplaceFormDal())?.ToDiveplaceBll();
+            return diveplace;
         }
 
-        public DiveplaceBll? Update(UpdateDiveplaceFormBll form)
+        public DiveplaceBll? Update(DiveplaceFormBll form)
         {
-            return _diveplaceDal.Update(form.ToUpdateDiveplaceFormDal())?.ToDiveplaceBll();
+            if (form.Adress is not null && form.Adress.Id is not null)
+            {
+                AdressBll adress = _adressBll.Update(form.Adress);
+                form.AdressId = adress.Id;
+            }
+            else if (form.Adress is not null && form.Adress.Id is null)
+            {
+                AdressBll adress = _adressBll.Insert(form.Adress);
+                form.AdressId = adress.Id;
+            }
+            else
+            {
+                form.AdressId = null;
+            }
+            DiveplaceBll diveplace = _diveplaceDal.Update(form.ToDiveplaceFormDal())?.ToDiveplaceBll();
+            return diveplace;
         }
 
         public int? Disable(int id)

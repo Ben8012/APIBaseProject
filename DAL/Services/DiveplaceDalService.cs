@@ -82,7 +82,7 @@ namespace DAL.Services
   
         public IEnumerable<DiveplaceDal> GetAll()
         {
-            Command command = new Command("SELECT Id, name, url, picture, map, description, gps, maxDepp, price, compressor, restoration,  createdAt, updatedAt, isActive, adress_Id FROM [Diveplace];", false);
+            Command command = new Command("SELECT Id, creator_Id, name, url, guidImage, guidMap, description, gps, maxDepp, price, compressor, restoration,  createdAt, updatedAt, isActive, adress_Id FROM [Diveplace];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToDiveplaceDal());
@@ -110,30 +110,41 @@ namespace DAL.Services
             }
         }
 
-        public DiveplaceDal? Insert(AddDiveplaceFormDal form)
+        public DiveplaceDal? Insert(DiveplaceFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Diveplace]( name, picture, map, description, gps, maxDepp, price, compressor, restoration, createdAt, isActive, adress_Id ) OUTPUT inserted.id VALUES( @name, @picture, @map, @description, @gps, @maxDepp, @price, @compressor, @restoration, @createdAt, @isActive, @adress_Id )", false);
+            Command command = new Command(@"INSERT INTO [Diveplace]
+                ( name,creator_Id, description, gps, maxDepp, price, compressor,url, restoration, createdAt, isActive, adress_Id ) 
+                OUTPUT inserted.id 
+                VALUES( @name,@creator_Id, @description, @gps, @maxDepp, @price, @compressor, @url, @restoration, @createdAt, @isActive, @adress_Id )", false);
             command.AddParameter("name", form.Name);
-            command.AddParameter("picture", form.Picture);
-            command.AddParameter("map", form.Map);
             command.AddParameter("description", form.Description);
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive", 1);
             command.AddParameter("adress_Id", form.AdressId);     
-            command.AddParameter("gps", form.AdressId);     
-            command.AddParameter("maxDepp", form.AdressId);     
-            command.AddParameter("price", form.AdressId);     
-            command.AddParameter("compressor", form.AdressId);
-            command.AddParameter("restoration", form.AdressId);
+            command.AddParameter("gps", form.Gps);     
+            command.AddParameter("maxDepp", form.MaxDeep);     
+            command.AddParameter("price", form.Price);     
+            command.AddParameter("compressor", form.Compressor);
+            command.AddParameter("restoration", form.Restoration);
+            command.AddParameter("url", form.Url);
+            command.AddParameter("creator_Id", form.CreatorId);
 
             try
             {
                 int? id = (int?)_connection.ExecuteScalar(command); // recuperer l'id du contact inseré
                 if (id.HasValue)
                 {
-                    DiveplaceDal? divelog = GetDiveplaceById(id.Value);
-                    return divelog;
+                    Command command2 = new Command(@"INSERT INTO [User_Diveplace](user_Id, diveplace_Id,evaluation, createdAt ) 
+                                                    VALUES( @user_Id, @diveplace_Id,@evaluation, @createdAt )", false);
+                    command2.AddParameter("user_Id", form.CreatorId);
+                    command2.AddParameter("diveplace_Id", id);
+                    command2.AddParameter("evaluation", 0);
+                    command2.AddParameter("createdAt", DateTime.Now);
+                    int? nbLigne = (int?)_connection.ExecuteNonQuery(command2);
+                    DiveplaceDal? diveplace = GetDiveplaceById(id.Value);
+                    
+                    return diveplace;
                 }
                 else
                 {
@@ -146,23 +157,33 @@ namespace DAL.Services
             }
         }
 
-        public DiveplaceDal? Update(UpdateDiveplaceFormDal form)
+        public DiveplaceDal? Update(DiveplaceFormDal form)
         {
-            Command command = new Command("UPDATE [Diveplace] SET [name] = @name , picture = @picture , map = @map , description = @description ,gps = @gps,= @maxDepp,price @price,compressor = @compressor,restoration = @restoration, updatedAt = @updatedAt , adress_Id = @adress_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command(@"UPDATE [Diveplace] SET 
+                                            [name] = @name, 
+                                            creator_Id = @creator_Id,
+                                            description = @description,
+                                            gps = @gps,
+                                            maxDepp = @maxDepp,
+                                            price = @price,
+                                            compressor = @compressor,
+                                            restoration = @restoration, 
+                                            updatedAt = @updatedAt , 
+                                            url = @url, 
+                                            adress_Id = @adress_Id  
+                                            OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
-            command.AddParameter("picture", form.Picture);
-            command.AddParameter("map", form.Map);
             command.AddParameter("description", form.Description);
             command.AddParameter("updatedAt", DateTime.Now);
             command.AddParameter("adress_Id", form.AdressId);
-            command.AddParameter("gps", form.AdressId);
-            command.AddParameter("maxDepp", form.AdressId);
-            command.AddParameter("price", form.AdressId);
-            command.AddParameter("compressor", form.AdressId);
-            command.AddParameter("restoration", form.AdressId);
-
-
+            command.AddParameter("gps", form.Gps);
+            command.AddParameter("maxDepp", form.MaxDeep);
+            command.AddParameter("price", form.Price);
+            command.AddParameter("compressor", form.Compressor);
+            command.AddParameter("restoration", form.Restoration);
+            command.AddParameter("url", form.Url);
+            command.AddParameter("creator_Id", form.CreatorId);
 
             try
             {
@@ -239,7 +260,7 @@ namespace DAL.Services
 
         private DiveplaceDal? GetDiveplaceById(int id)
         {
-            Command command = new Command("SELECT Id, url, [name], picture, map, description, gps, maxDepp, price, compressor, restoration, createdAt, updatedAt, isActive, adress_Id FROM [Diveplace] WHERE Id = @Id;", false);
+            Command command = new Command(@"SELECT Id, creator_Id, url, [name], guidImage, guidMap, description, gps, maxDepp, price, compressor, restoration, url, createdAt, updatedAt, isActive, adress_Id FROM [Diveplace] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -254,7 +275,7 @@ namespace DAL.Services
 
         public IEnumerable<DiveplaceDal>? GetDiveplaceByUserId(int id)
         {
-            Command command = new Command(@"SELECT [Diveplace].Id, [name],evaluation, picture, map, description, gps, maxDepp, price, compressor, restoration, [Diveplace].createdAt, [Diveplace].updatedAt, [Diveplace].isActive, [Diveplace].adress_Id 
+            Command command = new Command(@"SELECT [Diveplace].Id, [Diveplace].creator_Id, [name],evaluation, [Diveplace].guidImage, [Diveplace].guidMap, description, gps, maxDepp, price, compressor, restoration, [Diveplace].url, [Diveplace].createdAt, [Diveplace].updatedAt, [Diveplace].isActive, [Diveplace].adress_Id 
                                             FROM [Diveplace] 
                                             JOIN User_Diveplace ON User_Diveplace.diveplace_Id = Diveplace.Id
                                             JOIN [User] ON [User].Id = User_Diveplace.user_Id

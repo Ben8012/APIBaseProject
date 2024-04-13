@@ -56,7 +56,7 @@ namespace API.Controllers
 
 
         [HttpPost]
-        public IActionResult Insert([FromBody] AddDiveplaceForm form)
+        public IActionResult Insert([FromBody] DiveplaceForm form)
         {
 
 
@@ -65,7 +65,7 @@ namespace API.Controllers
 
             try
             {
-                return Ok(_diveplaceBll.Insert(form.ToAddDiveplaceFromBll())?.ToDiveplace());
+                return Ok(_diveplaceBll.Insert(form.ToDiveplaceFormBll())?.ToDiveplace());
             }
             catch (Exception ex)
             {
@@ -76,12 +76,12 @@ namespace API.Controllers
 
 
         [HttpPut]
-        public IActionResult Update([FromBody] UpdateDiveplaceForm form)
+        public IActionResult Update([FromBody] DiveplaceForm form)
         {
             if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
             try
             {
-                return Ok(_diveplaceBll.Update(form.ToUpdateDiveplaceFormBll())?.ToDiveplace());
+                return Ok(_diveplaceBll.Update(form.ToDiveplaceFormBll())?.ToDiveplace());
             }
             catch (Exception ex)
             {

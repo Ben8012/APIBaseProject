@@ -24,6 +24,8 @@
     <Folder Include="Images\InsuranceImages\" />
     <Folder Include="Images\LevelImages\" />
     <Folder Include="Images\CertificatImages\" />
+    <Folder Include="Images\DiveplaceImages\" />
+    <Folder Include="Images\DiveplacePlan\" />
   </ItemGroup>
 
 </Project>

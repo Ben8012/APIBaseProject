@@ -6,6 +6,7 @@ using System;
 using Microsoft.Extensions.Hosting;
 using DAL.Models.DTO;
 using System.Data.Common;
+using System.Drawing;
 
 namespace API.Controllers
 {
@@ -18,6 +19,8 @@ namespace API.Controllers
         private readonly string _insuranceImage;
         private readonly string _levelImage;
         private readonly string _certificatImage;
+        private readonly string _diveplaceImage;
+        private readonly string _diveplacePlan;
 
         private readonly Connection _connection;
 
@@ -29,6 +32,8 @@ namespace API.Controllers
             _insuranceImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "InsuranceImages");
             _levelImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "LevelImages");
             _certificatImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "CertificatImages");
+            _diveplaceImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "DiveplaceImages");
+            _diveplacePlan = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "DiveplacePlan");
             if (!Directory.Exists(_uploadFolder))
             {
                 Directory.CreateDirectory(_uploadFolder);
@@ -388,10 +393,182 @@ namespace API.Controllers
             return File(imageFileStream, "image/jpeg");
         }
 
-  
 
+        [HttpPost("SiteImage/{id}")]
+        public async Task<IActionResult> InsertSiteImage(int id)
+        {
+            var test = Directory.GetCurrentDirectory();
 
+            if (!Request.HasFormContentType)
+            {
+                return BadRequest("The request doesn't contain a valid form content.");
+            }
+
+            var form = Request.Form;
+
+            var files = form.Files;
+
+            string guidImage;
+            Command command1 = new Command(@"SELECT guidImage
+                                            FROM [Diveplace]  
+                                            WHERE Id=@Id ; ", false);
+            command1.AddParameter("Id", id);
+
+            try
+            {
+                guidImage = _connection.ExecuteScalar(command1) as string;
+                if (!String.IsNullOrEmpty(guidImage))
+                {
+                    var filePath = Path.Combine(_diveplaceImage, guidImage);
+
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var guid = Guid.NewGuid().ToString();
+                    var fileName = guid + Path.GetExtension(file.FileName);
+                    var filePath = Path.Combine(_diveplaceImage, fileName);
+
+                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
+                    {
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                        Command command = new Command(@"UPDATE [Diveplace] SET 
+                                        guidImage = @guidImage
+                                        WHERE Id=@Id ; ", false);
+                        command.AddParameter("Id", id);
+                        command.AddParameter("guidImage", guid);
+
+                        try
+                        {
+                            _connection.ExecuteScalar(command);
+                        }
+                        catch (Exception ex)
+                        {
+
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            return Ok(new { Message = "ok" });
+        }
+
+        [HttpGet("SiteImage/{imageName}")]
+        public IActionResult GetSiteImage(string imageName)
+        {
+            var filePath = Path.Combine(_diveplaceImage, imageName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return File(imageFileStream, "image/jpeg");
+        }
+
+        [HttpPost("SitePlan/{id}")]
+        public async Task<IActionResult> InsertSitePlan(int id)
+        {
+            var test = Directory.GetCurrentDirectory();
+
+            if (!Request.HasFormContentType)
+            {
+                return BadRequest("The request doesn't contain a valid form content.");
+            }
+
+            var form = Request.Form;
+
+            var files = form.Files;
+
+            string guidPlan;
+            Command command1 = new Command(@"SELECT guidMap
+                                            FROM [Diveplace]  
+                                            WHERE Id=@Id ; ", false);
+            command1.AddParameter("Id", id);
+
+            try
+            {
+                guidPlan = _connection.ExecuteScalar(command1) as string;
+                if (!String.IsNullOrEmpty(guidPlan))
+                {
+                    var filePath = Path.Combine(_diveplacePlan, guidPlan);
+
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var guid = Guid.NewGuid().ToString();
+                    var fileName = guid + Path.GetExtension(file.FileName);
+                    var filePath = Path.Combine(_diveplacePlan, fileName);
+
+                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
+                    {
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                        Command command = new Command(@"UPDATE [Diveplace] SET 
+                                        guidMap = @guidMap
+                                        WHERE Id=@Id ; ", false);
+                        command.AddParameter("Id", id);
+                        command.AddParameter("guidMap", guid);
+
+                        try
+                        {
+                            _connection.ExecuteScalar(command);
+                        }
+                        catch (Exception ex)
+                        {
+
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            return Ok(new { Message = "ok" });
+        }
+
+        [HttpGet("SitePlan/{imageName}")]
+        public IActionResult GetSitePlan(string imageName)
+        {
+            var filePath = Path.Combine(_diveplacePlan, imageName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return File(imageFileStream, "image/jpeg");
+        }
 
 
     }
+
 }

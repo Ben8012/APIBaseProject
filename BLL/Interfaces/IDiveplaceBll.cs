@@ -16,9 +16,9 @@ namespace BLL.Interfaces
 
         DiveplaceBll? GetById(int id);
 
-        DiveplaceBll? Insert(AddDiveplaceFormBll form);
+        DiveplaceBll? Insert(DiveplaceFormBll form);
 
-        DiveplaceBll? Update(UpdateDiveplaceFormBll form);
+        DiveplaceBll? Update(DiveplaceFormBll form);
 
         int? Delete(int id);
         int? Enable(int id);

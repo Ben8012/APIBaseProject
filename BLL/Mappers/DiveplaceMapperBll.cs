@@ -13,8 +13,8 @@ namespace BLL.Mappers
             {
                 Id = diveplaceDal.Id,
                 Name = diveplaceDal.Name,
-                Picture = diveplaceDal.Picture,
-                Map = diveplaceDal.Map,
+                GuidImage = diveplaceDal.GuidImage,
+                GuidMap = diveplaceDal.GuidMap,
                 Description = diveplaceDal.Description,
                 CreatedAt = diveplaceDal.CreatedAt,
                 UpdatedAt = diveplaceDal.UpdatedAt,
@@ -26,31 +26,27 @@ namespace BLL.Mappers
                 Compressor = diveplaceDal.Compressor,
                 Restoration = diveplaceDal.Restoration,
                 Url= diveplaceDal.Url,
+                CreatorId= diveplaceDal.CreatorId,
             };
         }
 
-        internal static AddDiveplaceFormDal ToAddDiveplaceFromDal(this AddDiveplaceFormBll addDiveplaceFromBll)
-        {
-            return new AddDiveplaceFormDal()
-            {
-                Name = addDiveplaceFromBll.Name,
-                Picture = addDiveplaceFromBll.Picture,
-                Map = addDiveplaceFromBll.Map,
-                Description = addDiveplaceFromBll.Description,
-                AdressId = addDiveplaceFromBll.AdressId
-            };
-        }
+       
 
-        internal static UpdateDiveplaceFormDal ToUpdateDiveplaceFormDal(this UpdateDiveplaceFormBll updateDiveplaceFormBll)
+        internal static DiveplaceFormDal ToDiveplaceFormDal(this DiveplaceFormBll DiveplaceFormBll)
         {
-            return new UpdateDiveplaceFormDal()
+            return new DiveplaceFormDal()
             {
-                Id = updateDiveplaceFormBll.Id,
-                Name = updateDiveplaceFormBll.Name,
-                Picture = updateDiveplaceFormBll.Picture,
-                Map = updateDiveplaceFormBll.Map,
-                Description = updateDiveplaceFormBll.Description,
-                AdressId = updateDiveplaceFormBll.AdressId
+                Id = DiveplaceFormBll.Id,
+                Name = DiveplaceFormBll.Name,
+                Description = DiveplaceFormBll.Description,
+                Compressor = DiveplaceFormBll.Compressor,
+                Restoration = DiveplaceFormBll.Restoration,
+                Gps = DiveplaceFormBll.Gps,
+                Url = DiveplaceFormBll.Url,
+                MaxDeep = DiveplaceFormBll.MaxDeep,
+                Price = DiveplaceFormBll.Price,
+                AdressId = DiveplaceFormBll.AdressId,
+                CreatorId = DiveplaceFormBll.CreatorId,
             };
         }
     }

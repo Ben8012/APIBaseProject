@@ -12,8 +12,8 @@ namespace DAL.Interfaces
     {
         IEnumerable<DiveplaceDal> GetAll();
         DiveplaceDal? GetById(int id);
-        DiveplaceDal? Insert(AddDiveplaceFormDal form);
-        DiveplaceDal? Update(UpdateDiveplaceFormDal form);
+        DiveplaceDal? Insert(DiveplaceFormDal form);
+        DiveplaceDal? Update(DiveplaceFormDal form);
 
         int? Delete(int id);
         int? Enable(int id);
