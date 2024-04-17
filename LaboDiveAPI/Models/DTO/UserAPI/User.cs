@@ -32,6 +32,8 @@
         public List<Diveplace>? Diveplaces { get; set;}
 
         public List<User>? Friends { get; set; }
+        public List<User>? Likers { get; set; }
+        public List<User>? Likeds { get; set; }
 
         public List<Club>? Clubs { get;set; }
 

@@ -13,7 +13,9 @@ namespace BLL.Interfaces
     {
          IEnumerable<UserBll> GetAll();
 
-        IEnumerable<UserBll> GetContactById(int id);
+        IEnumerable<UserBll> GetLikersByUserId(int id);
+        IEnumerable<UserBll> GetFriendsUserId(int id);
+        IEnumerable<UserBll> GetLikedsByUserId(int id);
 
          UserBll? GetById(int id);
 

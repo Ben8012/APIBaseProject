@@ -70,11 +70,38 @@ namespace API.Controllers
         }
 
         [HttpGet("Friends/{id}")]
-        public IActionResult GetContactById(int id)
+        public IActionResult GetFriendsUserId(int id)
         {
             try
             {
-                return Ok(_userBll.GetContactById(id)?.Select(u => u.ToUser()));
+                return Ok(_userBll.GetFriendsUserId(id)?.Select(u => u.ToUser()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("Likers/{id}")]
+        public IActionResult GetLikersByUserId(int id)
+        {
+            try
+            {
+                return Ok(_userBll.GetLikersByUserId(id)?.Select(u => u.ToUser()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+
+        [HttpGet("Likeds/{id}")]
+        public IActionResult GetLikedsByUserId(int id)
+        {
+            try
+            {
+                return Ok(_userBll.GetLikedsByUserId(id)?.Select(u => u.ToUser()));
             }
             catch (Exception ex)
             {
@@ -212,7 +239,7 @@ namespace API.Controllers
                 int? valid = _userBll.Like(form.LikerId, form.LikedId);
                 if (valid > 0)
                 {
-                    return Ok(_userBll.GetContactById(form.LikerId)?.Select(u => u.ToUser()));
+                    return Ok(_userBll.GetFriendsUserId(form.LikerId)?.Select(u => u.ToUser()));
                 }
                 return Ok(null);
                
@@ -232,7 +259,7 @@ namespace API.Controllers
                 int? valid = _userBll.UnLike(form.LikerId, form.LikedId);
                 if (valid > 0)
                 {
-                    return Ok(_userBll.GetContactById(form.LikerId)?.Select(u => u.ToUser()));
+                    return Ok(_userBll.GetFriendsUserId(form.LikerId)?.Select(u => u.ToUser()));
                 }
                 return Ok(null);
 

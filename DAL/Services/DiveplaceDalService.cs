@@ -210,7 +210,7 @@ namespace DAL.Services
             command1.AddParameter("diveplaceId", diveplaceId);
             try
             {
-                 id = (int)_connection.ExecuteScalar(command1);
+                 id = (int)_connection.ExecuteNonQuery(command1);
             }
             catch (Exception ex)
             {
@@ -218,7 +218,7 @@ namespace DAL.Services
                 throw ex;
             }
            
-            if (!id.HasValue)
+            if (id == -1)
             {
 
                 Command command = new Command(@"INSERT INTO [User_Diveplace](user_Id, diveplace_Id,evaluation, createdAt ) 

@@ -31,6 +31,8 @@ namespace BLL.Models.DTO
         public List<DivelogBll>? Divelogs { get; set; }
         public List<DiveplaceBll>? Diveplaces { get; set; }
         public List<UserBll>? Friends { get; set; }
+        public List<UserBll>? Likers { get; set; }
+        public List<UserBll>? Likeds { get; set; }
         public List<ClubBll>? Clubs { get; set; }
         public List<EventBll>? Events { get; set; }
 

@@ -44,7 +44,9 @@ namespace API.Mappers
                     Diveplaces = userBll.Diveplaces is null ? null : userBll.Diveplaces.Select(p => p.ToDiveplace()).ToList(),
                     Friends = userBll.Friends is null ? null :  userBll.Friends .Select(f => f.ToUser()).ToList(),
                     Clubs = userBll.Clubs is null ? null : userBll.Clubs.Select(c => c.ToClub()).ToList(),
-                    Events = userBll.Events is null ? null : userBll.Events.Select(e => e.ToEvent()).ToList()
+                    Events = userBll.Events is null ? null : userBll.Events.Select(e => e.ToEvent()).ToList(),
+                    Likers = userBll.Likers is null ? null : userBll.Likers.Select(f => f.ToUser()).ToList(),
+                    Likeds = userBll.Likeds is null ? null : userBll.Likeds.Select(f => f.ToUser()).ToList(),
 
                 };
         }

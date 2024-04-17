@@ -288,7 +288,30 @@ namespace DAL.Services
             }
         }
 
-        public IEnumerable<UserDal> GetContactByUserId(int id)
+        public IEnumerable<UserDal> GetLikersByUserId(int id)
+        {
+            Command command = new Command(
+                @"SELECT Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
+                    FROM [User]
+                    WHERE [User].Id In ( SELECT [Like].liker_Id 
+                                            FROM[User] 
+                                            JOIN dbo.[Like] ON dbo.[Like].liker_Id = [User].Id 
+                                            WHERE dbo.[like].liked_Id = @id )"
+                , false
+            );
+            command.AddParameter("id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public IEnumerable<UserDal> GetLikedsByUserId(int id)
         {
             Command command = new Command(
                 @"SELECT Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
@@ -297,6 +320,28 @@ namespace DAL.Services
                                             FROM[User] 
                                             JOIN dbo.[Like] ON dbo.[Like].liker_Id = [User].Id 
                                             WHERE dbo.[like].liker_Id = @id )"
+                , false
+            );
+            command.AddParameter("id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public IEnumerable<UserDal> GetFriendsUserId(int id)
+        {
+            Command command = new Command(
+                @"SELECT U.Id, U.lastname, U.firstname, U.email, U.phone, U.role, U.birthDate, U.createdAt, U.updatedAt, U.isActive, U.insurance_id, U.adress_id, U.guidImage, U.guidInsurance, U.guidLevel, U.guidCertificat, U.isLevelValid, U.medicalDateValidation, U.insuranceDateValidation
+                            FROM [User] AS U
+                            JOIN [Like] AS Like1 ON U.Id = Like1.liker_Id
+                            JOIN [Like] AS Like2 ON U.Id = Like2.liked_Id AND Like1.liker_Id = Like2.liked_Id AND Like1.liked_Id = Like2.liker_Id
+                            WHERE  Like1.liked_Id = @id"
                 , false
             );
             command.AddParameter("id", id);
