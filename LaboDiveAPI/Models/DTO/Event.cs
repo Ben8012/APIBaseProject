@@ -18,5 +18,6 @@ namespace API.Models.DTO
         public bool IsActive { get; set; }
 
         public List<User>? Participes { get; set; }
+        public List<User>? Demands { get; set; }
     }
 }

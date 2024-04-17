@@ -28,6 +28,10 @@ namespace DAL.Interfaces
 
         IEnumerable<EventDal> GetEventByUserId(int id);
         IEnumerable<UserDal> GetAllParticipeByEventId(int id);
+        IEnumerable<UserDal> GetAllDemandsByEventId(int id);
+
+        int? ValidationParticipate(int userId, int eventId);
+        int? UnValidationParticipate(int userId, int eventId);
 
     }
 }

@@ -49,6 +49,7 @@ namespace BLL.Services
                 e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
                 e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+                e.Demands = GetAllDemandsByEventId(e.Id).ToList();
             }
             return events;
         }
@@ -61,6 +62,7 @@ namespace BLL.Services
             e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
             e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
             e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+            e.Demands = GetAllDemandsByEventId(e.Id).ToList();
             return e;
         }
 
@@ -118,9 +120,25 @@ namespace BLL.Services
                 e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
                 e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+                e.Demands = GetAllDemandsByEventId(e.Id).ToList();
             }
             return events;
           
+        }
+
+        public IEnumerable<UserBll> GetAllDemandsByEventId(int id)
+        {
+            return _eventDal.GetAllDemandsByEventId(id).Select(u => u.ToUserBll());
+        }
+
+        public int? ValidationParticipate(int userId, int eventId)
+        {
+            return _eventDal.ValidationParticipate( userId, eventId);
+        }
+
+        public int? UnValidationParticipate(int userId, int eventId)
+        {
+            return _eventDal.UnValidationParticipate(userId, eventId);
         }
     }
 }

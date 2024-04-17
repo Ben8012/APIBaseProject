@@ -13,6 +13,7 @@
         public AdressBll? Adress { get; set; }
 
         public List<UserBll>? Participes { get; set; }
+        public List<UserBll>? Demands { get; set; }
 
     }
 }

@@ -26,6 +26,7 @@ namespace API.Mappers
                 Training = eventBll.Training is null ? null : eventBll.Training.ToTraining(),
                 Club = eventBll.Club is null ? null : eventBll.Club.ToClub(),
                 Participes = eventBll.Participes is null ? null : eventBll.Participes.Select(u => u.ToUser()).ToList(),
+                Demands = eventBll.Demands is null ? null : eventBll.Demands.Select(u => u.ToUser()).ToList(),
             };
         }
 

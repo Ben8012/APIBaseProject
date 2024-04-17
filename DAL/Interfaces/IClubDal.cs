@@ -26,5 +26,11 @@ namespace DAL.Interfaces
         IEnumerable<ClubDal>? GetClubsByUserId(int id);
 
         IEnumerable<UserDal> GetAllParticipeByClubId(int id);
+
+        int? ValidationParticipate(int userId, int clubId);
+
+        int? UnValidationParticipate(int userId, int clubId);
+
+        IEnumerable<UserDal> GetAllDemandsByClubId(int id);
     }
 }

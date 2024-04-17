@@ -1,4 +1,6 @@
 ﻿using API.Mappers;
+using API.Models.DTO;
+using API.Models.DTO.UserAPI;
 using API.Models.Forms.Club;
 using API.Models.Forms.Insurance;
 using API.Tools;
@@ -6,6 +8,7 @@ using BLL.Interfaces;
 using BLL.Models.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
@@ -172,7 +175,47 @@ namespace API.Controllers
         }
 
 
+        [HttpGet("ValidationParticipate/{userId}/{clubId}")]
+        public IActionResult ValidationParticipate(int userId, int clubId)
+        {
+            try
+            {
+                int? ligne = _clubBll.UnParticipate(userId, clubId);
+                List<Club> clubs = new List<Club>();
+                if (ligne.HasValue)
+                {
+                    clubs = _clubBll.GetClubsByUserId(userId).Select(u => u.ToClub()).ToList();
+                }
+                return Ok(clubs);
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("UnValidationParticipate/{userId}/{clubId}")]
+        public IActionResult UnValidationParticipate(int userId, int clubId)
+        {
+            try
+            {
+                int? ligne = _clubBll.UnParticipate(userId, clubId);
+                List<Club> clubs = new List<Club>();
+                if (ligne.HasValue)
+                {
+                    clubs = _clubBll.GetClubsByUserId(userId).Select(u => u.ToClub()).ToList();
+                }
+                return Ok(clubs);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+ 
 
     }
 }

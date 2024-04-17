@@ -305,7 +305,7 @@ namespace DAL.Services
                                             FROM [User]
                                             JOIN Participe ON Participe.[user_Id] = [User].Id
                                             JOIN [Event] ON [Participe].[event_Id] = [Event].Id
-                                            WHERE [Event].Id = @Id AND [User].isActive=1;", false);
+                                            WHERE [Event].Id = @Id AND [User].isActive=1 AND Participe.validation = 1;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -314,6 +314,66 @@ namespace DAL.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public IEnumerable<UserDal> GetAllDemandsByEventId(int id)
+        {
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id ,guidImage, guidInsurance, guidLevel, guidCertificat , isLevelValid, medicalDateValidation, insuranceDateValidation
+                                            FROM [User]
+                                            JOIN Participe ON Participe.[user_Id] = [User].Id
+                                            JOIN [Event] ON [Participe].[event_Id] = [Event].Id
+                                            WHERE [Event].Id = @Id AND [User].isActive=1 AND Participe.validation = 0;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+      
+        public int? ValidationParticipate(int userId, int eventId)
+        {
+            Command command = new Command(@"UPDATE [Participe] SET validation = @validation 
+                                           WHERE user_Id = @user_Id AND event_Id = @event_Id", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("event_Id", eventId);
+            command.AddParameter("validation", 1);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? UnValidationParticipate(int userId, int eventId)
+        {
+            Command command = new Command(@"UPDATE [Participe] SET validation = @validation
+                                           WHERE user_Id = @user_Id AND event_Id = @event_Id", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("event_Id", eventId);
+            command.AddParameter("validation", 0);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

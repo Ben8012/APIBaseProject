@@ -33,6 +33,7 @@ namespace DAL.Mappers
                 MedicalDateValidation = reader["medicalDateValidation"] is DBNull ? null : (DateTime)reader["medicalDateValidation"],
                 InsuranceDateValidation = reader["insuranceDateValidation"] is DBNull ? null : (DateTime)reader["insuranceDateValidation"],
                 IsLevelValid = (bool)reader["isLevelValid"],
+                
             };
 
         }

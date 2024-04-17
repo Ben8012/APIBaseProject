@@ -14,5 +14,7 @@ namespace API.Models.DTO
         public User? Creator { get; set; }
 
         public List<User>? Participes { get; set; }
+       
+        public List<User>? Demands { get; set; }
     }
 }

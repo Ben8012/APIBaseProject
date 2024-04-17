@@ -188,11 +188,15 @@ INSERT INTO Club([Name],createdAt, isActive,adress_Id,creator_Id,organisation_id
     ('Virtual-Lifras',GETDATE(),1,3,3,3),
     ('Virtual-Ffessm',GETDATE(),1,4,4,4);
 
-INSERT INTO [User_Club](user_Id,club_Id,createdAt)VALUES
-    (1,1,GETDATE()),
-    (2,2,GETDATE()),
-    (3,3,GETDATE()),
-    (4,4,GETDATE());
+INSERT INTO [User_Club](user_Id,club_Id,createdAt,validation)VALUES
+    (1,1,GETDATE(),1),
+    (1,2,GETDATE(),0),
+    (2,2,GETDATE(),1),
+    (2,1,GETDATE(),0),
+    (3,3,GETDATE(),1),
+    (3,2,GETDATE(),0),
+    (4,4,GETDATE(),1),
+    (4,1,GETDATE(),0);
 
 INSERT INTO [Event]([name], startDate, endDate, createdAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id) VALUES
     ('Explo 1','2023-01-01','2023-01-02', GETDATE(),1,1,1,null,null),
@@ -222,18 +226,18 @@ INSERT INTO Divelog(diveType,[description],duration,maxDeep, airTemperature, wat
     ('N3','chouette',42,14,15,17,'2022-01-10',GETDATE(),1,3,5);
 
 
-INSERT INTO [Participe](user_Id,event_Id,createdAt)VALUES
-    (1,1,GETDATE()),
-    (1,2,GETDATE()),
-    (1,3,GETDATE()),
-    (1,4,GETDATE()),
-    (2,1,GETDATE()),
-    (2,2,GETDATE()),
-    (2,6,GETDATE()),
-    (3,1,GETDATE()),
-    (3,4,GETDATE()),
-    (3,10,GETDATE()),
-    (3,9,GETDATE());
+INSERT INTO [Participe](user_Id,event_Id,createdAt,validation)VALUES
+    (1,1,GETDATE(),1),
+    (1,2,GETDATE(),1),
+    (1,3,GETDATE(),1),
+    (1,4,GETDATE(),1),
+    (2,1,GETDATE(),1),
+    (2,2,GETDATE(),1),
+    (2,6,GETDATE(),0),
+    (3,1,GETDATE(),0),
+    (3,4,GETDATE(),0),
+    (3,10,GETDATE(),0),
+    (3,9,GETDATE(),0);
 
 
 INSERT INTO Invite(inviter_Id,invited_Id,event_Id,createdAt)VALUES

@@ -140,10 +140,11 @@ namespace DAL.Services
 
         public int? Participate(int userId, int clubId)
         {
-            Command command = new Command("INSERT INTO [User_Club]( user_Id, club_Id, createdAt) VALUES( @user_Id, @club_Id, @createdAt)", false);
+            Command command = new Command("INSERT INTO [User_Club]( user_Id, club_Id, createdAt, validation) VALUES( @user_Id, @club_Id, @createdAt, @validation)", false);
             command.AddParameter("user_Id", userId);
             command.AddParameter("club_Id", clubId);
             command.AddParameter("createdAt", DateTime.Now);
+            command.AddParameter("validation", 0);
 
             try
             {
@@ -156,6 +157,48 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
+        public int? ValidationParticipate(int userId, int clubId)
+        {
+            Command command = new Command("UPDATE [User_Club] SET validation = @validation WHERE user_Id=@user_Id AND club_Id=@club_Id)", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("club_Id", clubId);
+            command.AddParameter("validation", 1);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? UnValidationParticipate(int userId, int clubId)
+        {
+            Command command = new Command("UPDATE [User_Club] SET validation = @validation WHERE user_Id=@user_Id AND club_Id=@club_Id)", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("club_Id", clubId);
+            command.AddParameter("validation", 0);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de l'insertion");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
+
 
         public int? UnParticipate(int userId, int clubId)
         {
@@ -247,13 +290,32 @@ namespace DAL.Services
             }
         }
 
-        public IEnumerable<UserDal> GetAllParticipeByClubId(int id)
+        public IEnumerable<UserDal> GetAllDemandsByClubId(int id)
         {
-            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id,guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation 
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id,guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
                                             FROM [User]
                                             JOIN [User_Club] ON [User_Club].[user_Id] = [User].Id
                                             JOIN [Club] ON [User_Club].[club_Id] = [Club].Id
-                                            WHERE [Club].Id = @Id;", false);
+                                            WHERE [Club].Id = @Id AND [User_Club].validation = 0;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public IEnumerable<UserDal> GetAllParticipeByClubId(int id)
+        {
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id,guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
+                                            FROM [User]
+                                            JOIN [User_Club] ON [User_Club].[user_Id] = [User].Id
+                                            JOIN [Club] ON [User_Club].[club_Id] = [Club].Id
+                                            WHERE [Club].Id = @Id AND [User_Club].validation = 1;", false);
             command.AddParameter("Id", id);
             try
             {

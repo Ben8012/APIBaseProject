@@ -1,4 +1,6 @@
 ﻿using API.Mappers;
+using API.Models.DTO;
+using API.Models.DTO.UserAPI;
 using API.Models.Forms.Diveplace;
 using API.Models.Forms.Event;
 using API.Models.Forms.Insurance;
@@ -207,6 +209,48 @@ namespace API.Controllers
 
 
 
+        [HttpGet("ValidationParticipate/{userId}/{eventId}")]
+        public IActionResult ValidationParticipate(int userId, int eventId)
+        {
+
+            if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
+
+            try
+            {
+                int? ligne = _eventBll.ValidationParticipate(userId, eventId);
+                List<Event> events = new List<Event>();
+                if (ligne.HasValue)
+                {
+                    events = _eventBll.GetEventByUserId(userId).Select(e => e.ToEvent()).ToList();
+                }
+                
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'insertion a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+
+        }
+
+        [HttpGet("UnValidationParticipate/{userId}/{eventId}")]
+        public IActionResult UnValidationParticipate(int userId, int eventId)
+        {
+            try
+            {
+                int? ligne = _eventBll.UnValidationParticipate(userId, eventId);
+                List<Event> events = new List<Event>();
+                if (ligne.HasValue)
+                {
+                    events = _eventBll.GetEventByUserId(userId).Select(e => e.ToEvent()).ToList();
+                }
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
 
     }
 }

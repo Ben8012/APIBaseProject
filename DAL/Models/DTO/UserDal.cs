@@ -25,5 +25,6 @@
         public DateTime? MedicalDateValidation { get; set; }
         public DateTime? InsuranceDateValidation { get; set; }
 
+
     }
 }

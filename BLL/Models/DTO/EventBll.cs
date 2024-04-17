@@ -19,6 +19,7 @@
         public ClubBll? Club { get; set; }
         public DiveplaceBll Diveplace { get; set; }
         public List<UserBll>? Participes { get; set; }
+        public List<UserBll>? Demands { get; set; }
 
     }
 }

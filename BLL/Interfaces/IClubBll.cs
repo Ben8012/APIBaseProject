@@ -33,5 +33,10 @@ namespace BLL.Interfaces
         IEnumerable<ClubBll> GetClubsByUserId(int id);
 
         IEnumerable<UserBll> GetAllParticipeByClubId(int id);
+        IEnumerable<UserBll> GetAllDemandsByClubId(int id);
+
+        int? ValidationParticipate(int userId, int clubId);
+
+        int? UnValidationParticipate(int userId, int clubId);
     }
 }
