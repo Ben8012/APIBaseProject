@@ -28,7 +28,7 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAll()
         {
-            Command command = new Command(@"SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id,guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
+            Command command = new Command(@"SELECT Id, lastname, firstname, email, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id,guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
                                             FROM [User];", false);
             try
             {
@@ -151,7 +151,7 @@ namespace DAL.Services
 
         private UserDal? GetUserById(int id)
         {
-            Command command = new Command(@"SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id,guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
+            Command command = new Command(@"SELECT Id, lastname, firstname, email, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id,guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
                                             FROM [User] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
@@ -191,7 +191,7 @@ namespace DAL.Services
                 throw ex;
             }
             
-            Command command2 = new Command(@"SELECT Id, lastname, firstname, email, phone, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
+            Command command2 = new Command(@"SELECT Id, lastname, firstname, email, role, birthDate, createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
                                             FROM [User] WHERE Email = @Email", false);
             command2.AddParameter("Email", form.Email);
 
@@ -291,7 +291,7 @@ namespace DAL.Services
         public IEnumerable<UserDal> GetLikersByUserId(int id)
         {
             Command command = new Command(
-                @"SELECT Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
+                @"SELECT Id, lastname, firstname, email, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
                     FROM [User]
                     WHERE [User].Id In ( SELECT [Like].liker_Id 
                                             FROM[User] 
@@ -314,7 +314,7 @@ namespace DAL.Services
         public IEnumerable<UserDal> GetLikedsByUserId(int id)
         {
             Command command = new Command(
-                @"SELECT Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
+                @"SELECT Id, lastname, firstname, email, role, birthDate, [User].createdAt, updatedAt,isActive,insurance_id, adress_id, guidImage, guidInsurance, guidLevel, guidCertificat, isLevelValid, medicalDateValidation, insuranceDateValidation
                     FROM [User]
                     WHERE [User].Id In ( SELECT [Like].liked_Id 
                                             FROM[User] 
@@ -337,7 +337,7 @@ namespace DAL.Services
         public IEnumerable<UserDal> GetFriendsUserId(int id)
         {
             Command command = new Command(
-                @"SELECT U.Id, U.lastname, U.firstname, U.email, U.phone, U.role, U.birthDate, U.createdAt, U.updatedAt, U.isActive, U.insurance_id, U.adress_id, U.guidImage, U.guidInsurance, U.guidLevel, U.guidCertificat, U.isLevelValid, U.medicalDateValidation, U.insuranceDateValidation
+                @"SELECT U.Id, U.lastname, U.firstname, U.email, U.role, U.birthDate, U.createdAt, U.updatedAt, U.isActive, U.insurance_id, U.adress_id, U.guidImage, U.guidInsurance, U.guidLevel, U.guidCertificat, U.isLevelValid, U.medicalDateValidation, U.insuranceDateValidation
                             FROM [User] AS U
                             JOIN [Like] AS Like1 ON U.Id = Like1.liker_Id
                             JOIN [Like] AS Like2 ON U.Id = Like2.liked_Id AND Like1.liker_Id = Like2.liked_Id AND Like1.liked_Id = Like2.liker_Id

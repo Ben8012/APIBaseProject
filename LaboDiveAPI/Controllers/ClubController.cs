@@ -180,7 +180,7 @@ namespace API.Controllers
         {
             try
             {
-                int? ligne = _clubBll.UnParticipate(userId, clubId);
+                int? ligne = _clubBll.ValidationParticipate(userId, clubId);
                 List<Club> clubs = new List<Club>();
                 if (ligne.HasValue)
                 {
@@ -200,7 +200,7 @@ namespace API.Controllers
         {
             try
             {
-                int? ligne = _clubBll.UnParticipate(userId, clubId);
+                int? ligne = _clubBll.UnValidationParticipate(userId, clubId);
                 List<Club> clubs = new List<Club>();
                 if (ligne.HasValue)
                 {

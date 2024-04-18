@@ -11,7 +11,6 @@ namespace DAL.Models.Forms
         public string Password { get; set; }
         public string? InsuranceNumber { get; set; }
         public int? InsuranceId { get; set; }
-        public string? Phone { get; set; }
         public int AdressId { get; set; }
     }
 }

@@ -22,7 +22,6 @@ namespace DAL.Mappers
                 Birthdate = (DateTime)reader["birthdate"],
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 IsActive = (bool)reader["isActive"],
-                Phone = reader["phone"] is DBNull ? null : (string)reader["phone"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 InsuranceId = reader["insurance_id"] is DBNull ? 0 : (int)reader["insurance_id"],
                 AdressId = reader["adress_id"] is DBNull ? 0 : (int)reader["adress_id"],

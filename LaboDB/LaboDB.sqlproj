@@ -60,7 +60,6 @@
     <Folder Include="Tables\Adress" />
     <Folder Include="Tables\Organisation" />
     <Folder Include="Tables\Diveplace" />
-    <Folder Include="Tables\Insurance" />
     <Folder Include="Tables\Social" />
     <Folder Include="Tables\Club" />
     <Folder Include="Tables\Event" />
@@ -73,10 +72,9 @@
     <Build Include="Tables\Adress\City.sql" />
     <Build Include="Tables\Adress\Adress.sql" />
     <Build Include="Tables\Organisation\Organisation.sql" />
-    <Build Include="Tables\Organisation\User_Organisation.sql" />
+    <Build Include="Tables\Organisation\User_Training.sql" />
     <Build Include="Tables\Diveplace\Diveplace.sql" />
     <Build Include="Tables\Diveplace\User_Diveplace.sql" />
-    <Build Include="Tables\Insurance\Insurance.sql" />
     <Build Include="Tables\Social\Like.sql" />
     <Build Include="Tables\Social\Message.sql" />
     <Build Include="Tables\Club\Club.sql" />

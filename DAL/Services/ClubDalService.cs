@@ -160,7 +160,7 @@ namespace DAL.Services
 
         public int? ValidationParticipate(int userId, int clubId)
         {
-            Command command = new Command("UPDATE [User_Club] SET validation = @validation WHERE user_Id=@user_Id AND club_Id=@club_Id)", false);
+            Command command = new Command("UPDATE [User_Club] SET validation = @validation WHERE user_Id=@user_Id AND club_Id=@club_Id", false);
             command.AddParameter("user_Id", userId);
             command.AddParameter("club_Id", clubId);
             command.AddParameter("validation", 1);
@@ -179,7 +179,7 @@ namespace DAL.Services
 
         public int? UnValidationParticipate(int userId, int clubId)
         {
-            Command command = new Command("UPDATE [User_Club] SET validation = @validation WHERE user_Id=@user_Id AND club_Id=@club_Id)", false);
+            Command command = new Command("UPDATE [User_Club] SET validation = @validation WHERE user_Id=@user_Id AND club_Id=@club_Id", false);
             command.AddParameter("user_Id", userId);
             command.AddParameter("club_Id", clubId);
             command.AddParameter("validation", 0);

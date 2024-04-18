@@ -184,10 +184,12 @@ namespace DAL.Services
 
         public int? Participate(int userId, int eventId)
         {
-            Command command = new Command("INSERT INTO [Participe]( user_Id, event_Id, createdAt) VALUES( @user_Id, @event_Id, @createdAt)", false);
+            Command command = new Command(@"INSERT INTO [Participe]( user_Id, event_Id, createdAt, validation) 
+                                            VALUES( @user_Id, @event_Id, @createdAt, @validation)", false);
             command.AddParameter("user_Id", userId);
             command.AddParameter("event_Id", eventId);
             command.AddParameter("createdAt", DateTime.Now);
+            command.AddParameter("validation", 0);
 
             try
             {
