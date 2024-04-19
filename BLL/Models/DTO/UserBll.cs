@@ -14,8 +14,6 @@ namespace BLL.Models.DTO
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
-
-        public int InsuranceId { get; set; }
         public int AdressId { get; set; }
         public string GuidImage { get; set; }
         public string GuidInsurance { get; set; }
@@ -26,7 +24,7 @@ namespace BLL.Models.DTO
         public DateTime? InsuranceDateValidation { get; set; }
 
         public AdressBll? Adress { get; set; }
-        public List<OrganisationBll>? Organisations { get; set; }
+        public List<TrainingBll>? Trainings { get; set; }
         public InsuranceBll? Insurance { get; set; }
         public List<DivelogBll>? Divelogs { get; set; }
         public List<DiveplaceBll>? Diveplaces { get; set; }

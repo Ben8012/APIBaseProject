@@ -1,6 +1,7 @@
 ﻿using DAL.Models.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,9 @@ namespace DAL.Mappers
                 Email = (string)reader["email"],
                 Role = (string)reader["role"],
                 Birthdate = (DateTime)reader["birthdate"],
-                CreatedAt = (DateTime)reader["CreatedAt"],
+                CreatedAt = (DateTime)reader["createdAt"],
                 IsActive = (bool)reader["isActive"],
-                UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
-                InsuranceId = reader["insurance_id"] is DBNull ? 0 : (int)reader["insurance_id"],
+                UpdatedAt = reader["updatedAt"] is DBNull ? null : (DateTime?)reader["updatedAt"],
                 AdressId = reader["adress_id"] is DBNull ? 0 : (int)reader["adress_id"],
                 GuidImage = reader["guidImage"] is DBNull ? "" : (string)reader["guidImage"],
                 GuidInsurance = reader["guidInsurance"] is DBNull ? "" : (string)reader["guidInsurance"],

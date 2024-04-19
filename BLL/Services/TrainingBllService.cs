@@ -69,5 +69,16 @@ namespace BLL.Services
         {
             return _trainingDal.Enable(id); ;
         }
+
+        public IEnumerable<TrainingBll>? GetTrainingsByUserId(int id)
+        {
+            List<TrainingBll> trainings = _trainingDal.GetTrainingsByUserId(id).Select(u => u.ToTrainingBll()).ToList();
+            foreach (TrainingBll training in trainings)
+            {
+                training.Organisation = _organisationBll.GetById(training.OrganisationId);
+            }
+
+            return trainings;
+        }
     }
 }

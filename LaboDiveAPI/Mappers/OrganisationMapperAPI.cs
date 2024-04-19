@@ -16,13 +16,12 @@ namespace API.Mappers
             {
                 Id = organisationBll.Id,
                 Name= organisationBll.Name,
-                Picture= organisationBll.Picture,
+                GuidImage = organisationBll.GuidImage,
                 CreatedAt= organisationBll.CreatedAt,
                 UpdatedAt= organisationBll.UpdatedAt,
                 IsActive= organisationBll.IsActive,
                 Adress = organisationBll.Adress is null ? null : organisationBll.Adress.ToAdress(),
-                Level = organisationBll.Level,
-                RefNumber = organisationBll.RefNumber,
+              
             };
         }
 
@@ -31,7 +30,7 @@ namespace API.Mappers
             return new AddOrganisationFormBll()
             {
                 Name = addOrganisationFrom.Name,
-                Picture = addOrganisationFrom.Picture,
+                GuidImage = addOrganisationFrom.GuidImage,
                 AdressId = addOrganisationFrom.AdressId,
             };
         }
@@ -42,20 +41,20 @@ namespace API.Mappers
             {
                 Id = updateOrganisationForm.Id,
                 Name = updateOrganisationForm.Name,
-                Picture = updateOrganisationForm.Picture,
+                GuidImage = updateOrganisationForm.GuidImage,
                 AdressId = updateOrganisationForm.AdressId,
             };
         }
 
-        internal static AddOrganisationParticipeFormBll ToAddOrganisationParticipeFormBll(this AddOrganisationParticipeForm form)
-        {
-            return new AddOrganisationParticipeFormBll()
-            {
-                UserId = form.UserId,
-                OrganisationId = form.OrganisationId,
-                Level = form.Level,
-                RefNumber = form.RefNumber,
-            };
-        }
+        //internal static AddOrganisationParticipeFormBll ToAddOrganisationParticipeFormBll(this AddOrganisationParticipeForm form)
+        //{
+        //    return new AddOrganisationParticipeFormBll()
+        //    {
+        //        UserId = form.UserId,
+        //        OrganisationId = form.OrganisationId,
+        //        Level = form.Level,
+        //        RefNumber = form.RefNumber,
+        //    };
+        //}
     }
 }

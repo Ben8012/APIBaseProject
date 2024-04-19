@@ -132,36 +132,36 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("Participe")]
-        public IActionResult Participe([FromBody] AddOrganisationParticipeForm form)
-        {
+        //[HttpPost("Participe")]
+        //public IActionResult Participe([FromBody] AddOrganisationParticipeForm form)
+        //{
 
-            if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
+        //    if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
 
-            try
-            {
-                return Ok(_organisationBll.Participe(form.ToAddOrganisationParticipeFormBll()));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = "l'insertion a échoué, contactez l'admin", ErrorMessage = ex.Message });
-            }
+        //    try
+        //    {
+        //        return Ok(_organisationBll.Participe(form.ToAddOrganisationParticipeFormBll()));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new { Message = "l'insertion a échoué, contactez l'admin", ErrorMessage = ex.Message });
+        //    }
 
-        }
+        //}
 
-        [HttpDelete("UnParticpe/{userId}/{organisationId}")]
-        public IActionResult UnParticpe(int userId, int organisationId)
-        {
-            try
-            {
-                return Ok(_organisationBll.UnParticipe(userId, organisationId));
+        //[HttpDelete("UnParticpe/{userId}/{organisationId}")]
+        //public IActionResult UnParticpe(int userId, int organisationId)
+        //{
+        //    try
+        //    {
+        //        return Ok(_organisationBll.UnParticipe(userId, organisationId));
 
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+        //    }
+        //}
 
     }
 }

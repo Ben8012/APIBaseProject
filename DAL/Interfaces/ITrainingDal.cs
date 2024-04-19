@@ -15,6 +15,8 @@ namespace DAL.Interfaces
         TrainingDal? Insert(AddTrainingFormDal form);
         TrainingDal? Update(UpdateTrainingFormDal form);
 
+        IEnumerable<TrainingDal>? GetTrainingsByUserId(int id);
+
         int? Delete(int id);
         int? Enable(int id);
         int? Disable(int id);

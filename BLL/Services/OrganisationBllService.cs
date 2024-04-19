@@ -72,14 +72,14 @@ namespace BLL.Services
             return _organisationDal.Enable(id); ;
         }
 
-        public int? Participe(AddOrganisationParticipeFormBll form)
-        {
-            return _organisationDal.Participe(form.ToAddOrganisationParticipeFormDal());
-        }
+        //public int? Participe(AddOrganisationParticipeFormBll form)
+        //{
+        //    return _organisationDal.Participe(form.ToAddOrganisationParticipeFormDal());
+        //}
 
-        public int? UnParticipe(int userId, int organisationId)
-        {
-            return _organisationDal.UnParticipe(userId, organisationId);
-        }
+        //public int? UnParticipe(int userId, int organisationId)
+        //{
+        //    return _organisationDal.UnParticipe(userId, organisationId);
+        //}
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace BLL.Models.DTO
+﻿using System.Security.Cryptography;
+
+namespace BLL.Models.DTO
 {
     public class TrainingBll
     {
@@ -15,5 +17,10 @@
         public OrganisationBll? Organisation { get; set; }
 
         public string Description { get; set; }
+
+        public string? RefNumber { get; set; }
+        public bool? IsMostLevel { get; set; }
+
+        
     }
 }

@@ -37,9 +37,8 @@ namespace API.Mappers
                     MedicalDateValidation = userBll.MedicalDateValidation,
                     InsuranceDateValidation = userBll.InsuranceDateValidation,
                     IsLevelValid = userBll.IsLevelValid,
-                    Insurance = userBll.Insurance is null ? null : userBll.Insurance.ToInsurance(),
                     Adress = userBll.Adress is null ? null : userBll.Adress.ToAdress(),
-                    Organisations = userBll.Organisations is null ? null : userBll.Organisations.Select(o => o.ToOrganisation()).ToList(),
+                    Trainings = userBll.Trainings is null ? null : userBll.Trainings.Select(t => t.ToTraining()).ToList(),
                     Divelogs = userBll.Divelogs is null ? null : userBll.Divelogs.Select(d => d.ToDivelog()).ToList(),
                     Diveplaces = userBll.Diveplaces is null ? null : userBll.Diveplaces.Select(p => p.ToDiveplace()).ToList(),
                     Friends = userBll.Friends is null ? null :  userBll.Friends .Select(f => f.ToUser()).ToList(),
@@ -86,19 +85,19 @@ namespace API.Mappers
             };
         }
 
-        internal static OrganisationByUser ToOrganisation(this DbDataReader reader)
-        {
-            return new OrganisationByUser()
-            {
-                UserId = (int)reader["user_id"],
-                Name = (string)reader["name"],
-                Level = (string)reader["level"],
-                RefNunber = (string)reader["refNumber"],
-                CreatedAt = (DateTime)reader["createdAt"],
-                Picture = (string)reader["picture"]
-            };
+        //internal static OrganisationByUser ToOrganisation(this DbDataReader reader)
+        //{
+        //    return new OrganisationByUser()
+        //    {
+        //        UserId = (int)reader["user_id"],
+        //        Name = (string)reader["name"],
+        //        Level = (string)reader["level"],
+        //        RefNunber = (string)reader["refNumber"],
+        //        CreatedAt = (DateTime)reader["createdAt"],
+        //        GuidImage = (string)reader["guidImage"]
+        //    };
 
-        }
+        //}
 
     }
 }

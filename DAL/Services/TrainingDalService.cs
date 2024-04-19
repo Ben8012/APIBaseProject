@@ -183,5 +183,23 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
+        public IEnumerable<TrainingDal>? GetTrainingsByUserId(int id)
+        {
+            Command command = new Command(@"SELECT Id, name, prerequis, picture, isSpeciality, [description], [Training].createdAt, updatedAt, isActive, organisation_Id,refNumber, isMostLevel   
+                                            FROM [Training] 
+                                            JOIN [User_Training] ON [Training].Id = [User_Training].training_Id
+                                            WHERE [User_Training].user_Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToTrainingByUserDal());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
     }
 }

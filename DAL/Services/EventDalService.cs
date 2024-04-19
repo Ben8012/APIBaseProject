@@ -32,7 +32,15 @@ namespace DAL.Services
             {
                 int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
                 if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+
+                Command command2 = new Command("DELETE FROM [Participe] WHERE event_Id=@Id", false);
+                command2.AddParameter("Id", id);
+
+                int? nbLigne2 = (int?)_connection.ExecuteNonQuery(command2);
+
                 return nbLigne;
+
+              
 
             }
             catch (Exception ex)
@@ -135,10 +143,11 @@ namespace DAL.Services
                 throw ex;
             }
 
-            Command command1 = new Command("INSERT INTO [Participe]( user_Id, event_Id, createdAt) VALUES( @user_Id, @event_Id, @createdAt)", false);
+            Command command1 = new Command("INSERT INTO [Participe]( user_Id, event_Id, createdAt, validation) VALUES( @user_Id, @event_Id, @createdAt , @validation)", false);
             command1.AddParameter("user_Id", form.CreatorId);
             command1.AddParameter("event_Id", id);
             command1.AddParameter("createdAt", DateTime.Now);
+            command1.AddParameter("validation", 1);
 
             try
             {
@@ -156,7 +165,16 @@ namespace DAL.Services
 
         public EventDal? Update(UpdateEventFormDal form)
         {
-            Command command = new Command("UPDATE [Event] SET name = @name , startDate = @startDate , endDate = @endDate, updatedAt = @updatedAt , diveplace_Id = @diveplace_Id ,creator_Id = @creator_Id , training_Id = @training_Id ,club_Id = @club_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command(@"UPDATE [Event] SET 
+                                            name = @name, 
+                                            startDate = @startDate, 
+                                            endDate = @endDate, 
+                                            updatedAt = @updatedAt, 
+                                            diveplace_Id = @diveplace_Id,
+                                            creator_Id = @creator_Id, 
+                                            training_Id = @training_Id,
+                                            club_Id = @club_Id  
+                                         OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
             command.AddParameter("startDate", form.StartDate);
@@ -303,7 +321,7 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAllParticipeByEventId(int id)
         {
-            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id ,guidImage, guidInsurance, guidLevel, guidCertificat , isLevelValid, medicalDateValidation, insuranceDateValidation
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email , role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive, [User].adress_id ,guidImage, guidInsurance, guidLevel, guidCertificat , isLevelValid, medicalDateValidation, insuranceDateValidation
                                             FROM [User]
                                             JOIN Participe ON Participe.[user_Id] = [User].Id
                                             JOIN [Event] ON [Participe].[event_Id] = [Event].Id
@@ -322,7 +340,7 @@ namespace DAL.Services
 
         public IEnumerable<UserDal> GetAllDemandsByEventId(int id)
         {
-            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, phone, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive,insurance_id, [User].adress_id ,guidImage, guidInsurance, guidLevel, guidCertificat , isLevelValid, medicalDateValidation, insuranceDateValidation
+            Command command = new Command(@"SELECT [User].Id, lastname, firstname, email, role, birthDate, [User].createdAt, [User].updatedAt,[User].isActive, [User].adress_id ,guidImage, guidInsurance, guidLevel, guidCertificat , isLevelValid, medicalDateValidation, insuranceDateValidation
                                             FROM [User]
                                             JOIN Participe ON Participe.[user_Id] = [User].Id
                                             JOIN [Event] ON [Participe].[event_Id] = [Event].Id

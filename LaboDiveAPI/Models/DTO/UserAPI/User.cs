@@ -23,9 +23,7 @@
 
         public Adress? Adress { get; set; }
 
-        public List<Organisation>? Organisations { get; set;}
-
-        public Insurance? Insurance { get; set; }
+        public List<Training>? Trainings { get; set;}
 
         public List<Divelog>? Divelogs { get; set; }
 

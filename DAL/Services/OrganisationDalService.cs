@@ -81,7 +81,7 @@ namespace DAL.Services
 
         public IEnumerable<OrganisationDal> GetAll()
         {
-            Command command = new Command("SELECT Id, name, picture, createdAt, updatedAt, isActive, adress_Id FROM [Organisation];", false);
+            Command command = new Command("SELECT Id, name, guidImage, createdAt, updatedAt, isActive, adress_Id FROM [Organisation];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToOrganisationDal());
@@ -112,9 +112,9 @@ namespace DAL.Services
         public OrganisationDal? Insert(AddOrganisationFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Organisation](name, picture, createdAt, isActive, adress_Id) OUTPUT inserted.id VALUES(@name, @picture, @createdAt, @isActive, @adress_Id)", false);
+            Command command = new Command("INSERT INTO [Organisation](name, guidImage, createdAt, isActive, adress_Id) OUTPUT inserted.id VALUES(@name, @picture, @createdAt, @isActive, @adress_Id)", false);
             command.AddParameter("name", form.Name);
-            command.AddParameter("picture", form.Picture);
+            command.AddParameter("guidImage", form.GuidImage);
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive", 1);
             command.AddParameter("adress_Id", form.AdressId );
@@ -138,52 +138,52 @@ namespace DAL.Services
             }
         }
 
-        public int? Participe(AddOrganisationParticipeFormDal form)
-        {
-            Command command = new Command("INSERT INTO [User_Organisation](user_Id, organisation_Id, level, refNumber, createdAt) VALUES(@user_Id, @organisation_Id, @level, @refNumber, @createdAt)", false);
-            command.AddParameter("user_Id", form.UserId);
-            command.AddParameter("organisation_Id", form.OrganisationId);
-            command.AddParameter("level", form.Level );
-            command.AddParameter("refNumber", form.Level);
-            command.AddParameter("createdAt", DateTime.Now);
+        //public int? Participe(AddOrganisationParticipeFormDal form)
+        //{
+        //    Command command = new Command("INSERT INTO [User_Training](user_Id, organisation_Id, level, refNumber, createdAt) VALUES(@user_Id, @organisation_Id, @level, @refNumber, @createdAt)", false);
+        //    command.AddParameter("user_Id", form.UserId);
+        //    command.AddParameter("organisation_Id", form.OrganisationId);
+        //    command.AddParameter("level", form.Level );
+        //    command.AddParameter("refNumber", form.Level);
+        //    command.AddParameter("createdAt", DateTime.Now);
 
-            try
-            {
-                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
-                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
-                return nbLigne;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //    try
+        //    {
+        //        int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+        //        if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+        //        return nbLigne;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-        public int? UnParticipe(int userId, int organisationId)
-        {
-            Command command = new Command("DELETE FROM [User_Organisation] WHERE user_Id=@user_Id AND organisation_Id = @organisation_Id", false);
-            command.AddParameter("user_Id", userId);
-            command.AddParameter("organisation_Id", organisationId);
-            try
-            {
-                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
-                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
-                return nbLigne;
+        //public int? UnParticipe(int userId, int organisationId)
+        //{
+        //    Command command = new Command("DELETE FROM [User_Training] WHERE user_Id=@user_Id AND organisation_Id = @organisation_Id", false);
+        //    command.AddParameter("user_Id", userId);
+        //    command.AddParameter("organisation_Id", organisationId);
+        //    try
+        //    {
+        //        int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+        //        if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+        //        return nbLigne;
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw ex;
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, ex.Message);
+        //        throw ex;
+        //    }
+        //}
 
         public OrganisationDal? Update(UpdateOrganisationFormDal form)
         {
-            Command command = new Command("UPDATE [Organisation] SET  name = @name , picture = @picture , updatedAt = @updatedAt , adress_Id = @adress_Id   OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Organisation] SET  name = @name , guidImage = @guidImage , updatedAt = @updatedAt , adress_Id = @adress_Id   OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
-            command.AddParameter("picture", form.Picture);
+            command.AddParameter("guidImage", form.GuidImage);
             command.AddParameter("updatedAt", DateTime.Now);
             command.AddParameter("adress_Id", form.AdressId);
 
@@ -205,11 +205,9 @@ namespace DAL.Services
 
         private OrganisationDal? GetOrganisationById(int id)
         {
-            Command command = new Command(@"SELECT[Organisation].Id, [Level],[refNumber], [Organisation].[name], picture, [Organisation].createdAt, [Organisation].updatedAt, [Organisation].isActive, [Organisation].adress_Id
-                                            FROM[Organisation]
-                                            JOIN User_Organisation ON User_Organisation.organisation_Id = Organisation.Id
-                                            JOIN[User] ON[User].Id = User_Organisation.user_Id
-                                            WHERE[User].Id = @Id;", false);
+            Command command = new Command(@"SELECT[Organisation].Id, [Organisation].[name], [Organisation].[guidImage], [Organisation].createdAt, [Organisation].updatedAt, [Organisation].isActive, [Organisation].adress_Id
+                                            FROM [Organisation]
+                                            WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -222,23 +220,23 @@ namespace DAL.Services
             }
         }
 
-        public IEnumerable<OrganisationDal>? GetOrganisationByUserId(int id)
-        {
-            Command command = new Command(@"SELECT[Organisation].Id, [Level],[refNumber], [Organisation].[name], picture, [Organisation].createdAt, [Organisation].updatedAt, [Organisation].isActive, [Organisation].adress_Id
-                                            FROM[Organisation]
-                                            JOIN User_Organisation ON User_Organisation.organisation_Id = Organisation.Id
-                                            JOIN[User] ON[User].Id = User_Organisation.user_Id
-                                            WHERE[User].Id = @Id;", false);
-            command.AddParameter("Id", id);
-            try
-            {
-                return _connection.ExecuteReader(command, dr => dr.ToOrganisationDal());
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw ex;
-            }
-        }
+        //public IEnumerable<OrganisationDal>? GetOrganisationByUserId(int id)
+        //{
+        //    Command command = new Command(@"SELECT[Organisation].Id, [Level],[refNumber], [Organisation].[name], picture, [Organisation].createdAt, [Organisation].updatedAt, [Organisation].isActive, [Organisation].adress_Id
+        //                                    FROM[Organisation]
+        //                                    JOIN User_Organisation ON User_Organisation.organisation_Id = Organisation.Id
+        //                                    JOIN[User] ON[User].Id = User_Organisation.user_Id
+        //                                    WHERE[User].Id = @Id;", false);
+        //    command.AddParameter("Id", id);
+        //    try
+        //    {
+        //        return _connection.ExecuteReader(command, dr => dr.ToOrganisationDal());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, ex.Message);
+        //        throw ex;
+        //    }
+        //}
     }
 }

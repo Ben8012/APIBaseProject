@@ -23,20 +23,22 @@ namespace BLL.Services
         private readonly IClubDal _clubDal;
         private readonly IDivelogDal _diveLogDal;
         private readonly IEventDal _eventDal;
-        private readonly IOrganisationDal _organisationDal;
         private readonly IDiveplaceDal _diveplaceDal;
         private readonly IAdressBll _adressBll;
+        private readonly ITrainingDal _trainingDal;
+        private readonly IOrganisationDal _organisationDal;
 
-        public UserBllService(ILogger<UserBllService> logger, IUserDal userDal, IClubDal clubDal, IDivelogDal diveLogDal, IEventDal eventDal, IOrganisationDal organisationDal, IDiveplaceDal diveplaceDal, IAdressBll adressBll)
+        public UserBllService(ILogger<UserBllService> logger, IOrganisationDal organisationDal, ITrainingDal trainingDal, IUserDal userDal, IClubDal clubDal, IDivelogDal diveLogDal, IEventDal eventDal, IDiveplaceDal diveplaceDal, IAdressBll adressBll)
         {
             _userDal = userDal;
             _logger = logger;
             _clubDal = clubDal;
             _diveLogDal = diveLogDal;
             _eventDal = eventDal;
-            _organisationDal = organisationDal;
             _diveplaceDal = diveplaceDal;
             _adressBll = adressBll;
+            _trainingDal = trainingDal;
+            _organisationDal= organisationDal;
         }
 
         public int? Delete(int id)
@@ -61,7 +63,11 @@ namespace BLL.Services
                 user.Likers = _userDal.GetLikersByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
                 user.Likeds = _userDal.GetLikedsByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
 
-                user.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
+                user.Trainings = _trainingDal.GetTrainingsByUserId(user.Id).Select(t => t.ToTrainingBll()).ToList();
+                foreach (var training in user.Trainings)
+                {
+                    training.Organisation = _organisationDal.GetById(training.OrganisationId).ToOrganisationBll();
+                }
                 //user.Diveplaces = _diveplaceDal.GetDiveplaceByUserId(user.Id).Select(d => d.ToDiveplaceBll()).ToList();
             }
             return users;
@@ -89,30 +95,42 @@ namespace BLL.Services
             foreach (var friend in user.Friends)
             {
                 friend.Adress = _adressBll.GetById(friend.AdressId);
-                friend.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
+                friend.Clubs = _clubDal.GetClubsByUserId(friend.Id).Select(c => c.ToClubBll()).ToList();
                 foreach(var club in friend.Clubs)
                 {
-                    club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(user.AdressId);
+                    club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(friend.AdressId);
                 }
-                friend.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
-                friend.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
-                friend.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
-                friend.Friends = null;
+                friend.Divelogs = _diveLogDal.GetDivelogByUserId(friend.Id).Select(d => d.ToDivelogBll()).ToList();
+                friend.Events = _eventDal.GetEventByUserId(friend.Id).Select(e => e.ToEventBll()).ToList();
+                friend.Trainings = _trainingDal.GetTrainingsByUserId(friend.Id).Select(t => t.ToTrainingBll()).ToList();
+                foreach (var training in friend.Trainings)
+                {
+                    training.Organisation = _organisationDal.GetById(training.OrganisationId).ToOrganisationBll();
+                }
             }
             foreach (var liker in user.Likers)
             {
-                liker.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
+                liker.Trainings = _trainingDal.GetTrainingsByUserId(liker.Id).Select(t => t.ToTrainingBll()).ToList();
+                foreach (var training in liker.Trainings)
+                {
+                    training.Organisation = _organisationDal.GetById(training.OrganisationId).ToOrganisationBll();
+                }
             }
             foreach (var liked in user.Likeds)
             {
-                liked.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
+                liked.Trainings = _trainingDal.GetTrainingsByUserId(liked.Id).Select(t => t.ToTrainingBll()).ToList();
+                foreach (var training in liked.Trainings)
+                {
+                    training.Organisation = _organisationDal.GetById(training.OrganisationId).ToOrganisationBll();
+                }
             }
 
-            user.Organisations = _organisationDal.GetOrganisationByUserId(user.Id).Select(o => o.ToOrganisationBll()).ToList();
-            foreach(var organisation in user.Organisations)
+            user.Trainings = _trainingDal.GetTrainingsByUserId(user.Id).Select(t => t.ToTrainingBll()).ToList();
+            foreach (var training in user.Trainings)
             {
-                organisation.Adress = _adressBll.GetById(organisation.AdressId);
+                training.Organisation = _organisationDal.GetById(training.OrganisationId).ToOrganisationBll();
             }
+
             //user.Diveplaces = _diveplaceDal.GetDiveplaceByUserId(user.Id).Select(d => d.ToDiveplaceBll()).ToList();
             //foreach (var diveplace in user.Diveplaces)
             //{

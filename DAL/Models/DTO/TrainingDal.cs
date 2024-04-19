@@ -1,4 +1,6 @@
-﻿namespace DAL.Models.DTO
+﻿using System.Security.Cryptography;
+
+namespace DAL.Models.DTO
 {
     public class TrainingDal
     {
@@ -13,5 +15,11 @@
         public bool IsActive { get; set; }
 
         public string Description { get; set; }
+
+        public string? RefNumber { get; set; }
+
+        public bool? IsMostLevel { get; set; }
+
+      
     }
 }

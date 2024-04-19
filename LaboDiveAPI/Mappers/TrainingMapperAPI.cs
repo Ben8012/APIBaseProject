@@ -4,6 +4,7 @@ using API.Models.Forms.Training;
 using BLL.Models.DTO;
 using BLL.Models.Forms.Organisation;
 using BLL.Models.Forms.Training;
+using DAL.Models.DTO;
 
 namespace API.Mappers
 {
@@ -23,6 +24,8 @@ namespace API.Mappers
                IsActive=trainingBll.IsActive,
                Organisation = trainingBll.Organisation is null ? null : trainingBll.Organisation.ToOrganisation(),
                Description = trainingBll.Description,
+               RefNumber = trainingBll.RefNumber,
+               IsMostLevel = trainingBll.IsMostLevel,
             };
         }
 

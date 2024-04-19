@@ -12,14 +12,12 @@ namespace DAL.Mappers
             {
                 Id = (int)reader["Id"],
                 Name = (string)reader["name"],
-                Picture = (string)reader["picture"], 
+                GuidImage = reader["guidImage"] is DBNull ? null : (string)reader["guidImage"],
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 IsActive = (bool)reader["isActive"],
                 AdressId = (int)reader["adress_Id"],
-                Level= reader["level"] is DBNull ? "" : (string)reader["level"],
-                RefNumber = reader["refNumber"] is DBNull ? "" : (string)reader["refNumber"]
-
+   
             };
 
         }

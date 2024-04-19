@@ -14,11 +14,11 @@ namespace DAL.Mappers
                 StartDate = (DateTime)reader["startDate"],
                 EndDate = (DateTime)reader["endDate"],
                 CreatedAt = (DateTime)reader["CreatedAt"],
-                UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
+                UpdatedAt = reader["updatedAt"] is DBNull ? null : (DateTime?)reader["updatedAt"],
                 IsActive = (bool)reader["isActive"],
                 DiveplaceId = (int)reader["diveplace_id"],
                 CreatorId = (int)reader["creator_id"],
-                TrainingId = reader["training_Id"] is DBNull ?  0 : (int)reader["creator_id"],
+                TrainingId = reader["training_Id"] is DBNull ?  0 : (int)reader["training_Id"],
                 ClubId = reader["club_Id"] is DBNull ?  0 : (int)reader["club_id"],
 
             };

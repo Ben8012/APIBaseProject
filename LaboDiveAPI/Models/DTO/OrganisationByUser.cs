@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Level { get; set; }
         public string RefNunber { get; set; }
-        public string Picture { get; set; }
+        public string GuidImage { get; set; }
         
         public DateTime CreatedAt { get; set; }
     }

@@ -110,7 +110,7 @@ builder.Services.AddScoped<IMessageBll, MessageBllService>();
 //injection organisation
 builder.Services.AddScoped<IOrganisationDal, OrganisationDalService>();
 builder.Services.AddScoped<IOrganisationBll, OrganisationBllService>();
-//injection organisation
+//injection training
 builder.Services.AddScoped<ITrainingDal, TrainingDalService>();
 builder.Services.AddScoped<ITrainingBll, TrainingBllService>();
 //injection adress

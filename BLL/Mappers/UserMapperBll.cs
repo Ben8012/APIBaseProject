@@ -30,7 +30,6 @@ namespace BLL.Mappers
                 CreatedAt = userDal.CreatedAt,
                 UpdatedAt = userDal.UpdatedAt,
                 IsActive = userDal.IsActive,
-                InsuranceId = userDal.InsuranceId,
                 AdressId = userDal.AdressId,
                 GuidImage = userDal.GuidImage,
                 GuidInsurance = userDal.GuidInsurance,
@@ -67,7 +66,6 @@ namespace BLL.Mappers
                 FirstName = updateUserFromBll.FirstName,
                 LastName = updateUserFromBll.LastName,
                 Email = updateUserFromBll.Email,
-                ProfilImage= updateUserFromBll.ProfilImage,
                 Birthdate = updateUserFromBll.Birthdate,
             };
         }

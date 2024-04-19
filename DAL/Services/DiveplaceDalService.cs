@@ -202,7 +202,7 @@ namespace DAL.Services
 
         public List<DiveplaceDal> Vote(int userId, int diveplaceId, int vote)
         {
-            int? id;
+            int? oldVote;
             Command command1 = new Command(@"SELECT evaluation
                                             FROM [User_Diveplace] 
                                             WHERE user_Id = @userId AND diveplace_Id = @diveplaceId ;", false);
@@ -210,7 +210,7 @@ namespace DAL.Services
             command1.AddParameter("diveplaceId", diveplaceId);
             try
             {
-                 id = (int)_connection.ExecuteNonQuery(command1);
+                oldVote = (int?)_connection.ExecuteScalar(command1);
             }
             catch (Exception ex)
             {
@@ -218,7 +218,7 @@ namespace DAL.Services
                 throw ex;
             }
            
-            if (id == -1)
+            if (!oldVote.HasValue)
             {
 
                 Command command = new Command(@"INSERT INTO [User_Diveplace](user_Id, diveplace_Id,evaluation, createdAt ) 

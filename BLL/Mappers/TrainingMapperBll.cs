@@ -21,6 +21,8 @@ namespace BLL.Mappers
                 IsActive = trainingDal.IsActive,
                 OrganisationId = trainingDal.OrganisationId,
                 Description = trainingDal.Description,
+                RefNumber= trainingDal.RefNumber,
+                IsMostLevel= trainingDal.IsMostLevel,
             };
         }
 

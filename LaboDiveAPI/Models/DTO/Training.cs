@@ -15,5 +15,8 @@ namespace API.Models.DTO
         public bool IsActive { get; set; }
 
         public string Description { get; set; }
+
+        public string? RefNumber { get; set; }
+        public bool? IsMostLevel { get; set; }
     }
 }
