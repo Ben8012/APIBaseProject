@@ -117,27 +117,12 @@ INSERT INTO [User_Training]([user_Id],training_Id,refNumber,createdAt,isMostLeve
     (3,3,'666',GETDATE(),1),
     (4,4,'666',GETDATE(),1);
 
-    --'3fontaines.jpg','3fontaines.pdf',
-    --'Dongelberg.jpg','dongelberg.pdf',
-    --'Dour.jpg','dour.pdf',
-    --'Ekeren.jpg','ekeren.pdf',
-    --'Esch_sur_Sure.jpg','esch.pdf',
-    --'Floreffe.jpg','floreffe.pdf',
-    --'Gombe.jpg','la_gombe.pdf',
-    --'La_plate_taille.jpg','plate_taille.pdf',
-    --'Lessine.jpg','lessines.pdf',
-    --'Lille.jpg','lille.pdf',
-    --'Opperbais.jpg','opprebais.pdf',
-    --'Rochefontaine.jpg','rochefontaine.pdf',
-    --'V2E.jpg','villers.pdf',
-    --'Vodelee.jpg','vodelee.pdf',
-    --'Vodecee.jpg','vodecee.pdf',
+
 INSERT INTO Diveplace(creator_Id,[name],createdAt,isActive,adress_Id, gps, maxDepp, price, compressor, restoration,[url],[description]) VALUES
     (1,'Trois Fontaines',GETDATE(),1,9,'50.635856, 4.646673',18,6,0,1,'https://timberdiving.be/reservations/','Ancienne carrière de quartzite réhabilitée pour la plongée.'),
     (2,'Dongelberg',  GETDATE(),1,10,'50°4145''N  04°4910''E',40,4,1,1,'https://cpdongelberg.be/','Dongelberg est une ancienne carrière de quartzites ouverte aux plongeurs depuis 1980. Située à proximité de Liège, elle est la propriété de VMW (Vlaamse Watermaatschappij) et de la Société Wallonne des Eaux. Elle offre une série de plateaux étagés jusqu à 40 m de profondeur. De quoi satisfaire l ensemble des plongeurs...'),    
     (3,'Dour',  GETDATE(),1,11,'50°25′ 02″ N 003°45′ 50″ E',22,4,1,1,'https://www.hainosaurusboussudour.be/','Ancien site ayant servi pour la fabrication de chaux industrielle, située en région wallonne, dans la zone frontalière non loin de Valenciennes, la carrière de Dour possède un magnifique plan d’eau d’environ 2 ha et une profondeur maximale variant de 18 à 22m (selon la saison). D’aspect bleu turquoise, elle est composée de plusieurs plateaux et pentes douces permettent de réaliser tout type de plongée, de la plongée baptême à la plongée d’exploration.'),
     (4,'Ekeren',  GETDATE(),1,12,'51.1700 4.2320',21,3,1,0,'https://www.avos.be/site/index.php','Egalement connu sous le nom de "Puits d Ekeren" ou "Etang de Muisbroek", le lac d Ekeren est situé immédiatement au nord d Anvers,  dans un très beau parc boisé d’une superficie de 12 hectares. C est pour cela que, pour y plonger, il est nécessaire d obtenir un permis auprès la structure gestionnaire pour un prix variant de 3€ (à la journée) à 20€ (valable 3 ans). La carrière possède pas mal d’herbiers, plusieurs statues, un tombant vers les 20m et beaucoup de vie aquatique.'),
-    --('Esch sur Sure',  GETDATE(),1,13),
     (1,'Floreffe',  GETDATE(),1,14,'50°2530''N  04°4427''E',20,4,0,0,'https://www.fpp-plongee.be/','La carrière de Floreffe est une jeune carrière inondée. En effet, l’exploitation axée sur l’extraction de la dolomie (CaMg(CO3)2) afin d’approvisionner principalement les verreries, n’a débuté qu’à la fin des années 70. En 1984, le creusement atteint la nappe phréatique qui inonde le site assez rapidement et naturellement toute exploitation cesse par suite de l’inondation. Elle fait 280 mètres de long sur 80 mètres de large, soit un peu plus de 2 hectares de superficie. La profondeur maximum est de 20 mètres en fonction des variations de la nappe phréatique et la profondeur moyenne est de 15 mètres. les parois sont pratiquement verticales jusqu’au fond. L’endroit de mise à l’eau est en pente douce, ce qui facilite la tâche pour les personnes à mobilité réduite et pour les plongées baptêmes et enfants.'),
     (2,'La Gombe',  GETDATE(),1,15,'50.509084, 5.566270',30,8,1,1,'https://clas.be/carriere-de-la-gombe/','Ancienne carrière désaffectée de marbre gris, la Gombe offre un magnifique plan d eau claire d une profondeur de – 31 mètres. Dans ces eaux, une faune et une flore variées se laissent admirer pour le plus grand plaisir des plongeurs. L inauguration officielle du centre de plongée à eu lieu le 12 février 1977 en présence de Monsieur J-P.Graffé sénateur à l époque, ainsi que de nombreuses autorités politique et du monde de la plongée. La Gombe reçoit des plongeurs de toutes les régions de Belgique mais aussi de l étranger qui s y retrouvent pour pratiquer la plongée, réaliser des exercices ou simplement pour le plaisir et prendre le verre de l amitié dans un club house accueillant.'),
     (3,'La plate taille',  GETDATE(),1,16,'N50°10"60'' E4°23"16''',35,5,1,1,'https://www.cpbeh.net/','La Plate Taille est le lac le plus étendu d un complexe de cinq lacs artificiels (Plate Taille, Ry Jaune, Falemprise, Eau d Heure, Féronval) établis sur le cours de la rivière de l Eau d Heure, affuent de la Sambre. Le site offre une profondeur pouvant atteindre 35 m. Le niveau est cependant assez variable et les profondeurs indiquées sur le plan ci-dessous peuvent varier sensiblement.'),
@@ -190,12 +175,9 @@ INSERT INTO Club([Name],createdAt, isActive,adress_Id,creator_Id,organisation_id
 INSERT INTO [User_Club](user_Id,club_Id,createdAt,validation)VALUES
     (1,1,GETDATE(),1),
     (1,2,GETDATE(),0),
-    (2,2,GETDATE(),1),
-    (2,1,GETDATE(),0),
-    (3,3,GETDATE(),1),
-    (3,2,GETDATE(),0),
-    (4,4,GETDATE(),1),
-    (4,1,GETDATE(),0);
+    (2,3,GETDATE(),1),
+    (2,4,GETDATE(),0);
+
 
 INSERT INTO [Event]([name], startDate, endDate, createdAt, isActive, diveplace_Id,creator_Id, training_Id ,club_Id) VALUES
     ('Explo 1','2023-01-01','2023-01-02', GETDATE(),1,1,1,null,null),
@@ -212,17 +194,16 @@ INSERT INTO [Event]([name], startDate, endDate, createdAt, isActive, diveplace_I
     ('N1 V2E','2024-08-15','2024-08-15', GETDATE(),1,12,1,11,1),
     ('N3 Voldelee','2024-08-18','2024-08-19', GETDATE(),1,13,2,12,2);
 
-INSERT INTO Divelog(diveType,[description],duration,maxDeep, airTemperature, waterTemperature,diveDate, createdAt,isActive,[user_Id],event_Id) VALUES
-    ('N1','chouette',45,15,15,15,'2022-01-01',GETDATE(),1,1,null),
-    ('N2','chouette',55,20,16,15,'2022-01-02',GETDATE(),1,2,2),
-    ('N3','chouette',50,25,18,16,'2022-01-03',GETDATE(),1,3,1),
-    ('N4','chouette',52,18,15,16,'2022-01-04',GETDATE(),1,1,3),
-    ('N1','chouette',47,30,20,16,'2022-01-05',GETDATE(),1,2,4),
-    ('N2','chouette',59,35,21,16,'2022-01-06',GETDATE(),1,3,5),
-    ('N3','chouette',62,16,15,16,'2022-01-07',GETDATE(),1,1,1),
-    ('N4','chouette',45,18,14,16,'2022-01-08',GETDATE(),1,2,6),
-    ('N1','chouette',46,20,15,17,'2022-01-09',GETDATE(),1,1,1),
-    ('N3','chouette',42,14,15,17,'2022-01-10',GETDATE(),1,3,5);
+INSERT INTO Divelog([description],duration,maxDeep, airTemperature, waterTemperature, createdAt,isActive,[user_Id],event_Id) VALUES
+    ('chouette',45,15,15,15,GETDATE(),1,1,1),
+    ('chouette',55,20,16,15,GETDATE(),1,2,2),
+    ('chouette',50,25,18,16,GETDATE(),1,3,3),
+    ('chouette',50,25,18,16,GETDATE(),1,3,4),
+    ('chouette',50,25,18,16,GETDATE(),1,3,5),
+    ('chouette',50,25,18,16,GETDATE(),1,3,6),
+    ('chouette',50,25,18,16,GETDATE(),1,3,7),
+    ('chouette',50,25,18,16,GETDATE(),1,3,8);
+
 
 
 INSERT INTO [Participe](user_Id,event_Id,createdAt,validation)VALUES

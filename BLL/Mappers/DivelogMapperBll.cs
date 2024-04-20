@@ -14,9 +14,7 @@ namespace BLL.Mappers
                 {
                     Id = divelogDal.Id,
                     Description = divelogDal.Description,
-                    DiveType = divelogDal.DiveType,
                     Duration = divelogDal.Duration,
-                    DiveDate = divelogDal.DiveDate,
                     MaxDeep = divelogDal.MaxDeep,
                     AirTemperature = divelogDal.AirTemperature,
                     WaterTemperature = divelogDal.WaterTemperature,
@@ -34,9 +32,7 @@ namespace BLL.Mappers
                 return new AddDivelogFormDal()
                 {
                     Description = addDivelogFromBll.Description,
-                    DiveType = addDivelogFromBll.DiveType,
                     Duration = addDivelogFromBll.Duration,
-                    DiveDate = addDivelogFromBll.DiveDate,
                     AirTemperature = addDivelogFromBll.AirTemperature,
                     WaterTemperature = addDivelogFromBll.WaterTemperature,
                     UserId = addDivelogFromBll.UserId,
@@ -51,9 +47,7 @@ namespace BLL.Mappers
                 {
                     Id = updateDivelogFormBll.Id,
                     Description = updateDivelogFormBll.Description,
-                    DiveType = updateDivelogFormBll.DiveType,
                     Duration = updateDivelogFormBll.Duration,
-                    DiveDate = updateDivelogFormBll.DiveDate,
                     AirTemperature = updateDivelogFormBll.AirTemperature,
                     WaterTemperature = updateDivelogFormBll.WaterTemperature,
                     UserId = updateDivelogFormBll.UserId,

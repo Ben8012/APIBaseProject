@@ -15,6 +15,8 @@ namespace DAL.Interfaces
         DivelogDal? Insert(AddDivelogFormDal form);
         DivelogDal? Update(UpdateDivelogFormDal form);
 
+        DivelogDal? GetDivelogByEventId(int id);
+
         int? Delete(int id);
 
         int? Enable(int id);

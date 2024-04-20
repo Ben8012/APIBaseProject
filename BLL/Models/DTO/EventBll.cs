@@ -21,5 +21,7 @@
         public List<UserBll>? Participes { get; set; }
         public List<UserBll>? Demands { get; set; }
 
+        public DivelogBll? Divelog { get; set; }
+
     }
 }

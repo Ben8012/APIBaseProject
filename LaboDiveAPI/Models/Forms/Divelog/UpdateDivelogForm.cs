@@ -7,13 +7,6 @@ namespace API.Models.Forms.Divelog
         [Required]
         public int Id { get; set; }
 
-        [Required]
-        [MinLength(1)]
-        [MaxLength(50)]
-        public string DiveType { get; set; }
-
-        [MinLength(1)]
-        [MaxLength(250)]
         public string Description { get; set; }
 
         [Required]
@@ -22,17 +15,13 @@ namespace API.Models.Forms.Divelog
         [Required]
         public int MaxDeep { get; set; }
 
-        [Required]
         public int AirTemperature { get; set; }
 
-        [Required]
         public int WaterTemperature { get; set; }
 
         [Required]
-        public DateTime DiveDate { get; set; }
-
-        [Required]
         public int UserId { get; set; }
+        [Required]
         public int EventId { get; set; }
     }
 }

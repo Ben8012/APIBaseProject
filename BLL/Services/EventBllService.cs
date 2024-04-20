@@ -23,8 +23,9 @@ namespace BLL.Services
         private readonly IClubBll _clubBll;
         private readonly IUserBll _userBll;
         private readonly ITrainingBll _trainingBll;
+        private readonly IDivelogDal _divelogDal;
 
-        public EventBllService(ILogger<EventBllService> logger, IEventDal eventDal, IDiveplaceBll diveplaceBll, IClubBll clubBll, IUserBll userBll, ITrainingBll trainingBll)
+        public EventBllService(ILogger<EventBllService> logger, IEventDal eventDal, IDiveplaceBll diveplaceBll, IClubBll clubBll, IUserBll userBll, ITrainingBll trainingBll, IDivelogDal divelogDal)
         {
             _eventDal = eventDal;
             _logger = logger;
@@ -32,6 +33,7 @@ namespace BLL.Services
             _clubBll= clubBll;
             _userBll = userBll;
             _trainingBll = trainingBll;
+            _divelogDal= divelogDal;
         }
 
         public int? Delete(int id)
@@ -50,6 +52,7 @@ namespace BLL.Services
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
                 e.Participes = GetAllParticipeByEventId(e.Id).ToList();
                 e.Demands = GetAllDemandsByEventId(e.Id).ToList();
+                e.Divelog = _divelogDal.GetDivelogByEventId(e.Id) is null ? null : _divelogDal.GetDivelogByEventId(e.Id).ToDivelogBll();
             }
             return events;
         }
@@ -63,6 +66,7 @@ namespace BLL.Services
             e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
             e.Participes = GetAllParticipeByEventId(e.Id).ToList();
             e.Demands = GetAllDemandsByEventId(e.Id).ToList();
+            e.Divelog = _divelogDal.GetDivelogByEventId(e.Id) is null ? null : _divelogDal.GetDivelogByEventId(e.Id).ToDivelogBll();
             return e;
         }
 
@@ -121,6 +125,7 @@ namespace BLL.Services
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
                 e.Participes = GetAllParticipeByEventId(e.Id).ToList();
                 e.Demands = GetAllDemandsByEventId(e.Id).ToList();
+                e.Divelog = _divelogDal.GetDivelogByEventId(e.Id) is null ? null : _divelogDal.GetDivelogByEventId(e.Id).ToDivelogBll();
             }
             return events;
           

@@ -38,20 +38,12 @@ namespace BLL.Services
         public IEnumerable<DivelogBll> GetAll()
         {
             List<DivelogBll> divelogs = _divelogDal.GetAll().Select(u => u.ToDivelogBll()).ToList();
-            foreach (var d in divelogs)
-            {
-                d.Event = d.EventId == 0 ? null : _eventBll.GetById(d.EventId);
-                d.User = d.UserId == 0 ? null : _userBll.GetById(d.UserId);
-            }
             return divelogs;
         }
 
         public DivelogBll? GetById(int id)
         {
             DivelogBll divelog = _divelogDal.GetById(id)?.ToDivelogBll();
-            divelog.Event = divelog.EventId == 0 ? null : _eventBll.GetById(divelog.EventId);
-            divelog.User = divelog.UserId == 0 ? null : _userBll.GetById(divelog.UserId);
-
             return divelog;
         }
 
@@ -72,7 +64,12 @@ namespace BLL.Services
 
         public int? Enable(int id)
         {
-            return _divelogDal.Enable(id); ;
+            return _divelogDal.Enable(id);
+        }
+
+        public DivelogBll? GetDivelogByEventId(int id)
+        {
+            return _divelogDal.GetDivelogByEventId(id).ToDivelogBll();
         }
     }
 }

@@ -81,7 +81,7 @@ namespace DAL.Services
 
         public IEnumerable<DivelogDal> GetAll()
         {
-            Command command = new Command("SELECT Id, diveType, description, duration, maxDeep, airTemperature, waterTemperature, diveDate, createdAt, updatedAt, isActive, user_Id, event_Id FROM [Divelog];", false);
+            Command command = new Command("SELECT Id, description, duration, maxDeep, airTemperature, waterTemperature, createdAt, updatedAt, isActive, user_Id, event_Id FROM [Divelog];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToDivelogDal());
@@ -112,14 +112,12 @@ namespace DAL.Services
         public DivelogDal? Insert(AddDivelogFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Divelog]( diveType, description, duration, maxDeep, airTemperature, waterTemperature, diveDate, createdAt, isActive, user_Id, event_Id) OUTPUT inserted.id VALUES( @diveType, @description, @duration, @maxDeep, @airTemperature, @waterTemperature, @diveDate, @createdAt, @isActive, @user_Id, @event_Id )", false);
-            command.AddParameter("diveType", form.DiveType);
+            Command command = new Command("INSERT INTO [Divelog]( description, duration, maxDeep, airTemperature, waterTemperature, createdAt, isActive, user_Id, event_Id) OUTPUT inserted.id VALUES( @description, @duration, @maxDeep, @airTemperature, @waterTemperature, @createdAt, @isActive, @user_Id, @event_Id )", false);
             command.AddParameter("description", form.Description);
             command.AddParameter("duration", form.Duration);
             command.AddParameter("maxDeep", form.MaxDeep);
             command.AddParameter("airTemperature", form.AirTemperature);
             command.AddParameter("waterTemperature", form.WaterTemperature);
-            command.AddParameter("diveDate", form.DiveDate);
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive", 1);
             command.AddParameter("user_Id", form.UserId);
@@ -144,17 +142,16 @@ namespace DAL.Services
             }
         }
 
+
         public DivelogDal? Update(UpdateDivelogFormDal form)
         {
-            Command command = new Command("UPDATE [Divelog] SET diveType = @diveType, description = @description, duration = @duration, maxDeep = @maxDeep, airTemperature = @airTemperature , waterTemperature = @waterTemperature , diveDate = @diveDate , updatedAt = @updatedAt, user_Id = @user_Id, event_Id = @event_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Divelog] SET description = @description, duration = @duration, maxDeep = @maxDeep, airTemperature = @airTemperature , waterTemperature = @waterTemperature , updatedAt = @updatedAt, user_Id = @user_Id, event_Id = @event_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
-            command.AddParameter("diveType", form.DiveType);
             command.AddParameter("description", form.Description);
             command.AddParameter("duration", form.Duration);
             command.AddParameter("maxDeep", form.MaxDeep);
             command.AddParameter("airTemperature", form.AirTemperature);
             command.AddParameter("waterTemperature", form.WaterTemperature);
-            command.AddParameter("diveDate", form.DiveDate);
             command.AddParameter("updatedAt", DateTime.Now);
             command.AddParameter("user_Id", form.UserId);
             command.AddParameter("event_Id", form.EventId);
@@ -178,7 +175,23 @@ namespace DAL.Services
 
         private DivelogDal? GetDivelogById(int id)
         {
-            Command command = new Command("SELECT Id, diveType, description, duration, maxDeep, airTemperature, waterTemperature, diveDate, createdAt, updatedAt, isActive, user_Id, event_Id FROM [Divelog] WHERE Id = @Id;", false);
+            Command command = new Command("SELECT Id, description, duration, maxDeep, airTemperature, waterTemperature, createdAt, updatedAt, isActive, user_Id, event_Id FROM [Divelog] WHERE Id = @Id;", false);
+            command.AddParameter("Id", id);
+            try
+            {
+                return _connection.ExecuteReader(command, dr => dr.ToDivelogDal()).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+        public DivelogDal? GetDivelogByEventId(int id)
+        {
+            Command command = new Command(@"SELECT Id, description, duration, maxDeep, airTemperature, waterTemperature, createdAt, updatedAt, isActive, user_Id, event_Id FROM [Divelog] 
+                                            WHERE event_Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -193,7 +206,7 @@ namespace DAL.Services
 
         public IEnumerable<DivelogDal> GetDivelogByUserId(int id)
         {
-            Command command = new Command(@"SELECT [Divelog].Id, diveType, [Divelog].[description], duration, maxDeep, airTemperature, waterTemperature, diveDate, [Divelog].createdAt, [Divelog].updatedAt, [Divelog].isActive, user_Id, event_Id 
+            Command command = new Command(@"SELECT [Divelog].Id, [Divelog].[description], duration, maxDeep, airTemperature, waterTemperature, [Divelog].createdAt, [Divelog].updatedAt, [Divelog].isActive, user_Id, event_Id 
                                             FROM [Divelog] 
                                             JOIN [User] ON [User].Id = DiveLog.user_Id
                                             WHERE [User].Id = @Id;", false);

@@ -15,17 +15,15 @@ namespace API.Mappers
             {
                 Id= divelogBll.Id,
                 Description= divelogBll.Description,
-                DiveType = divelogBll.DiveType,
                 Duration= divelogBll.Duration,
-                DiveDate = divelogBll.DiveDate,
                 MaxDeep = divelogBll.MaxDeep,
                 AirTemperature= divelogBll.AirTemperature,
                 WaterTemperature= divelogBll.WaterTemperature,
                 CreatedAt= divelogBll.CreatedAt,
                 UpdatedAt= divelogBll.UpdatedAt,
                 IsActive= divelogBll.IsActive,
-                User= divelogBll.User is null ? null : divelogBll.User.ToUser(),
-                Event= divelogBll.Event is null ? null : divelogBll.Event.ToEvent(),      
+                UserId= divelogBll.UserId,
+                EventId = divelogBll.EventId    
 
             };
         }
@@ -35,9 +33,7 @@ namespace API.Mappers
             return new AddDivelogFormBll()
             {
                Description= addDivelogFrom.Description,
-               DiveType = addDivelogFrom.DiveType,
                Duration= addDivelogFrom.Duration,
-               DiveDate = addDivelogFrom.DiveDate,
                AirTemperature= addDivelogFrom.AirTemperature,
                WaterTemperature= addDivelogFrom.WaterTemperature,
                UserId= addDivelogFrom.UserId,
@@ -52,9 +48,7 @@ namespace API.Mappers
             {
                 Id = updateDivelogForm.Id,
                 Description = updateDivelogForm.Description,
-                DiveType = updateDivelogForm.DiveType,
                 Duration = updateDivelogForm.Duration,
-                DiveDate = updateDivelogForm.DiveDate,
                 AirTemperature = updateDivelogForm.AirTemperature,
                 WaterTemperature = updateDivelogForm.WaterTemperature,
                 UserId = updateDivelogForm.UserId,

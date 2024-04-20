@@ -10,13 +10,11 @@ namespace DAL.Mappers
             return new DivelogDal()
             {
                 Id = (int)reader["Id"],
-                DiveType = (string)reader["diveType"],
                 Description = reader["description"] is DBNull ? null : (string)reader["description"],
                 Duration = (int)reader["duration"],
                 MaxDeep = (int)reader["maxDeep"],
                 AirTemperature = reader["airTemperature"] is DBNull ? 0 : (int)reader["airTemperature"],
                 WaterTemperature = reader["waterTemperature"] is DBNull ? 0 : (int)reader["waterTemperature"],
-                DiveDate = (DateTime)reader["diveDate"],
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
                 IsActive = (bool)reader["isActive"],

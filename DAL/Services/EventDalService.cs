@@ -301,7 +301,7 @@ namespace DAL.Services
 
         public IEnumerable<EventDal> GetEventByUserId(int id)
         {
-            Command command = new Command(@"SELECT [Event].Id, [name], startDate, endDate, [Event].createdAt, [Event].updatedAt, [Event].isActive, diveplace_Id,creator_Id, training_Id ,club_Id 
+            Command command = new Command(@"SELECT Distinct [Event].Id, [name], startDate, endDate, [Event].createdAt, [Event].updatedAt, [Event].isActive, diveplace_Id,creator_Id, training_Id ,club_Id 
                                             FROM [Event]
                                             JOIN Participe ON Participe.event_Id = [Event].Id
                                             JOIN [User] ON [User].Id = Participe.user_Id

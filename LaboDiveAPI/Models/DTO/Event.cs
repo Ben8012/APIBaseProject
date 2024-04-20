@@ -19,5 +19,7 @@ namespace API.Models.DTO
 
         public List<User>? Participes { get; set; }
         public List<User>? Demands { get; set; }
+
+        public Divelog? Divelog { get; set; }
     }
 }
