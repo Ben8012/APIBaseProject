@@ -174,5 +174,19 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("DeleteUserTraining/{trainingId}/{userId}")]
+        public IActionResult DeleteUserTraining(int trainingId, int userId)
+        {
+            try
+            {
+                int? resultid = _trainingBll.DeleteUserTraining( trainingId,  userId);
+                return Ok(_trainingBll.GetTrainingsByUserId(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
     }
 }

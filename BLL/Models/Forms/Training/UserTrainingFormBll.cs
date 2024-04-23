@@ -13,6 +13,6 @@ namespace BLL.Models.Forms.Training
         public int UserId { get; set; }
         public int TrainingId { get; set; }
         public bool? IsMostlevel { get; set; }
-        public string RefNumber { get; set; }
+        public string? RefNumber { get; set; }
     }
 }

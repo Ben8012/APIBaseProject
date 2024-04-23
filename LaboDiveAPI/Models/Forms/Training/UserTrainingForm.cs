@@ -12,6 +12,6 @@ namespace API.Models.Forms.Training
         [Required]
         public int TrainingId { get; set; }
         public bool? IsMostlevel { get; set; }
-        public string RefNumber { get; set; }
+        public string? RefNumber { get; set; }
     }
 }

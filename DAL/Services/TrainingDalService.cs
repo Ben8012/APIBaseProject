@@ -224,14 +224,14 @@ namespace DAL.Services
         {
 
             Command command = new Command(@"INSERT INTO [User_Training]
-                              (user_Id, isMostLevel, refNumber, createdAt, trainingId) 
+                              (user_Id, isMostLevel, refNumber, createdAt, training_Id) 
                               OUTPUT inserted.id 
-                        VALUES(@user_Id, @isMostLevel, @refNumber, @createdAt, @trainingId)", false);
+                        VALUES(@user_Id, @isMostLevel, @refNumber, @createdAt, @training_Id)", false);
             command.AddParameter("user_Id", form.UserId);
             command.AddParameter("isMostLevel", 0);
             command.AddParameter("refNumber", form.RefNumber);
             command.AddParameter("createdAt", DateTime.Now);
-            command.AddParameter("trainingId", form.TrainingId);
+            command.AddParameter("training_Id", form.TrainingId);
 
             try
             {
@@ -290,6 +290,24 @@ namespace DAL.Services
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+
+        public int? DeleteUserTraining(int trainingId, int userId)
+        {
+
+            Command command = new Command(@"DELETE FROM [User_Training] 
+                                    WHERE training_Id = @training_Id AND user_Id = @user_Id ", false);
+            command.AddParameter("user_Id", userId);
+            command.AddParameter("training_Id", trainingId);
+
+            try
+            {
+                return (int?)_connection.ExecuteNonQuery(command); // recuperer l'id du contact inseré
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

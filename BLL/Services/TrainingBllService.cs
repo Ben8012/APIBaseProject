@@ -95,5 +95,10 @@ namespace BLL.Services
         {
             return _trainingDal.UpdateMostLevel(id);
         }
+
+        public int? DeleteUserTraining(int trainingId, int userId)
+        {
+            return _trainingDal.DeleteUserTraining(trainingId, userId);
+        }
     }
 }

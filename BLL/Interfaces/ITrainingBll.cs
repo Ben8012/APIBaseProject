@@ -32,5 +32,6 @@ namespace BLL.Interfaces
         int? Disable(int id);
 
         int? UpdateMostLevel(int id);
+        int? DeleteUserTraining(int trainingId, int userId);
     }
 }
