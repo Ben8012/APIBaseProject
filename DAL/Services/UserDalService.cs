@@ -262,6 +262,30 @@ namespace DAL.Services
             }
         }
 
+        public int? DeleteLike(int likerId, int likedId)
+        {
+            Command command = new Command(@"DELETE FROM [Like] 
+                                            WHERE liker_Id = @liker_Id AND liked_Id = @liked_Id 
+                                            OR liker_Id = @liked_Id AND liked_Id = @liker_Id ", false);
+            command.AddParameter("liker_Id", likerId);
+            command.AddParameter("liked_Id", likedId);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne == 0) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+
+
+
 
         public int? Like(int likerId, int likedId)
         {

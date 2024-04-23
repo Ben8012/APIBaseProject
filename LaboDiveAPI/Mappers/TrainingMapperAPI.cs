@@ -55,5 +55,18 @@ namespace API.Mappers
                 Description = updateTrainingForm.Description,
             };
         }
+
+        internal static UserTrainingFormBll ToUserTrainingFromBll(this UserTrainingForm form)
+        {
+            return new UserTrainingFormBll()
+            {
+                Id = form.Id,
+                UserId= form.UserId,
+                IsMostlevel = form.IsMostlevel,
+                TrainingId= form.TrainingId,
+                RefNumber= form.RefNumber,
+            };
+        }
+
     }
 }

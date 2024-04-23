@@ -126,6 +126,7 @@ namespace DAL.Services
                 {
                     ClubDal? club = GetClubById(id.Value);
                     Participate(form.CreatorId, club.Id);
+                    ValidationParticipate(form.CreatorId, club.Id);
                     return club;
                 }
                 else
@@ -278,7 +279,7 @@ namespace DAL.Services
         {
             Command command = new Command(@"SELECT Id, name, createdAt, updatedAt, isActive,  adress_id, creator_id 
                                             FROM [Club] 
-                                            WHERE Id = @Id;", false);
+                                            WHERE Id = @Id AND [Club].isActive = 1;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -297,7 +298,7 @@ namespace DAL.Services
                                             FROM [User]
                                             JOIN [User_Club] ON [User_Club].[user_Id] = [User].Id
                                             JOIN [Club] ON [User_Club].[club_Id] = [Club].Id
-                                            WHERE [Club].Id = @Id AND [User_Club].validation = 0;", false);
+                                            WHERE [Club].Id = @Id AND [User_Club].validation = 0 AND [Club].isActive = 1;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -316,7 +317,7 @@ namespace DAL.Services
                                             FROM [User]
                                             JOIN [User_Club] ON [User_Club].[user_Id] = [User].Id
                                             JOIN [Club] ON [User_Club].[club_Id] = [Club].Id
-                                            WHERE [Club].Id = @Id AND [User_Club].validation = 1;", false);
+                                            WHERE [Club].Id = @Id AND [User_Club].validation = 1 AND [Club].isActive = 1;", false);
             command.AddParameter("Id", id);
             try
             {

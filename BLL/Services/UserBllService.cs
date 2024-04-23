@@ -192,5 +192,10 @@ namespace BLL.Services
         {
             return _userDal.GetLikedsByUserId(id).Select(u => u.ToUserBll());
         }
+
+        public int? DeleteLike(int likerId, int likedId)
+        {
+            return _userDal.DeleteLike(likerId, likedId);
+        }
     }
 }

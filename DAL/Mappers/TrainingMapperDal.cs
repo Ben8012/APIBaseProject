@@ -38,7 +38,7 @@ namespace DAL.Mappers
                 IsActive = (bool)reader["isActive"],
                 OrganisationId = (int)reader["organisation_Id"],
                 Description = reader["description"] is DBNull ? "" : (string)reader["description"],
-                RefNumber = (string)reader["refNumber"],
+                RefNumber = reader["refNumber"] is DBNull ? "" : (string)reader["refNumber"],
                 IsMostLevel = (bool)reader["isMostLevel"],
             };
 

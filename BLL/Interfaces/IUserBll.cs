@@ -32,6 +32,7 @@ namespace BLL.Interfaces
 
         int? Like(int likerId, int likedId);
         int? UnLike(int likerId, int likedId);
+        int? DeleteLike(int likerId, int likedId);
 
     }
 }

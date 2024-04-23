@@ -2,6 +2,7 @@
 using BLL.Models.Forms.Organisation;
 using BLL.Models.Forms.Training;
 using DAL.Models.DTO;
+using DAL.Models.Forms.Training;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,15 @@ namespace BLL.Interfaces
         TrainingBll? Update(UpdateTrainingFormBll form);
 
         IEnumerable<TrainingBll>? GetTrainingsByUserId(int id);
+        IEnumerable<TrainingBll>? GetTrainingsByOrganisationId(int id);
+
+        IEnumerable<TrainingBll>? InsertUserTraining(UserTrainingFormBll form);
 
         int? Delete(int id);
         int? Enable(int id);
 
         int? Disable(int id);
+
+        int? UpdateMostLevel(int id);
     }
 }

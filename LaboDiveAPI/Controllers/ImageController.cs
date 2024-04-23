@@ -130,94 +130,94 @@ namespace API.Controllers
         }
 
 
-        //[HttpPost("InsuranceImage/{id}")]
-        //public async Task<IActionResult> InsertInsuranceImage(int id)
-        //{
-        //    var test = Directory.GetCurrentDirectory();
+        [HttpPost("InsuranceImage/{id}")]
+        public async Task<IActionResult> InsertInsuranceImage(int id)
+        {
+            var test = Directory.GetCurrentDirectory();
 
-        //    if (!Request.HasFormContentType)
-        //    {
-        //        return BadRequest("The request doesn't contain a valid form content.");
-        //    }
+            if (!Request.HasFormContentType)
+            {
+                return BadRequest("The request doesn't contain a valid form content.");
+            }
 
-        //    var form = Request.Form;
+            var form = Request.Form;
 
-        //    var files = form.Files;
+            var files = form.Files;
 
-        //    string guidInsurance;
-        //    Command command1 = new Command(@"SELECT guidInsurance 
-        //                                    FROM [User]  
-        //                                    WHERE Id=@Id ; ", false);
-        //    command1.AddParameter("Id", id);
+            string guidInsurance;
+            Command command1 = new Command(@"SELECT guidInsurance 
+                                            FROM [User]  
+                                            WHERE Id=@Id ; ", false);
+            command1.AddParameter("Id", id);
 
-        //    try
-        //    {
-        //        guidInsurance = _connection.ExecuteScalar(command1) as string;
-        //        if (!String.IsNullOrEmpty(guidInsurance))
-        //        {
-        //            var filePath = Path.Combine(_insuranceImage, guidInsurance);
+            try
+            {
+                guidInsurance = _connection.ExecuteScalar(command1) as string;
+                if (!String.IsNullOrEmpty(guidInsurance))
+                {
+                    var filePath = Path.Combine(_insuranceImage, guidInsurance);
 
-        //            if (System.IO.File.Exists(filePath))
-        //            {
-        //                System.IO.File.Delete(filePath);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-        //    foreach (var file in files)
-        //    {
-        //        if (file.Length > 0)
-        //        {
-        //            var guid = Guid.NewGuid().ToString();
-        //            var fileName = guid + Path.GetExtension(file.FileName);
-        //            var filePath = Path.Combine(_insuranceImage, fileName);
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var guid = Guid.NewGuid().ToString();
+                    var fileName = file.FileName;
+                    var filePath = Path.Combine(_insuranceImage, fileName);
 
-        //            if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-        //            {
-        //                using (var stream = new FileStream(filePath, FileMode.Create))
-        //                {
-        //                    await file.CopyToAsync(stream);
-        //                }
-        //                Command command = new Command(@"UPDATE [User] SET 
-        //                                guidInsurance = @guidInsurance
-        //                                WHERE Id=@Id ; ", false);
-        //                command.AddParameter("Id", id);
-        //                command.AddParameter("guidInsurance", guid);
+                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
+                    {
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                        Command command = new Command(@"UPDATE [User] SET 
+                                        guidInsurance = @guidInsurance
+                                        WHERE Id=@Id ; ", false);
+                        command.AddParameter("Id", id);
+                        command.AddParameter("guidInsurance", fileName);
 
-        //                try
-        //                {
-        //                    _connection.ExecuteScalar(command);
-        //                }
-        //                catch (Exception ex)
-        //                {
+                        try
+                        {
+                            _connection.ExecuteScalar(command);
+                        }
+                        catch (Exception ex)
+                        {
 
-        //                    throw ex;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return Ok(new { Message = "ok" });
-        //}
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            return Ok(new { Message = "ok" });
+        }
 
-        //[HttpGet("InsuranceImage/{imageName}")]
-        //public IActionResult GetInsuranceImage(string imageName)
-        //{
-        //    var filePath = Path.Combine(_insuranceImage, imageName);
+        [HttpGet("InsuranceImage/{imageName}")]
+        public IActionResult GetInsuranceImage(string imageName)
+        {
+            var filePath = Path.Combine(_insuranceImage, imageName);
 
-        //    if (!System.IO.File.Exists(filePath))
-        //    {
-        //        return NotFound();
-        //    }
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
 
-        //    var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        //    return File(imageFileStream, "image/jpeg"); 
-        //}
+            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return File(imageFileStream, "image/jpeg");
+        }
 
-     
+
         [HttpPost("LevelImage/{id}")]
         public async Task<IActionResult> InsertLevelImage(int id)
         {

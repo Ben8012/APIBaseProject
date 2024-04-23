@@ -52,5 +52,17 @@ namespace BLL.Mappers
                 Description = updateTrainingFormBll.Description,
             };
         }
+
+        internal static UserTrainingFormDal ToUserTrainingFromDal(this UserTrainingFormBll form)
+        {
+            return new UserTrainingFormDal()
+            {
+                Id = form.Id,
+                UserId = form.UserId,
+                IsMostlevel = form.IsMostlevel,
+                TrainingId = form.TrainingId,
+                RefNumber = form.RefNumber,
+            };
+        }
     }
 }

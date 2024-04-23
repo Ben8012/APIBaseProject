@@ -4,7 +4,7 @@
 	[name] NVARCHAR(50) NOT NULL,
 	[description] NVARCHAR(1000)  NULL,
 	[startDate] DATETIME2 NOT NULL,
-	[endDate] DATETIME2 NOT NULL,
+	[endDate] DATETIME2 NULL,
 	[createdAt] DATETIME2 NOT NULL,
 	[updatedAt] DATETIME2 NULL,
 	[isActive] BIT NOT NULL,

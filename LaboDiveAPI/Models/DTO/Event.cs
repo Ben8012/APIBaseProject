@@ -8,7 +8,7 @@ namespace API.Models.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public User? Creator { get; set; }
         public Training? Training { get; set; }
         public Club? Club { get; set; }

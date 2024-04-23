@@ -12,7 +12,7 @@ namespace DAL.Mappers
                 Id = (int)reader["Id"],
                 Name = (string)reader["name"],
                 StartDate = (DateTime)reader["startDate"],
-                EndDate = (DateTime)reader["endDate"],
+                EndDate = reader["endDate"] is DBNull ? null : (DateTime?)reader["endDate"],
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 UpdatedAt = reader["updatedAt"] is DBNull ? null : (DateTime?)reader["updatedAt"],
                 IsActive = (bool)reader["isActive"],

@@ -268,6 +268,25 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost("DeleteLike")]
+        public IActionResult DeleteLike([FromBody] LikeForm form)
+        {
+            try
+            {
+                int? valid = _userBll.DeleteLike(form.LikerId, form.LikedId);
+                if (valid > 0)
+                {
+                    return Ok(_userBll.GetFriendsUserId(form.LikerId)?.Select(u => u.ToUser()));
+                }
+                return Ok(null);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
         [HttpPost("Token")]
         public IActionResult GetUserByToken([FromBody] Token form)
         {

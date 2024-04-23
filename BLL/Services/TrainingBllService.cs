@@ -80,5 +80,20 @@ namespace BLL.Services
 
             return trainings;
         }
+
+        public IEnumerable<TrainingBll>? GetTrainingsByOrganisationId(int id)
+        {
+            return _trainingDal.GetTrainingsByOrganisationId(id).Select(u => u.ToTrainingBll()).ToList();
+        }
+
+        public IEnumerable<TrainingBll>? InsertUserTraining(UserTrainingFormBll form)
+        {
+            return _trainingDal.InsertUserTraining(form.ToUserTrainingFromDal()).Select(u => u.ToTrainingBll()).ToList();
+        }
+
+        public int? UpdateMostLevel(int id)
+        {
+            return _trainingDal.UpdateMostLevel(id);
+        }
     }
 }

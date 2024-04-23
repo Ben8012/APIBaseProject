@@ -5,6 +5,8 @@ using API.Models.Forms.Training;
 using API.Tools;
 using BLL.Interfaces;
 using BLL.Models.DTO;
+using DAL.Models.DTO;
+using DAL.Models.Forms.Training;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -131,6 +133,46 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetByOrganisationId/{id}")]
+        public IActionResult GetByOrganisationId(int id)
+        {
+            try
+            {
+                return Ok(_trainingBll.GetTrainingsByOrganisationId(id)?.Select(u => u.ToTraining()).ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPost("InsertUserTraining")]
+        public IActionResult InsertUserTraining([FromBody] UserTrainingForm form)
+        {
+            try
+            {
+                return Ok(_trainingBll.InsertUserTraining(form.ToUserTrainingFromBll())?.Select(t => t.ToTraining()).ToList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+
+        }
+
+        [HttpGet("UpdateMostLevel/{id}/{userId}")]
+        public IActionResult  UpdateMostLevel(int id,int userId)
+        {
+            try
+            {
+                int? resultid = _trainingBll.UpdateMostLevel(id);
+                return Ok(_trainingBll.GetTrainingsByUserId(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
 
     }
 }

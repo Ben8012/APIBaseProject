@@ -51,7 +51,15 @@ namespace BLL.Services
                 e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
                 e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+                //foreach (var participe in e.Participes)
+                //{
+                //    participe.Friends = _userBll.GetFriendsUserId(participe.Id).ToList();
+                //}
                 e.Demands = GetAllDemandsByEventId(e.Id).ToList();
+                //foreach (var demand in e.Demands)
+                //{
+                //    demand.Friends = _userBll.GetFriendsUserId(demand.Id).ToList();
+                //}
                 e.Divelog = _divelogDal.GetDivelogByEventId(e.Id) is null ? null : _divelogDal.GetDivelogByEventId(e.Id).ToDivelogBll();
             }
             return events;
@@ -65,7 +73,15 @@ namespace BLL.Services
             e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
             e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
             e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+            //foreach (var participe in e.Participes)
+            //{
+            //    participe.Friends = _userBll.GetFriendsUserId(participe.Id).ToList();
+            //}
             e.Demands = GetAllDemandsByEventId(e.Id).ToList();
+            //foreach (var demand in e.Demands)
+            //{
+            //    demand.Friends = _userBll.GetFriendsUserId(demand.Id).ToList();
+            //}
             e.Divelog = _divelogDal.GetDivelogByEventId(e.Id) is null ? null : _divelogDal.GetDivelogByEventId(e.Id).ToDivelogBll();
             return e;
         }
@@ -124,7 +140,15 @@ namespace BLL.Services
                 e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
                 e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+                //foreach (var participe in e.Participes)
+                //{
+                //    participe.Friends = _userBll.GetFriendsUserId(participe.Id).ToList();
+                //}
                 e.Demands = GetAllDemandsByEventId(e.Id).ToList();
+                //foreach (var demand in e.Demands)
+                //{
+                //    demand.Friends = _userBll.GetFriendsUserId(demand.Id).ToList();
+                //}
                 e.Divelog = _divelogDal.GetDivelogByEventId(e.Id) is null ? null : _divelogDal.GetDivelogByEventId(e.Id).ToDivelogBll();
             }
             return events;
