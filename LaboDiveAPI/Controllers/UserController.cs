@@ -312,44 +312,32 @@ namespace API.Controllers
             }
         }
 
-        //[HttpGet("Organisation")]
-        //public IActionResult GetOrganistionByUserId()
-        //{
+        [HttpGet("Admin/{id}")]
+        public IActionResult Admin(int id)
+        {
+            try
+            {
+                return Ok(_userBll.Admin(id));
 
-        //    if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState insert est invalide" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
 
-        //    Command command = new Command(
-        //           @"SELECT [user_id] , [name], [level], refNumber, picture, User_Organisation.createdAt 
-        //            FROM Organisation  
-        //            JOIN User_Organisation ON Organisation.Id = organisation_id; "
-        //           , false
-        //        );
-         
-           
-        //    try
-        //    {
-        //        return Ok(_connection.ExecuteReader(command, dr => dr.ToOrganisation()));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, ex.Message);
-        //        throw ex;
-        //    }
-        //}
+        [HttpGet("UnAdmin/{id}")]
+        public IActionResult UnAdmin(int id)
+        {
+            try
+            {
+                return Ok(_userBll.UnAdmin(id));
 
-        //private UserWithToken GetUserWithToken(User user)
-        //{
-        //    return new UserWithToken()
-        //    {
-        //        Id = user.Id,
-        //        Firstname = user.Firstname,
-        //        Lastname = user.Lastname,
-        //        Email = user.Email,
-        //        Birthdate = user.Birthdate,
-        //        CreatedAt = user.CreatedAt,
-        //        UpdatedAt = user.UpdatedAt,
-        //        Token = _token.GenerateJWTUser(user)
-        //    };
-        //}
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
     }
 }

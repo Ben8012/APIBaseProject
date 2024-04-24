@@ -197,5 +197,15 @@ namespace BLL.Services
         {
             return _userDal.DeleteLike(likerId, likedId);
         }
+
+        public int? Admin(int id)
+        {
+            return _userDal.Admin(id);
+        }
+
+        public int? UnAdmin(int id)
+        {
+            return _userDal.UnAdmin(id);
+        }
     }
 }

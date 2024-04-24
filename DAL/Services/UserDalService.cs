@@ -374,5 +374,41 @@ namespace DAL.Services
             }
         }
 
+        public int? Admin(int id)
+        {
+            Command command = new Command("UPDATE [User] SET role = @role WHERE Id=@Id ; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("role", "admin");
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? UnAdmin(int id)
+        {
+            Command command = new Command("UPDATE [User] SET role = @role WHERE Id=@Id; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("role", "user");
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
