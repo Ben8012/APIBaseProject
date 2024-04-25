@@ -78,11 +78,11 @@ INSERT INTO Adress(street,number,city_Id) VALUES
 --    ('Paul','Paul','paul@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','user','1980-12-10',GETDATE(),1,3,1,'2023-03-10','2023-05-10');
 
     
-INSERT INTO [User]( firstname,lastname, email, passwd, [role], birthDate, createdAt, isActive, adress_Id, isLevelValid, medicalDateValidation, insuranceDateValidation,guidImage) VALUES
-    ('Benjamin','Sterckx','ben@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','super admin','1980-12-10', GETDATE(), 1, 1,1,'2024-12-10','2024-12-10','BenjaminSterckx1'),
-    ('Tom','Tom','tom@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','admin','1980-12-10',GETDATE(),1,2,1,'2024-10-10','2024-11-10','TomTom2'),
-    ('Jean','Jean','jean@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','user','1980-12-10',GETDATE(),1,3,1,'2024-04-10','2023-02-10','JeanJean3'),
-    ('Paul','Paul','paul@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','user','1980-12-10',GETDATE(),1,3,1,'2023-03-10','2023-05-10','PaulPaul4');
+INSERT INTO [User]( firstname,lastname, email, passwd, [role], birthDate, createdAt, isActive, adress_Id, isLevelValid, medicalDateValidation, insuranceDateValidation,guidImage,guidCertificat,guidInsurance,guidLevel) VALUES
+    ('Benjamin','Sterckx','ben@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','super admin','1980-12-10', GETDATE(), 1, 1,1,'2024-12-10','2024-12-10','BenjaminSterckx1','BenjaminSterckx1','BenjaminSterckx1','BenjaminSterckx1'),
+    ('Tom','Tom','tom@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','admin','1980-12-10',GETDATE(),1,2,1,'2024-10-10','2024-11-10','TomTom2',NULL,NULL,NULL),
+    ('Jean','Jean','jean@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','user','1980-12-10',GETDATE(),1,3,1,'2024-04-10','2023-02-10','JeanJean3',NULL,NULL,NULL),
+    ('Paul','Paul','paul@mail.be','$2a$10$EUxG8yCa2gznhPsVwv26gOCTqfMbJxyVOZ6w/ipaqIU1oBdv8OwLK','user','1980-12-10',GETDATE(),1,3,1,'2023-03-10','2023-05-10','PaulPaul4',NULL,NULL,NULL);
     
 
 INSERT INTO Organisation([name],createdAt,isActive,adress_Id) VALUES

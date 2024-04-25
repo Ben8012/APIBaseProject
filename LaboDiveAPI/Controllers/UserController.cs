@@ -339,5 +339,33 @@ namespace API.Controllers
                 return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
             }
         }
+
+        [HttpPut("UpdateInsuranceDate/{id}")]
+        public IActionResult UpdateInsuranceDate(int id, [FromBody] FormCertificatDate form)
+        {
+            if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
+            try
+            {
+                return Ok(_userBll.UpdateInsuranceDate(id, form.Date));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la modification a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPut("UpdateCertificatDate/{id}")]
+        public IActionResult UpdateCertificatDate(int id, [FromBody] FormCertificatDate form)
+        {
+            if (!ModelState.IsValid) return BadRequest(new { Message = "ModelState update est invalide" });
+            try
+            {
+                return Ok(_userBll.UpdateCertificatDate(id, form.Date));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la modification a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
     }
 }

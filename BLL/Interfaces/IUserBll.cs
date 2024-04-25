@@ -36,5 +36,9 @@ namespace BLL.Interfaces
         int? Admin(int id);
         int? UnAdmin(int id);
 
+        int? UpdateInsuranceDate(int id, string date);
+        int? UpdateCertificatDate(int id, string date);
+
+
     }
 }

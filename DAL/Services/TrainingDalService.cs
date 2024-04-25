@@ -254,19 +254,11 @@ namespace DAL.Services
 
         public int? UpdateMostLevel(int id)
         {
-            Command command = new Command("SELECT Id FROM [User_Training] WHERE isMostLevel = 1 ; ", false);
-            
+           
+            Command command = new Command("UPDATE [User_Training] SET isMostLevel = 0 WHERE isMostLevel = 1 ; ", false);
             try
             {
-                int? resultId = (int?)_connection.ExecuteScalar(command);
-                if (resultId.HasValue)
-                {
-                    Command command1 = new Command("UPDATE [User_Training] SET isMostLevel = @isMostLevel WHERE Id = @Id ; ", false);
-                    command1.AddParameter("isMostLevel", 0);
-                    command1.AddParameter("Id", resultId);
-
-                   _connection.ExecuteNonQuery(command1);
-                }
+                _connection.ExecuteNonQuery(command);
             }
             catch (Exception ex)
             {
@@ -289,8 +281,8 @@ namespace DAL.Services
             }
             catch (Exception ex)
             {
-
                 throw ex;
+
             }
         }
 

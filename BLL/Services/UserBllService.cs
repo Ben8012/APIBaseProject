@@ -207,5 +207,15 @@ namespace BLL.Services
         {
             return _userDal.UnAdmin(id);
         }
+
+        public int? UpdateInsuranceDate(int id, string date)
+        {
+            return _userDal.UpdateInsuranceDate(id, date);
+        }
+
+        public int? UpdateCertificatDate(int id, string date)
+        {
+            return _userDal.UpdateCertificatDate(id, date);
+        }
     }
 }

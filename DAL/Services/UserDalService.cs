@@ -410,5 +410,42 @@ namespace DAL.Services
             }
         }
 
+      
+        public int? UpdateCertificatDate(int id, string date)
+        {
+            Command command = new Command("UPDATE [User] SET medicalDateValidation = @medicalDateValidation WHERE Id=@Id; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("medicalDateValidation", date);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int? UpdateInsuranceDate(int id, string date)
+        {
+            Command command = new Command("UPDATE [User] SET insuranceDateValidation = @insuranceDateValidation WHERE Id=@Id; ", false);
+            command.AddParameter("Id", id);
+            command.AddParameter("insuranceDateValidation", date);
+
+            try
+            {
+                int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
+                if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
+                return nbLigne;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
