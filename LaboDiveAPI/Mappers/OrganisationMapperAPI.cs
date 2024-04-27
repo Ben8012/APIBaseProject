@@ -1,6 +1,8 @@
 ﻿using API.Models.DTO;
+using API.Models.Forms.Diveplace;
 using API.Models.Forms.Message;
 using API.Models.Forms.Organisation;
+using BLL.Interfaces;
 using BLL.Models.DTO;
 using BLL.Models.Forms.Message;
 using BLL.Models.Forms.Organisation;
@@ -30,8 +32,7 @@ namespace API.Mappers
             return new AddOrganisationFormBll()
             {
                 Name = addOrganisationFrom.Name,
-                GuidImage = addOrganisationFrom.GuidImage,
-                AdressId = addOrganisationFrom.AdressId,
+                Adress = addOrganisationFrom.Adress is null ? null : addOrganisationFrom.Adress.ToAdressBll(),
             };
         }
 
@@ -41,8 +42,7 @@ namespace API.Mappers
             {
                 Id = updateOrganisationForm.Id,
                 Name = updateOrganisationForm.Name,
-                GuidImage = updateOrganisationForm.GuidImage,
-                AdressId = updateOrganisationForm.AdressId,
+                Adress = updateOrganisationForm.Adress is null ? null : updateOrganisationForm.Adress.ToAdressBll(),
             };
         }
 

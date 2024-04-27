@@ -26,7 +26,6 @@ namespace BLL.Mappers
             return new AddOrganisationFormDal()
             {
                 Name = addOrganisationFromBll.Name,
-                GuidImage = addOrganisationFromBll.GuidImage,
                 AdressId = addOrganisationFromBll.AdressId,
             };
         }
@@ -37,7 +36,6 @@ namespace BLL.Mappers
             {
                 Id = updateOrganisationFormBll.Id,
                 Name = updateOrganisationFormBll.Name,
-                GuidImage = updateOrganisationFormBll.GuidImage,
                 AdressId = updateOrganisationFormBll.AdressId,
             };
         }

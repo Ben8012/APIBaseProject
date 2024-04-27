@@ -12,7 +12,9 @@ namespace BLL.Interfaces
 {
     public interface IDiveplaceBll
     {
-        IEnumerable<DiveplaceBll> GetAll(int userId);
+        IEnumerable<DiveplaceBll> GetAll();
+        IEnumerable<DiveplaceBll> GetAllSiteAndVote(int userId);
+        
 
         DiveplaceBll? GetById(int id);
 

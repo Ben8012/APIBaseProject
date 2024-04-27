@@ -28,9 +28,16 @@ namespace BLL.Services
             _organisationBll = organisationBll;
         }
 
-        public int? Delete(int id)
+        public IEnumerable<TrainingBll> Delete(int id)
         {
-            return _trainingDal.Delete(id);
+            TrainingBll training = GetById(id);
+            int? nbligne = _trainingDal.Delete(id);
+            List<TrainingBll> trainings = new List<TrainingBll>();
+            if (nbligne.HasValue)
+            {
+                trainings = _trainingDal.GetTrainingsByOrganisationId(training.Organisation.Id).Select(u => u.ToTrainingBll()).ToList();
+            }
+            return trainings;
         }
 
         public IEnumerable<TrainingBll> GetAll()
@@ -39,6 +46,7 @@ namespace BLL.Services
             foreach (var training in trainings)
             {
                 training.Organisation = _organisationBll.GetById(training.OrganisationId);
+                training.Prerequis = training.PrerequisiteId == 0 ? null : _trainingDal.GetById(training.PrerequisiteId).ToTrainingBll();
             }
             return trainings;
         }
@@ -47,6 +55,7 @@ namespace BLL.Services
         {
             TrainingBll training = _trainingDal.GetById(id)?.ToTrainingBll();
             training.Organisation = _organisationBll.GetById(training.OrganisationId);
+            training.Prerequis = training.PrerequisiteId == 0 ? null : _trainingDal.GetById(training.PrerequisiteId).ToTrainingBll();
             return training;
         }
 

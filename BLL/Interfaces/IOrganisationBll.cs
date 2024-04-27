@@ -19,7 +19,7 @@ namespace BLL.Interfaces
 
         OrganisationBll? Update(UpdateOrganisationFormBll form);
 
-        int? Delete(int id);
+        IEnumerable<OrganisationBll> Delete(int id);
         int? Enable(int id);
 
         int? Disable(int id);

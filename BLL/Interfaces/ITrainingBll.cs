@@ -26,7 +26,7 @@ namespace BLL.Interfaces
 
         IEnumerable<TrainingBll>? InsertUserTraining(UserTrainingFormBll form);
 
-        int? Delete(int id);
+        IEnumerable<TrainingBll> Delete(int id);
         int? Enable(int id);
 
         int? Disable(int id);

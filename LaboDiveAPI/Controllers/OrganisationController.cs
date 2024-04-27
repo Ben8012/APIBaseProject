@@ -1,5 +1,6 @@
 ﻿
 using API.Mappers;
+using API.Models.DTO;
 using API.Models.Forms.Insurance;
 using API.Models.Forms.Message;
 using API.Models.Forms.Organisation;
@@ -95,7 +96,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_organisationBll.Delete(id));
+                return Ok(_organisationBll.Delete(id).Select(u => u.ToOrganisation()));
 
             }
             catch (Exception ex)

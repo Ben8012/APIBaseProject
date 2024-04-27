@@ -13,8 +13,8 @@ namespace BLL.Mappers
             {
                 Id = trainingDal.Id,
                 Name = trainingDal.Name,
-                Prerequisite = trainingDal.Prerequisite,
-                Picture = trainingDal.Picture,
+                PrerequisiteId = trainingDal.PrerequisId,
+                GuidImage = trainingDal.GuidImage,
                 IsSpeciality = trainingDal.IsSpeciality,
                 CreatedAt = trainingDal.CreatedAt,
                 UpdatedAt = trainingDal.UpdatedAt,
@@ -31,8 +31,7 @@ namespace BLL.Mappers
             return new AddTrainingFormDal()
             {
                 Name = addTrainingFromBll.Name,
-                Prerequisite = addTrainingFromBll.Prerequisite,
-                Picture = addTrainingFromBll.Picture,
+                PrerequisId = addTrainingFromBll.PrerequisId,
                 IsSpeciality = addTrainingFromBll.IsSpeciality,
                 OrganisationId = addTrainingFromBll.OrganisationId,
                 Description = addTrainingFromBll.Description,
@@ -45,8 +44,7 @@ namespace BLL.Mappers
             {
                 Id = updateTrainingFormBll.Id,
                 Name = updateTrainingFormBll.Name,
-                Prerequisite = updateTrainingFormBll.Prerequisite,
-                Picture = updateTrainingFormBll.Picture,
+                PrerequisId = updateTrainingFormBll.PrerequisId,
                 IsSpeciality = updateTrainingFormBll.IsSpeciality,
                 OrganisationId = updateTrainingFormBll.OrganisationId,
                 Description = updateTrainingFormBll.Description,

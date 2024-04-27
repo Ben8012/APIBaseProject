@@ -96,7 +96,7 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_trainingBll.Delete(id));
+                return Ok(_trainingBll.Delete(id).Select(u => u.ToTraining()));
 
             }
             catch (Exception ex)

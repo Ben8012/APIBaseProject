@@ -34,8 +34,17 @@ namespace BLL.Services
         {
             return _diveplaceDal.Delete(id);
         }
+        public IEnumerable<DiveplaceBll> GetAll()
+        {
+            List<DiveplaceBll> diveplaces = _diveplaceDal.GetAll().Select(u => u.ToDiveplaceBll()).ToList();
+            foreach (var diveplace in diveplaces)
+            {
+                diveplace.Adress = diveplace.AdressId == 0 ? null : _adressBll.GetById(diveplace.AdressId);
+            }
+            return diveplaces;
+        }
 
-        public IEnumerable<DiveplaceBll> GetAll(int userId)
+        public IEnumerable<DiveplaceBll> GetAllSiteAndVote(int userId)
         {
             List<DiveplaceBll> diveplaces = _diveplaceDal.GetAll().Select(u => u.ToDiveplaceBll()).ToList();
             foreach (var diveplace in diveplaces)
@@ -123,5 +132,7 @@ namespace BLL.Services
         {
             return _diveplaceDal.GetVoteByUserIdAndDiveplaceId(userId, diveplaceId);
         }
+
+       
     }
 }

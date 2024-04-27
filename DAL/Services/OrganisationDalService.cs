@@ -112,9 +112,8 @@ namespace DAL.Services
         public OrganisationDal? Insert(AddOrganisationFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Organisation](name, guidImage, createdAt, isActive, adress_Id) OUTPUT inserted.id VALUES(@name, @picture, @createdAt, @isActive, @adress_Id)", false);
+            Command command = new Command("INSERT INTO [Organisation](name, createdAt, isActive, adress_Id) OUTPUT inserted.id VALUES(@name, @createdAt, @isActive, @adress_Id)", false);
             command.AddParameter("name", form.Name);
-            command.AddParameter("guidImage", form.GuidImage);
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive", 1);
             command.AddParameter("adress_Id", form.AdressId );
@@ -138,52 +137,11 @@ namespace DAL.Services
             }
         }
 
-        //public int? Participe(AddOrganisationParticipeFormDal form)
-        //{
-        //    Command command = new Command("INSERT INTO [User_Training](user_Id, organisation_Id, level, refNumber, createdAt) VALUES(@user_Id, @organisation_Id, @level, @refNumber, @createdAt)", false);
-        //    command.AddParameter("user_Id", form.UserId);
-        //    command.AddParameter("organisation_Id", form.OrganisationId);
-        //    command.AddParameter("level", form.Level );
-        //    command.AddParameter("refNumber", form.Level);
-        //    command.AddParameter("createdAt", DateTime.Now);
-
-        //    try
-        //    {
-        //        int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
-        //        if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
-        //        return nbLigne;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        //public int? UnParticipe(int userId, int organisationId)
-        //{
-        //    Command command = new Command("DELETE FROM [User_Training] WHERE user_Id=@user_Id AND organisation_Id = @organisation_Id", false);
-        //    command.AddParameter("user_Id", userId);
-        //    command.AddParameter("organisation_Id", organisationId);
-        //    try
-        //    {
-        //        int? nbLigne = (int?)_connection.ExecuteNonQuery(command);
-        //        if (nbLigne != 1) throw new Exception("erreur lors de la suppression");
-        //        return nbLigne;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, ex.Message);
-        //        throw ex;
-        //    }
-        //}
-
         public OrganisationDal? Update(UpdateOrganisationFormDal form)
         {
-            Command command = new Command("UPDATE [Organisation] SET  name = @name , guidImage = @guidImage , updatedAt = @updatedAt , adress_Id = @adress_Id   OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Organisation] SET  name = @name , updatedAt = @updatedAt , adress_Id = @adress_Id   OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
-            command.AddParameter("guidImage", form.GuidImage);
             command.AddParameter("updatedAt", DateTime.Now);
             command.AddParameter("adress_Id", form.AdressId);
 

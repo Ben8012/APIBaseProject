@@ -6,8 +6,8 @@ namespace API.Models.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Prerequisite { get; set; }
-        public string Picture { get; set; }
+        public Training Prerequis { get; set; }
+        public string GuidImage { get; set; }
         public bool IsSpeciality { get; set; }
         public Organisation? Organisation { get; set; }
         public DateTime CreatedAt { get; set; }

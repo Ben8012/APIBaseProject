@@ -82,7 +82,7 @@ namespace DAL.Services
 
         public IEnumerable<TrainingDal> GetAll()
         {
-            Command command = new Command("SELECT Id, name, prerequis, picture, isSpeciality,[description], createdAt, updatedAt, isActive, organisation_Id FROM [Training];", false);
+            Command command = new Command("SELECT Id, name, prerequis_Id ,guidImage, isSpeciality,[description], createdAt, updatedAt, isActive, organisation_Id FROM [Training];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToTrainingDal());
@@ -113,11 +113,11 @@ namespace DAL.Services
         public TrainingDal? Insert(AddTrainingFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Training](name, prerequis, picture, isSpeciality,[description], createdAt, isActive, organisation_Id) OUTPUT inserted.id VALUES(@name, @prerequis, @picture, @isSpeciality, @createdAt, @isActive, @organisation_Id)", false);
+            Command command = new Command("INSERT INTO [Training](name, prerequis_Id, isSpeciality,[description], createdAt, isActive, organisation_Id) OUTPUT inserted.id VALUES(@name, @prerequis_Id, @isSpeciality, @description, @createdAt, @isActive, @organisation_Id)", false);
             command.AddParameter("name", form.Name);
-            command.AddParameter("prerequis", form.Prerequisite);
-            command.AddParameter("picture", form.Picture);
+            command.AddParameter("prerequis_Id", form.PrerequisId);
             command.AddParameter("isSpeciality", form.IsSpeciality);
+            command.AddParameter("description", form.Description);
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive", 1);
             command.AddParameter("organisation_Id", form.OrganisationId);
@@ -143,11 +143,10 @@ namespace DAL.Services
 
         public TrainingDal? Update(UpdateTrainingFormDal form)
         {
-            Command command = new Command("UPDATE [Training] SET name = @name , [description] = @description, prerequis = @prerequis , picture = @picture , isSpeciality = @isSpeciality, updatedAt = @updatedAt , organisation_Id = @organisation_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
+            Command command = new Command("UPDATE [Training] SET name = @name , [description] = @description, prerequis_Id = @prerequis_Id , isSpeciality = @isSpeciality, updatedAt = @updatedAt , organisation_Id = @organisation_Id  OUTPUT inserted.id WHERE Id=@Id ; ", false);
             command.AddParameter("Id", form.Id);
             command.AddParameter("name", form.Name);
-            command.AddParameter("prerequis", form.Prerequisite);
-            command.AddParameter("picture", form.Picture);
+            command.AddParameter("prerequis_Id", form.PrerequisId);
             command.AddParameter("isSpeciality", form.IsSpeciality);
             command.AddParameter("updatedAt", DateTime.Now);
             command.AddParameter("organisation_Id", form.OrganisationId);
@@ -171,7 +170,7 @@ namespace DAL.Services
 
         private TrainingDal? GetTrainingById(int id)
         {
-            Command command = new Command("SELECT Id, name, prerequis, picture, isSpeciality, [description], createdAt, updatedAt, isActive, organisation_Id  FROM [Training] WHERE Id = @Id;", false);
+            Command command = new Command("SELECT Id, name, prerequis_Id, guidImage, isSpeciality, [description], createdAt, updatedAt, isActive, organisation_Id  FROM [Training] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -186,7 +185,7 @@ namespace DAL.Services
 
         public IEnumerable<TrainingDal>? GetTrainingsByUserId(int id)
         {
-            Command command = new Command(@"SELECT [Training].Id, [Training].name, [Training].prerequis, [Training].picture, [Training].isSpeciality, [Training].[description], [Training].createdAt, [Training].updatedAt, [Training].isActive, [Training].organisation_Id, [User_Training].refNumber, [User_Training].isMostLevel   
+            Command command = new Command(@"SELECT [Training].Id, [Training].name, [Training].prerequis_Id, [Training].guidImage, [Training].isSpeciality, [Training].[description], [Training].createdAt, [Training].updatedAt, [Training].isActive, [Training].organisation_Id, [User_Training].refNumber, [User_Training].isMostLevel   
                                             FROM [Training] 
                                             JOIN [User_Training] ON [Training].Id = [User_Training].training_Id
                                             WHERE [User_Training].user_Id = @Id AND [Training].isActive =1;", false);
@@ -204,7 +203,7 @@ namespace DAL.Services
 
         public IEnumerable<TrainingDal>? GetTrainingsByOrganisationId(int id)
         {
-            Command command = new Command(@"SELECT [Training].Id, [Training].name, [Training].prerequis, [Training].picture, [Training].isSpeciality, [Training].[description], [Training].createdAt, [Training].updatedAt, [Training].isActive, [Training].organisation_Id  
+            Command command = new Command(@"SELECT [Training].Id, [Training].name, [Training].prerequis_Id, [Training].guidImage, [Training].isSpeciality, [Training].[description], [Training].createdAt, [Training].updatedAt, [Training].isActive, [Training].organisation_Id  
                                             FROM [Training] 
                                             JOIN [Organisation] ON [Training].organisation_Id = [Organisation].Id
                                             WHERE [Organisation].Id = @Id AND [Training].isActive = 1;", false);

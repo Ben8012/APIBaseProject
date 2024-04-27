@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using API.Models.Forms.Adress;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Models.Forms.Organisation
 {
@@ -11,9 +12,7 @@ namespace API.Models.Forms.Organisation
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public string GuidImage { get; set; }
-
         [Required]
-        public int AdressId { get; set; }
+        public AdressForm Adress { get; set; }
     }
 }

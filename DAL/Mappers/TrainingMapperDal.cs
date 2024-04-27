@@ -11,8 +11,8 @@ namespace DAL.Mappers
             {
                 Id = (int)reader["Id"],
                 Name = (string)reader["name"],
-                Prerequisite = (string)reader["prerequis"],
-                Picture = (string)reader["picture"],
+                PrerequisId = reader["prerequis_Id"] is DBNull ? 0 : (int)reader["prerequis_Id"],
+                GuidImage = reader["guidImage"] is DBNull ? "" : (string)reader["guidImage"],
                 IsSpeciality = (bool)reader["isSpeciality"],
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],
@@ -30,8 +30,8 @@ namespace DAL.Mappers
             {
                 Id = (int)reader["Id"],
                 Name = (string)reader["name"],
-                Prerequisite = (string)reader["prerequis"],
-                Picture = (string)reader["picture"],
+                PrerequisId = reader["prerequis_Id"] is DBNull ? 0 : (int)reader["prerequis_Id"],
+                GuidImage = reader["guidImage"] is DBNull ? "" : (string)reader["guidImage"],
                 IsSpeciality = (bool)reader["isSpeciality"],
                 CreatedAt = (DateTime)reader["createdAt"],
                 UpdatedAt = reader["updatedAt"] is DBNull ? null : (DateTime?)reader["updatedAt"],

@@ -16,8 +16,8 @@ namespace API.Mappers
             {
                Id= trainingBll.Id,
                Name=trainingBll.Name,
-               Prerequisite=trainingBll.Prerequisite,
-               Picture=trainingBll.Picture,
+               Prerequis=trainingBll.Prerequis is null ? null : trainingBll.Prerequis.ToTraining(),
+               GuidImage =trainingBll.GuidImage,
                IsSpeciality=trainingBll.IsSpeciality,
                CreatedAt=trainingBll.CreatedAt,
                UpdatedAt=trainingBll.UpdatedAt,
@@ -34,8 +34,7 @@ namespace API.Mappers
             return new AddTrainingFormBll()
             {
                 Name = addTrainingFrom.Name,
-                Prerequisite = addTrainingFrom.Prerequisite,
-                Picture = addTrainingFrom.Picture,
+                PrerequisId = addTrainingFrom.PrerequisId,
                 IsSpeciality = addTrainingFrom.IsSpeciality,
                 OrganisationId = addTrainingFrom.OrganisationId,
                 Description = addTrainingFrom.Description,
@@ -48,8 +47,7 @@ namespace API.Mappers
             {
                 Id = updateTrainingForm.Id,
                 Name = updateTrainingForm.Name,
-                Prerequisite = updateTrainingForm.Prerequisite,
-                Picture = updateTrainingForm.Picture,
+                PrerequisId = updateTrainingForm.PrerequisId,
                 IsSpeciality = updateTrainingForm.IsSpeciality,
                 OrganisationId = updateTrainingForm.OrganisationId,
                 Description = updateTrainingForm.Description,

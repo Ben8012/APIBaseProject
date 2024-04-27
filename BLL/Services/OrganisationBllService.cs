@@ -30,9 +30,15 @@ namespace BLL.Services
             _adressBll = adressBll;
         }
 
-        public int? Delete(int id)
+        public IEnumerable<OrganisationBll> Delete(int id)
         {
-            return _organisationDal.Delete(id);
+            int? nbligne = _organisationDal.Delete(id);
+            List<OrganisationBll> organisations = new List<OrganisationBll>();
+            if (nbligne.HasValue)
+            {
+                organisations = _organisationDal.GetAll().Select(u => u.ToOrganisationBll()).ToList();
+            }
+            return organisations;
         }
 
         public IEnumerable<OrganisationBll> GetAll()
@@ -54,12 +60,21 @@ namespace BLL.Services
 
         public OrganisationBll? Insert(AddOrganisationFormBll form)
         {
-            return _organisationDal.Insert(form.ToAddOrganisationFromDal())?.ToOrganisationBll();
+       
+            AdressBll adress = _adressBll.Insert(form.Adress);
+            form.AdressId = adress.Id;
+            OrganisationBll organisation = _organisationDal.Insert(form.ToAddOrganisationFromDal())?.ToOrganisationBll();
+            return organisation;
         }
 
         public OrganisationBll? Update(UpdateOrganisationFormBll form)
         {
-            return _organisationDal.Update(form.ToUpdateOrganisationFormDal())?.ToOrganisationBll();
+
+            AdressBll adress = _adressBll.Insert(form.Adress);
+            form.AdressId = adress.Id;
+            OrganisationBll organisation = _organisationDal.Update(form.ToUpdateOrganisationFormDal())?.ToOrganisationBll();
+            return organisation;
+          
         }
 
         public int? Disable(int id)
@@ -71,15 +86,5 @@ namespace BLL.Services
         {
             return _organisationDal.Enable(id); ;
         }
-
-        //public int? Participe(AddOrganisationParticipeFormBll form)
-        //{
-        //    return _organisationDal.Participe(form.ToAddOrganisationParticipeFormDal());
-        //}
-
-        //public int? UnParticipe(int userId, int organisationId)
-        //{
-        //    return _organisationDal.UnParticipe(userId, organisationId);
-        //}
     }
 }

@@ -26,13 +26,26 @@ namespace API.Controllers
             _token = token;
         }
 
-
-        [HttpGet("All/{userId}")]
-        public IActionResult GetAll(int userId)
+        [HttpGet]
+        public IActionResult getAll()
         {
             try
             {
-                return Ok(_diveplaceBll.GetAll(userId).Select(u => u.ToDiveplace()));
+                return Ok(_diveplaceBll.GetAll().Select(u => u.ToDiveplace()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+
+        [HttpGet("GetAllSiteAndVote/{userId}")]
+        public IActionResult GetAllSiteAndVote(int userId)
+        {
+            try
+            {
+                return Ok(_diveplaceBll.GetAllSiteAndVote(userId).Select(u => u.ToDiveplace()));
             }
             catch (Exception ex)
             {

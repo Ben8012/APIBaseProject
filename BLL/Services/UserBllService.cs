@@ -51,6 +51,7 @@ namespace BLL.Services
             List<UserBll> users = _userDal.GetAll().Select(u => u.ToUserBll()).ToList();
             foreach (UserBll user in users)
             {
+                user.Email = "";
                 user.Adress = _adressBll.GetById(user.AdressId);
                 user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
                 foreach (var club in user.Clubs)
@@ -62,6 +63,16 @@ namespace BLL.Services
                 user.Friends = _userDal.GetFriendsUserId(user.Id).Select(u => u.ToUserBll()).ToList();
                 user.Likers = _userDal.GetLikersByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
                 user.Likeds = _userDal.GetLikedsByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
+
+              
+                foreach (var liker in user.Likers)
+                {
+                    liker.Email = "";
+                }
+                foreach (var liked in user.Likeds)
+                {
+                    liked.Email = "";
+                }
 
                 user.Trainings = _trainingDal.GetTrainingsByUserId(user.Id).Select(t => t.ToTrainingBll()).ToList();
                 foreach (var training in user.Trainings)
@@ -110,6 +121,7 @@ namespace BLL.Services
             }
             foreach (var liker in user.Likers)
             {
+                liker.Email = "";
                 liker.Trainings = _trainingDal.GetTrainingsByUserId(liker.Id).Select(t => t.ToTrainingBll()).ToList();
                 foreach (var training in liker.Trainings)
                 {
@@ -118,6 +130,7 @@ namespace BLL.Services
             }
             foreach (var liked in user.Likeds)
             {
+                liked.Email = "";
                 liked.Trainings = _trainingDal.GetTrainingsByUserId(liked.Id).Select(t => t.ToTrainingBll()).ToList();
                 foreach (var training in liked.Trainings)
                 {
