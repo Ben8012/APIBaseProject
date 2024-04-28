@@ -3,6 +3,7 @@ using DAL.Mappers;
 using DAL.Models.DTO;
 using DAL.Models.Forms.Insurance;
 using DAL.Models.Forms.Message;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -82,7 +83,7 @@ namespace DAL.Services
 
         public IEnumerable<MessageDal> GetAll()
         {
-            Command command = new Command("SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive FROM [Message];", false);
+            Command command = new Command("SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive, isRead FROM [Message];", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToMessageDal());
@@ -96,7 +97,6 @@ namespace DAL.Services
 
         public MessageDal? GetById(int id)
         {
-
             try
             {
                 MessageDal? message = GetMessageById(id);
@@ -113,12 +113,13 @@ namespace DAL.Services
         public MessageDal? Insert(AddMessageFormDal form)
         {
 
-            Command command = new Command("INSERT INTO [Message](sender_Id, reciever_Id, content, createdAt, isActive ) OUTPUT inserted.id VALUES( @sender_Id, @reciever_Id, @content, @createdAt, @isActive )", false);
+            Command command = new Command("INSERT INTO [Message](sender_Id, reciever_Id, content, createdAt, isActive,isRead ) OUTPUT inserted.id VALUES( @sender_Id, @reciever_Id, @content, @createdAt, @isActive, @isRead )", false);
             command.AddParameter("sender_Id", form.SenderId);
             command.AddParameter("reciever_Id", form.RecieverId);
             command.AddParameter("content", form.Content);
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive", 1);
+            command.AddParameter("isRead", 0);
 
             try
             {
@@ -166,7 +167,7 @@ namespace DAL.Services
 
         private MessageDal? GetMessageById(int id)
         {
-            Command command = new Command("SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive FROM [Message] WHERE Id = @Id;", false);
+            Command command = new Command("SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive, isRead FROM [Message] WHERE Id = @Id;", false);
             command.AddParameter("Id", id);
             try
             {
@@ -181,7 +182,7 @@ namespace DAL.Services
 
         public IEnumerable<MessageDal>? GetMessagesBySenderId(int id)
         {
-            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive 
+            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive, isRead 
                                             FROM [Message] 
                                             WHERE sender_Id = @Id;", false);
             command.AddParameter("Id", id);
@@ -198,7 +199,7 @@ namespace DAL.Services
 
         public IEnumerable<MessageDal>? GetMessagesBetween(int sender, int reciever)
         {
-            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive 
+            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive ,isRead
                                             FROM [Message] 
                                             WHERE sender_Id = @sender AND reciever_Id = @reciever
                                             OR sender_Id = @reciever AND reciever_Id = @sender", false);
@@ -217,7 +218,7 @@ namespace DAL.Services
 
         public IEnumerable<MessageDal>? GetMessagesByRecieverId(int id)
         {
-            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive 
+            Command command = new Command(@"SELECT Id, sender_Id, reciever_Id, content, createdAt, updatedAt, isActive , isRead
                                             FROM [Message] 
                                             WHERE reciever_Id = @Id;", false);
             command.AddParameter("Id", id);
@@ -231,5 +232,26 @@ namespace DAL.Services
                 throw ex;
             }
         }
+
+        public void IsRead(int friendId, int userId)
+        {
+            Command command = new Command(@"UPDATE [Message] SET isRead = @isRead
+                                            WHERE sender_Id = @sender AND reciever_Id = @reciever
+                                            OR sender_Id = @reciever AND reciever_Id = @sender", false);
+            command.AddParameter("reciever", friendId);
+            command.AddParameter("sender", userId);
+            command.AddParameter("isRead", 1);
+         
+            try
+            {
+                _connection.ExecuteNonQuery(command);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw ex;
+            }
+        }
+      
     }
 }

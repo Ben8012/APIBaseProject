@@ -27,8 +27,9 @@ namespace BLL.Services
         private readonly IAdressBll _adressBll;
         private readonly ITrainingDal _trainingDal;
         private readonly IOrganisationDal _organisationDal;
+        private readonly IMessageDal _messageDal;
 
-        public UserBllService(ILogger<UserBllService> logger, IOrganisationDal organisationDal, ITrainingDal trainingDal, IUserDal userDal, IClubDal clubDal, IDivelogDal diveLogDal, IEventDal eventDal, IDiveplaceDal diveplaceDal, IAdressBll adressBll)
+        public UserBllService(ILogger<UserBllService> logger,IMessageDal messageDal, IOrganisationDal organisationDal, ITrainingDal trainingDal, IUserDal userDal, IClubDal clubDal, IDivelogDal diveLogDal, IEventDal eventDal, IDiveplaceDal diveplaceDal, IAdressBll adressBll)
         {
             _userDal = userDal;
             _logger = logger;
@@ -39,6 +40,7 @@ namespace BLL.Services
             _adressBll = adressBll;
             _trainingDal = trainingDal;
             _organisationDal= organisationDal;
+            _messageDal = messageDal;
         }
 
         public int? Delete(int id)
@@ -60,9 +62,9 @@ namespace BLL.Services
                 }
                 //user.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
                 //user.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
-                user.Friends = _userDal.GetFriendsUserId(user.Id).Select(u => u.ToUserBll()).ToList();
-                user.Likers = _userDal.GetLikersByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
-                user.Likeds = _userDal.GetLikedsByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
+                user.Friends = GetFriendsUserId(user.Id).ToList();
+                user.Likers = GetLikersByUserId(user.Id).ToList();
+                user.Likeds = GetLikedsByUserId(user.Id).ToList();
 
               
                 foreach (var liker in user.Likers)
@@ -100,11 +102,20 @@ namespace BLL.Services
             //    divelog.Event = divelog.EventId == 0 ? null : _eventDal.GetById(divelog.EventId)?.ToEventBll();
             //}
             //user.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
-            user.Friends = _userDal.GetFriendsUserId(user.Id).Select(u => u.ToUserBll()).ToList();
-            user.Likers = _userDal.GetLikersByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
-            user.Likeds = _userDal.GetLikedsByUserId(user.Id).Select(u => u.ToUserBll()).ToList();
+            user.Friends = GetFriendsUserId(user.Id).ToList();
+            user.Likers = GetLikersByUserId(user.Id).ToList();
+            user.Likeds = GetLikedsByUserId(user.Id).ToList();
             foreach (var friend in user.Friends)
             {
+                //friend.Email = "";
+                friend.Messages = _messageDal.GetMessagesBetween(user.Id, friend.Id).Select(m => m.ToMessageBll()).ToList();
+                foreach (var message in friend.Messages)
+                {
+                    message.Sender = _userDal.GetById(message.SenderId).ToUserBll();
+                    message.Sender.Email = "";
+                    message.Reciever = _userDal.GetById(message.RecieverId).ToUserBll();
+                    message.Reciever.Email = "";
+                }
                 friend.Adress = _adressBll.GetById(friend.AdressId);
                 friend.Clubs = _clubDal.GetClubsByUserId(friend.Id).Select(c => c.ToClubBll()).ToList();
                 foreach(var club in friend.Clubs)

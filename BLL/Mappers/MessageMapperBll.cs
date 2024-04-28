@@ -18,7 +18,7 @@ namespace BLL.Mappers
                 Content = messageDal.Content,
                 UpdatedAt = messageDal.UpdatedAt,
                 IsActive = messageDal.IsActive,
-
+                IsRead= messageDal.IsRead,
             };
         }
 

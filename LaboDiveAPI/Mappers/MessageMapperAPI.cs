@@ -20,6 +20,7 @@ namespace API.Mappers
                 Content= messageBll.Content,
                 UpdatedAt= messageBll.UpdatedAt,
                 IsActive= messageBll.IsActive,
+                IsRead= messageBll.IsRead,
 
             };
         }

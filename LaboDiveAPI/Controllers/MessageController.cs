@@ -159,12 +159,26 @@ namespace API.Controllers
 
 
 
-        [HttpGet("RecieverMessages{id}")]
+        [HttpGet("RecieverMessages/{id}")]
         public IActionResult GetMessagesByRecieverId(int id)
         {
             try
             {
                 return Ok(_messageBll.GetMessagesByRecieverId(id).Select(u => u.ToMessage()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("IsRead/{friendId}/{userId}")]
+        public IActionResult IsRead(int friendId, int userId)
+        {
+            try
+            {
+                _messageBll.IsRead(friendId,userId);
+                return Ok(_messageBll.GetMessagesBetween(friendId, userId).Select(u => u.ToMessage()));
             }
             catch (Exception ex)
             {

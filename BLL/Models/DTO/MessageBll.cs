@@ -12,5 +12,7 @@
 
         public UserBll? Sender { get; set; }
         public UserBll? Reciever { get; set; }
+
+        public bool IsRead { get; set; }
     }
 }

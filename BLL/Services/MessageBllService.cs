@@ -80,7 +80,7 @@ namespace BLL.Services
             List<MessageBll> messages = _messageDal.GetMessagesBySenderId(id).Select(u => u.ToMessageBll()).ToList();
             foreach (var message in messages)
             {
-                //message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
                 message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
             }
             return messages;
@@ -92,7 +92,7 @@ namespace BLL.Services
             foreach (var message in messages)
             {
                 message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
-                //message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+                message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
             }
 
             return messages;
@@ -103,13 +103,15 @@ namespace BLL.Services
             List<MessageBll> messages = _messageDal.GetMessagesBetween(sender, reciever).Select(u => u.ToMessageBll()).ToList();
             foreach (var message in messages)
             {
-                message.Reciever = _userDal.GetById(message.RecieverId).ToUserBll();
-                message.Sender = _userDal.GetById(message.SenderId).ToUserBll();
+                message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
             }
             return messages;
         }
 
-
-
+        public void IsRead(int friendId, int userId)
+        {
+            _messageDal.IsRead(friendId, userId);
+        }
     }
 }

@@ -46,7 +46,8 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_userBll.GetAll().Select(u => u.ToUser()));
+                List<User> users = _userBll.GetAll().Select(u => u.ToUser()).ToList();
+                return Ok(users);
             }
             catch (Exception ex)
             {

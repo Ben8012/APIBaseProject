@@ -46,6 +46,7 @@ namespace API.Mappers
                     Events = userBll.Events is null ? null : userBll.Events.Select(e => e.ToEvent()).ToList(),
                     Likers = userBll.Likers is null ? null : userBll.Likers.Select(f => f.ToUser()).ToList(),
                     Likeds = userBll.Likeds is null ? null : userBll.Likeds.Select(f => f.ToUser()).ToList(),
+                    Messages = userBll.Messages is null ? null : userBll.Messages.Select(m => m.ToMessage()).ToList(),
 
                 };
         }

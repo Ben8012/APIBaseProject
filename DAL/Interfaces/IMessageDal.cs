@@ -21,5 +21,7 @@ namespace DAL.Interfaces
         IEnumerable<MessageDal>? GetMessagesByRecieverId(int id);
 
         IEnumerable<MessageDal>? GetMessagesBetween(int sender, int reciever);
+
+        void IsRead(int friendId, int userId);
     }
 }

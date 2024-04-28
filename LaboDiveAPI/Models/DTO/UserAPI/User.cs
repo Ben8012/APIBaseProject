@@ -1,4 +1,6 @@
-﻿namespace API.Models.DTO.UserAPI
+﻿using BLL.Models.DTO;
+
+namespace API.Models.DTO.UserAPI
 {
     public class User
     {
@@ -36,6 +38,7 @@
         public List<Club>? Clubs { get;set; }
 
         public List<Event>? Events { get; set; }
+        public List<Message>? Messages { get; set; }
 
 
     }

@@ -34,5 +34,7 @@ namespace BLL.Models.DTO
         public List<ClubBll>? Clubs { get; set; }
         public List<EventBll>? Events { get; set; }
 
+        public List<MessageBll>? Messages { get; set; }
+
     }
 }

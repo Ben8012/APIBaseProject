@@ -5,6 +5,7 @@ using DAL.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,5 +23,7 @@ namespace BLL.Interfaces
         IEnumerable<MessageBll>? GetMessagesBySenderId(int id);
         IEnumerable<MessageBll>? GetMessagesByRecieverId(int id);
         IEnumerable<MessageBll>? GetMessagesBetween(int sender, int reciever);
+
+        void IsRead(int friendId, int userId);
     }
 }
