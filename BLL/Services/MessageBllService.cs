@@ -57,7 +57,10 @@ namespace BLL.Services
 
         public MessageBll? Insert(AddMessageFormBll form)
         {
-            return _messageDal.Insert(form.ToAddMessageFromDal())?.ToMessageBll();
+            MessageBll message = _messageDal.Insert(form.ToAddMessageFromDal())?.ToMessageBll();
+            message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+            message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+            return message;
         }
 
         public MessageBll? Update(UpdateMessageFormBll form)
@@ -109,9 +112,10 @@ namespace BLL.Services
             return messages;
         }
 
-        public void IsRead(int friendId, int userId)
+        public IEnumerable<MessageBll>? IsRead(int friendId, int userId)
         {
             _messageDal.IsRead(friendId, userId);
+            return GetMessagesBetween(friendId, userId);
         }
     }
 }

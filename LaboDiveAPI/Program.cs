@@ -140,7 +140,7 @@ app.UseCors("MyPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHub<ChatHub>("/chat", options =>
+app.MapHub<ChatHub>("/Chathub", options =>
 {
     options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
 });

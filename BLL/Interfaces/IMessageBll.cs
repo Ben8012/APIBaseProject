@@ -24,6 +24,6 @@ namespace BLL.Interfaces
         IEnumerable<MessageBll>? GetMessagesByRecieverId(int id);
         IEnumerable<MessageBll>? GetMessagesBetween(int sender, int reciever);
 
-        void IsRead(int friendId, int userId);
+        IEnumerable<MessageBll>? IsRead(int friendId, int userId);
     }
 }

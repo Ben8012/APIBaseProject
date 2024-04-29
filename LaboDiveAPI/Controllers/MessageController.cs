@@ -177,8 +177,7 @@ namespace API.Controllers
         {
             try
             {
-                _messageBll.IsRead(friendId,userId);
-                return Ok(_messageBll.GetMessagesBetween(friendId, userId).Select(u => u.ToMessage()));
+                return Ok(_messageBll.IsRead(friendId, userId));
             }
             catch (Exception ex)
             {
