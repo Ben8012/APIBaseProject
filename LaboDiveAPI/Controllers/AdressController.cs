@@ -12,7 +12,7 @@ namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    //[Authorize("Auth")]
+    [Authorize("Auth")]
     public class AdressController : ControllerBase
     {
         private readonly IAdressBll _adressBll;

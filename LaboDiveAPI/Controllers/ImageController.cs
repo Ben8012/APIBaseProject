@@ -7,12 +7,13 @@ using Microsoft.Extensions.Hosting;
 using DAL.Models.DTO;
 using System.Data.Common;
 using System.Drawing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    //[Authorize("Auth")]
+    [Authorize("Auth")]
     public class ImageController : ControllerBase
     {
         private readonly string _uploadFolder;
@@ -471,6 +472,7 @@ namespace API.Controllers
             return Ok(new { Message = "ok" });
         }
 
+        [AllowAnonymous]
         [HttpGet("SiteImage/{imageName}")]
         public IActionResult GetSiteImage(string imageName)
         {
@@ -558,6 +560,7 @@ namespace API.Controllers
             return Ok(new { Message = "ok" });
         }
 
+        [AllowAnonymous]
         [HttpGet("SitePlan/{imageName}")]
         public IActionResult GetSitePlan(string imageName)
         {
@@ -646,6 +649,7 @@ namespace API.Controllers
             return Ok(new { Message = "ok" });
         }
 
+        [AllowAnonymous]
         [HttpGet("OrganisationImage/{imageName}")]
         public IActionResult GetOrganisationImage(string imageName)
         {
@@ -660,7 +664,6 @@ namespace API.Controllers
             return File(imageFileStream, "image/jpeg");
         }
 
-        //
         [HttpPost("TrainingImage/{id}")]
         public async Task<IActionResult> InsertTrainingImage(int id)
         {
@@ -734,6 +737,7 @@ namespace API.Controllers
             return Ok(new { Message = "ok" });
         }
 
+        [AllowAnonymous]
         [HttpGet("TrainingImage/{imageName}")]
         public IActionResult GeTrainingImage(string imageName)
         {

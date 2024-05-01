@@ -1,11 +1,13 @@
 ﻿using API.Mappers;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize("Auth")]
     public class ChatController : Controller
     {
         private readonly IMessageBll _messageBll;

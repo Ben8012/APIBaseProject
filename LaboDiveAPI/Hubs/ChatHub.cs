@@ -27,6 +27,12 @@ namespace API.Hubs
             await Clients.All.SendAsync("MessageDeleted", message);
         }
 
+        public async Task MessageIsRead(IsReadMessageFormBll message)
+        {
+            _messageBll.IsRead(message.FriendId, message.UserId);
+            await Clients.All.SendAsync("MessageReaded", message);
+        }
+
         //public async Task SendMessageToGroup(Message message, string groupName)
         //{
         //    await Clients.Group(groupName).SendAsync("fromGroup" + groupName, message);

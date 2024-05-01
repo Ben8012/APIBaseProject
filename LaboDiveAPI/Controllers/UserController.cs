@@ -17,12 +17,14 @@ using System.Xml;
 using System.Data.SqlClient;
 using DAL.Interfaces;
 using DAL.Models.DTO;
+using System.Net.Mail;
+using System.Net;
 
 namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    //[Authorize("Auth")]
+    [Authorize("Auth")]
     public class UserController : ControllerBase
     {
 
@@ -61,7 +63,7 @@ namespace API.Controllers
             try
             {
                 User user = _userBll.GetById(id)?.ToUser();
-                user.Token = _token.GenerateJWTUser(user);
+               
                 return Ok(user);
             }
             catch (Exception ex)
@@ -288,6 +290,7 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("Token")]
         public IActionResult GetUserByToken([FromBody] Token form)
         {
@@ -295,7 +298,6 @@ namespace API.Controllers
 
             try
             {
-
                 JwtSecurityToken token = new JwtSecurityToken(jwtEncodedString: form.TokenString);
                 int id = int.Parse( token.Claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid").Value);
 
@@ -366,6 +368,96 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "la modification a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost("SendEmailToResetPassword")]
+        public IActionResult SendEmailToResetPassword([FromBody] SendEmailToResetPassword form)
+        {
+            Command command = new Command("SELECT Id FROM [User] WHERE email = @email;", false);
+            command.AddParameter("email", form.Email);
+
+            User? user = new User();
+            try
+            {
+                int? id = (int?)_connection.ExecuteScalar(command); // recuperer l'id de la boisson inseré
+                if (id.HasValue)
+                {
+                    user = _userBll.GetById(id.Value).ToUser();
+                    if (user is null)
+                    {
+                        return BadRequest(new { Message = "L'utilisateur n'a pas été trouvé " });
+                    }
+                    user.Token = _token.GenerateJWTUser(user);
+                }
+                else
+                {
+                    throw new Exception("probleme l'email est inconnu");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            string smtpServer = "smtp.gmail.com";
+            string smtpUsername = "easyorder100@gmail.com";
+            string smtpPassword = "olmo vgpy thwt yupj";
+
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress("easyorder100@gmail.com");
+            //message.To.Add(form.Email);
+            message.To.Add(form.Email);
+            message.Subject = "Réinitialisation de mot de passe";
+            message.Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : http://localhost:4200/reset-password/"+user.Token;
+
+            SmtpClient smtpClient = new SmtpClient(smtpServer);
+            smtpClient.Port = 587; // Le port SMTP approprié
+            smtpClient.EnableSsl = true;
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+
+            try
+            {
+                smtpClient.Send(message);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Erreur lors de l'envoi de l'e-mail : " + ex.Message });
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("ResetPassword")]
+        public IActionResult ResetPassword([FromBody] ResetPassword form)
+        {
+            form.Password = BCrypt.Net.BCrypt.HashPassword(form.Password);
+
+            Command command = new Command("UPDATE [User] SET passwd = @passwd OUTPUT inserted.id WHERE email = @email;", false);
+            command.AddParameter("email", form.Email);
+            command.AddParameter("passwd", form.Password);
+
+            User user = new User();
+            try
+            {
+                int? id = (int?)_connection.ExecuteScalar(command); // recuperer l'id de la boisson inseré
+                if (id.HasValue)
+                {
+                    user = _userBll.GetById(id.Value).ToUser();
+                    user.Token = _token.GenerateJWTUser(user);
+                    return Ok(user);
+                }
+                else
+                {
+                    throw new Exception("probleme de recuperation de l'id lors de l'insertion");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

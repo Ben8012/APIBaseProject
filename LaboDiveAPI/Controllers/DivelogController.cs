@@ -5,6 +5,7 @@ using API.Models.Forms.Insurance;
 using API.Tools;
 using BLL.Interfaces;
 using BLL.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize("Auth")]
     public class DivelogController : ControllerBase
     {
 

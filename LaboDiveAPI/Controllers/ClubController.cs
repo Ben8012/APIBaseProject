@@ -6,6 +6,7 @@ using API.Models.Forms.Insurance;
 using API.Tools;
 using BLL.Interfaces;
 using BLL.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,7 @@ namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize("Auth")]
     public class ClubController : ControllerBase
     {
         private readonly IClubBll _clubBll;
@@ -27,7 +29,7 @@ namespace API.Controllers
             _token = token;
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {

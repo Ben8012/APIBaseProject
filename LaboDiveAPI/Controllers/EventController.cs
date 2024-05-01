@@ -7,6 +7,7 @@ using API.Models.Forms.Insurance;
 using API.Tools;
 using BLL.Interfaces;
 using BLL.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ namespace API.Controllers
             _token = token;
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {

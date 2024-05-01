@@ -14,6 +14,7 @@ namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize("Auth")]
     public class InsuranceController : ControllerBase
     {
         private readonly IInsuranceBll _insuranceBll;
