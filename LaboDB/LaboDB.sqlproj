@@ -90,7 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="LaboDB.publish.xml" />
-    <None Include="LaboDB_1.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment1.sql" />
