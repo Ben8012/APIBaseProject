@@ -3,6 +3,7 @@
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
 	[name] NVARCHAR(50) NOT NULL,
 	[description] NVARCHAR(1000) NULL,
+	[guidImage] VARBINARY(MAX) NULL,
 	[createdAt] DATETIME2 NOT NULL,
 	[updatedAt] DATETIME2 NULL,
 	[isActive] BIT NOT NULL,
