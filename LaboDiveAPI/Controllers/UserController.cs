@@ -63,7 +63,6 @@ namespace API.Controllers
             try
             {
                 User user = _userBll.GetById(id)?.ToUser();
-               
                 return Ok(user);
             }
             catch (Exception ex)

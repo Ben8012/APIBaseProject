@@ -4,8 +4,8 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string? GuidImage { get; set; }
-        public string? GuidMap { get; set; }
+        public byte[]? GuidImage { get; set; }
+        public byte[]? GuidMap { get; set; }
         public string? Description { get; set; }
         public int AdressId { get; set; }
         public DateTime CreatedAt { get; set; }

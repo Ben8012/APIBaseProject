@@ -7,7 +7,7 @@ namespace API.Models.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public Training Prerequis { get; set; }
-        public string GuidImage { get; set; }
+        public byte[]? GuidImage { get; set; }
         public bool IsSpeciality { get; set; }
         public Organisation? Organisation { get; set; }
         public DateTime CreatedAt { get; set; }

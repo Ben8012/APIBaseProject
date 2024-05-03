@@ -25,15 +25,4 @@
     <ProjectReference Include="..\BLL\BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Images\InsuranceImages\" />
-    <Folder Include="Images\LevelImages\" />
-    <Folder Include="Images\CertificatImages\" />
-    <Folder Include="Images\DiveplaceImages\" />
-    <Folder Include="Images\DiveplacePlan\" />
-    <Folder Include="Images\TrainingImages\" />
-    <Folder Include="Images\OrganisationImages\" />
-    <Folder Include="Images\ProfilImages\" />
-  </ItemGroup>
-
 </Project>

@@ -11,8 +11,8 @@ namespace DAL.Mappers
             {
                 Id = (int)reader["Id"],
                 Name = (string)reader["name"],             
-                GuidImage = reader["guidImage"] is DBNull ? null : (string)reader["guidImage"],
-                GuidMap = reader["guidMap"] is DBNull ? null : (string)reader["guidMap"],
+                GuidImage = reader["guidImage"] is DBNull ? null : (byte[])reader["guidImage"],
+                GuidMap = reader["guidMap"] is DBNull ? null : (byte[])reader["guidMap"],
                 Description = reader["description"] is DBNull ? null : (string)reader["description"],
                 CreatedAt = (DateTime)reader["CreatedAt"],
                 UpdatedAt = reader["UpdatedAt"] is DBNull ? null : (DateTime?)reader["UpdatedAt"],

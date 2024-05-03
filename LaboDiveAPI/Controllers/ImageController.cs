@@ -8,6 +8,8 @@ using DAL.Models.DTO;
 using System.Data.Common;
 using System.Drawing;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.Controllers
 {
@@ -16,741 +18,468 @@ namespace API.Controllers
     [Authorize("Auth")]
     public class ImageController : ControllerBase
     {
-        private readonly string _uploadFolder;
-        private readonly string _insuranceImage;
-        private readonly string _levelImage;
-        private readonly string _certificatImage;
-        private readonly string _diveplaceImage;
-        private readonly string _diveplacePlan;
-        private readonly string _organisationImage;
-        private readonly string _trainingImage;
-
         private readonly Connection _connection;
-
-
+       
         public ImageController(Connection connection)
         {
-          
-            _uploadFolder = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "ProfilImages");
-            _insuranceImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "InsuranceImages");
-            _levelImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "LevelImages");
-            _certificatImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "CertificatImages");
-            _diveplaceImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "DiveplaceImages");
-            _diveplacePlan = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "DiveplacePlan");
-            _organisationImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "OrganisationImages");
-            _trainingImage = Path.Combine(Directory.GetCurrentDirectory() + "\\Images", "", "TrainingImages");
-            if (!Directory.Exists(_uploadFolder))
-            {
-                Directory.CreateDirectory(_uploadFolder);
-            }
-            _connection = connection;
+           _connection = connection;
         }
 
 
-        [HttpPost("ProfilImage/{id}")]
-        public async Task<IActionResult> InsertProfilImage(int id)
+        [HttpPost("{id}/{type}")]
+        public async Task<IActionResult> Insert(int id,string type)
         {
-            var test = Directory.GetCurrentDirectory();
-
-            if (!Request.HasFormContentType)
-            {
-                return BadRequest("The request doesn't contain a valid form content.");
-            }
-
-            var form = Request.Form;
-
-            var files = form.Files;
-
-            string guidImage;
-            Command command1 = new Command(@"SELECT guidImage 
-                                            FROM [User]  
-                                            WHERE Id=@Id ; ", false);
-            command1.AddParameter("Id", id);
-
             try
             {
-                guidImage = _connection.ExecuteScalar(command1) as string;
-                if(!String.IsNullOrEmpty(guidImage))
-                {
-                    var filePath = Path.Combine(_uploadFolder, guidImage);
+                var file = Request.Form.Files[0]; // Récupérer le fichier envoyé dans la requête
 
-                    if (System.IO.File.Exists(filePath))
+                if (file.Length > 0)
+                {
+                    using (var stream = new MemoryStream())
                     {
-                        System.IO.File.Delete(filePath);
+                        // Copier le contenu du fichier dans un flux mémoire
+                        await file.CopyToAsync(stream);
+
+                        // Convertir le flux en tableau d'octets
+                        byte[] imageBytes = stream.ToArray();
+
+                        // Insérer l'image blob dans la base de données
+                        if (type == "ProfilImage")
+                        {
+                            Command command = new Command(@"UPDATE [User] SET guidImage = @guidImage WHERE Id=@Id ;", false);
+                            command.AddParameter("Id", id);
+                            command.AddParameter("guidImage", imageBytes);
+                            try
+                            {
+                                _connection.ExecuteScalar(command);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+                        else if(type == "InsuranceImage")
+                        {
+                            Command command = new Command(@"UPDATE [User] SET guidInsurance = @guidInsurance WHERE Id=@Id ;", false);
+                            command.AddParameter("Id", id);
+                            command.AddParameter("guidInsurance", imageBytes);
+                            try
+                            {
+                                _connection.ExecuteScalar(command);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+                        else if (type == "LevelImage")
+                        {
+                            Command command = new Command(@"UPDATE [User] SET guidLevel = @guidLevel WHERE Id=@Id ;", false);
+                            command.AddParameter("Id", id);
+                            command.AddParameter("guidLevel", imageBytes);
+                            try
+                            {
+                                _connection.ExecuteScalar(command);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+                        else if (type == "CertificatImage")
+                        {
+                            Command command = new Command(@"UPDATE [User] SET guidCertificat = @guidCertificat WHERE Id=@Id ;", false);
+                            command.AddParameter("Id", id);
+                            command.AddParameter("guidCertificat", imageBytes);
+                            try
+                            {
+                                _connection.ExecuteScalar(command);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+                        else if (type == "SiteImage")
+                        {
+                            Command command = new Command(@"UPDATE [Diveplace] SET guidImage = @guidImage WHERE Id=@Id ;", false);
+                            command.AddParameter("Id", id);
+                            command.AddParameter("guidImage", imageBytes);
+                            try
+                            {
+                                _connection.ExecuteScalar(command);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+                        else if (type == "SitePlan")
+                        {
+                            Command command = new Command(@"UPDATE [Diveplace] SET guidMap = @guidMap WHERE Id=@Id ;", false);
+                            command.AddParameter("Id", id);
+                            command.AddParameter("guidMap", imageBytes);
+                            try
+                            {
+                                _connection.ExecuteScalar(command);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+                        else if (type == "OrganisationImage")
+                        {              
+                            Command command = new Command(@"UPDATE [Organisation] SET guidImage = @guidImage WHERE Id=@Id ;", false);
+                            command.AddParameter("Id", id);
+                            command.AddParameter("guidImage", imageBytes);
+                            try
+                            {
+                                _connection.ExecuteScalar(command);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+                        else if (type == "TrainingImage")
+                        {
+                            Command command = new Command(@"UPDATE [Training] SET guidImage = @guidImage WHERE Id=@Id ;", false);
+                            command.AddParameter("Id", id);
+                            command.AddParameter("guidImage", imageBytes);
+                            try
+                            {
+                                _connection.ExecuteScalar(command);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+
                     }
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Empty file.");
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                return StatusCode(500, "Error uploading and inserting image.");
             }
-
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
-                {
-                    var guid = Guid.NewGuid().ToString();
-                    var fileName = file.FileName;
-                    var filePath = Path.Combine(_uploadFolder, fileName);
-
-                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        Command command = new Command(@"UPDATE [User] SET 
-                                        guidImage = @guidImage
-                                        WHERE Id=@Id ; ", false);
-                        command.AddParameter("Id", id);
-                        command.AddParameter("guidImage", fileName);
-                          
-                        try
-                        {
-                            _connection.ExecuteScalar(command);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw ex;
-                        }
-                    }              
-                }
-            }
-            return Ok(new {Message = "ok"});
         }
 
-        [HttpGet("ProfilImage/{imageName}")]
-        public IActionResult GetProfilImage(string imageName)
+        [HttpGet("{id}/{type}")]
+        public IActionResult GetImage(int id, string type)
         {
-            var filePath = Path.Combine(_uploadFolder, imageName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return File(imageFileStream, "image/jpeg"); // Modifier le type de contenu en fonction du type d'image que vous stockez
-        }
-
-
-        [HttpPost("InsuranceImage/{id}")]
-        public async Task<IActionResult> InsertInsuranceImage(int id)
-        {
-            var test = Directory.GetCurrentDirectory();
-
-            if (!Request.HasFormContentType)
-            {
-                return BadRequest("The request doesn't contain a valid form content.");
-            }
-
-            var form = Request.Form;
-
-            var files = form.Files;
-
-            string guidInsurance;
-            Command command1 = new Command(@"SELECT guidInsurance 
-                                            FROM [User]  
-                                            WHERE Id=@Id ; ", false);
-            command1.AddParameter("Id", id);
-
+            byte[] imageBytes;
             try
             {
-                guidInsurance = _connection.ExecuteScalar(command1) as string;
-                if (!String.IsNullOrEmpty(guidInsurance))
+                // Récupérer l'image blob de la base de données
+                if (type == "ProfilImage")
                 {
-                    var filePath = Path.Combine(_insuranceImage, guidInsurance);
-
-                    if (System.IO.File.Exists(filePath))
+                    Command command = new Command(@"SELECT [User].guidImage FROM [User] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
                     {
-                        System.IO.File.Delete(filePath);
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
                     }
                 }
+                else if (type == "InsuranceImage")
+                {
+                    Command command = new Command(@"SELECT [User].guidInsurance FROM [User] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else if (type == "LevelImage")
+                {
+                    Command command = new Command(@"SELECT [User].guidLevel FROM [User] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else if (type == "CertificatImage")
+                {
+                    Command command = new Command(@"SELECT [User].guidCertificat FROM [User] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else if (type == "SiteImage")
+                {
+                    Command command = new Command(@"SELECT [Diveplace].guidImage FROM [Diveplace] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else if (type == "SitePlan")
+                {
+                    Command command = new Command(@"SELECT [Diveplace].guidMap FROM [Diveplace] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else if (type == "OrganisationImage")
+                {
+                    Command command = new Command(@"SELECT [Organisation].guidImage FROM [Organisation] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else if (type == "TrainingImage")
+                {
+                    Command command = new Command(@"SELECT [Training].guidImage FROM [Training] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else
+                {
+                    return NotFound("le type n'est pas connu"); // le type n'est pas connu
+                }
+
             }
             catch (Exception ex)
             {
-                throw ex;
+                return StatusCode(500, "Error retrieving image from database.");
             }
-
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
-                {
-                    var guid = Guid.NewGuid().ToString();
-                    var fileName = file.FileName;
-                    var filePath = Path.Combine(_insuranceImage, fileName);
-
-                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        Command command = new Command(@"UPDATE [User] SET 
-                                        guidInsurance = @guidInsurance
-                                        WHERE Id=@Id ; ", false);
-                        command.AddParameter("Id", id);
-                        command.AddParameter("guidInsurance", fileName);
-
-                        try
-                        {
-                            _connection.ExecuteScalar(command);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw ex;
-                        }
-                    }
-                }
-            }
-            return Ok(new { Message = "ok" });
         }
 
-        [HttpGet("InsuranceImage/{imageName}")]
-        public IActionResult GetInsuranceImage(string imageName)
-        {
-            var filePath = Path.Combine(_insuranceImage, imageName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return File(imageFileStream, "image/jpeg");
-        }
-
-
-        [HttpPost("LevelImage/{id}")]
-        public async Task<IActionResult> InsertLevelImage(int id)
-        {
-            var test = Directory.GetCurrentDirectory();
-
-            if (!Request.HasFormContentType)
-            {
-                return BadRequest("The request doesn't contain a valid form content.");
-            }
-
-            var form = Request.Form;
-
-            var files = form.Files;
-
-            string guidLevel;
-            Command command1 = new Command(@"SELECT guidLevel 
-                                            FROM [User]  
-                                            WHERE Id=@Id ; ", false);
-            command1.AddParameter("Id", id);
-
-            try
-            {
-                guidLevel = _connection.ExecuteScalar(command1) as string;
-                if (!String.IsNullOrEmpty(guidLevel))
-                {
-                    var filePath = Path.Combine(_levelImage, guidLevel);
-
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
-                {
-                    var guid = Guid.NewGuid().ToString();
-                    var fileName = file.FileName;
-                    var filePath = Path.Combine(_levelImage, fileName);
-
-                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        Command command = new Command(@"UPDATE [User] SET 
-                                        guidLevel = @guidLevel
-                                        WHERE Id=@Id ; ", false);
-                        command.AddParameter("Id", id);
-                        command.AddParameter("guidLevel", fileName);
-
-                        try
-                        {
-                            _connection.ExecuteScalar(command);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw ex;
-                        }
-                    }
-                }
-            }
-            return Ok(new { Message = "ok" });
-        }
-
-        [HttpGet("LevelImage/{imageName}")]
-        public IActionResult GetLevelImage(string imageName)
-        {
-            var filePath = Path.Combine(_levelImage, imageName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return File(imageFileStream, "image/jpeg");
-        }
-
-      
-        [HttpPost("CertificatImage/{id}")]
-        public async Task<IActionResult> InsertCertificatImage(int id)
-        {
-            var test = Directory.GetCurrentDirectory();
-
-            if (!Request.HasFormContentType)
-            {
-                return BadRequest("The request doesn't contain a valid form content.");
-            }
-
-            var form = Request.Form;
-
-            var files = form.Files;
-
-            string guidCertificat;
-            Command command1 = new Command(@"SELECT guidCertificat 
-                                            FROM [User]  
-                                            WHERE Id=@Id ; ", false);
-            command1.AddParameter("Id", id);
-
-            try
-            {
-                guidCertificat = _connection.ExecuteScalar(command1) as string;
-                if (!String.IsNullOrEmpty(guidCertificat))
-                {
-                    var filePath = Path.Combine(_certificatImage, guidCertificat);
-
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
-                {
-                    var guid = Guid.NewGuid().ToString();
-                    var fileName = file.FileName;
-                    var filePath = Path.Combine(_certificatImage, fileName);
-
-                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        Command command = new Command(@"UPDATE [User] SET 
-                                        guidCertificat = @guidCertificat
-                                        WHERE Id=@Id ; ", false);
-                        command.AddParameter("Id", id);
-                        command.AddParameter("guidCertificat", fileName);
-
-                        try
-                        {
-                            _connection.ExecuteScalar(command);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw ex;
-                        }
-                    }
-                }
-            }
-            return Ok(new { Message = "ok" });
-        }
-
-        [HttpGet("CertificatImage/{imageName}")]
-        public IActionResult GetCertificatImage(string imageName)
-        {
-            var filePath = Path.Combine(_certificatImage, imageName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return File(imageFileStream, "image/jpeg");
-        }
-
-
-        [HttpPost("SiteImage/{id}")]
-        public async Task<IActionResult> InsertSiteImage(int id)
-        {
-            var test = Directory.GetCurrentDirectory();
-
-            if (!Request.HasFormContentType)
-            {
-                return BadRequest("The request doesn't contain a valid form content.");
-            }
-
-            var form = Request.Form;
-
-            var files = form.Files;
-
-            string guidImage;
-            Command command1 = new Command(@"SELECT guidImage
-                                            FROM [Diveplace]  
-                                            WHERE Id=@Id ; ", false);
-            command1.AddParameter("Id", id);
-
-            try
-            {
-                guidImage = _connection.ExecuteScalar(command1) as string;
-                if (!String.IsNullOrEmpty(guidImage))
-                {
-                    var filePath = Path.Combine(_diveplaceImage, guidImage);
-
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
-                {
-                    var guid = Guid.NewGuid().ToString();
-                    var fileName = file.FileName;
-                    var filePath = Path.Combine(_diveplaceImage, fileName);
-
-                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        Command command = new Command(@"UPDATE [Diveplace] SET 
-                                        guidImage = @guidImage
-                                        WHERE Id=@Id ; ", false);
-                        command.AddParameter("Id", id);
-                        command.AddParameter("guidImage", fileName);
-
-                        try
-                        {
-                            _connection.ExecuteScalar(command);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw ex;
-                        }
-                    }
-                }
-            }
-            return Ok(new { Message = "ok" });
-        }
 
         [AllowAnonymous]
-        [HttpGet("SiteImage/{imageName}")]
-        public IActionResult GetSiteImage(string imageName)
+        [HttpGet("Allowed/{id}/{type}")]
+        public IActionResult GetAllowedImage(int id, string type)
         {
-            var filePath = Path.Combine(_diveplaceImage, imageName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return File(imageFileStream, "image/jpeg");
-        }
-
-        [HttpPost("SitePlan/{id}")]
-        public async Task<IActionResult> InsertSitePlan(int id)
-        {
-            var test = Directory.GetCurrentDirectory();
-
-            if (!Request.HasFormContentType)
-            {
-                return BadRequest("The request doesn't contain a valid form content.");
-            }
-
-            var form = Request.Form;
-
-            var files = form.Files;
-
-            string guidPlan;
-            Command command1 = new Command(@"SELECT guidMap
-                                            FROM [Diveplace]  
-                                            WHERE Id=@Id ; ", false);
-            command1.AddParameter("Id", id);
-
+            byte[] imageBytes;
             try
             {
-                guidPlan = _connection.ExecuteScalar(command1) as string;
-                if (!String.IsNullOrEmpty(guidPlan))
+                
+                if (type == "SiteImage")
                 {
-                    var filePath = Path.Combine(_diveplacePlan, guidPlan);
-
-                    if (System.IO.File.Exists(filePath))
+                    Command command = new Command(@"SELECT [Diveplace].guidImage FROM [Diveplace] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
                     {
-                        System.IO.File.Delete(filePath);
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
                     }
                 }
+                else if (type == "SitePlan")
+                {
+                    Command command = new Command(@"SELECT [Diveplace].guidMap FROM [Diveplace] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else if (type == "OrganisationImage")
+                {
+                    Command command = new Command(@"SELECT [Organisation].guidImage FROM [Organisation] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else if (type == "TrainingImage")
+                {
+                    Command command = new Command(@"SELECT [Training].guidImage FROM [Training] WHERE id = @id; ", false);
+                    command.AddParameter("id", id);
+                    try
+                    {
+                        imageBytes = (byte[])_connection.ExecuteScalar(command);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    // Si l'image est trouvée, la renvoyer comme contenu de l'image
+                    if (imageBytes != null)
+                    {
+                        return File(imageBytes, "image/jpeg"); // Spécifiez le type MIME approprié selon le format de votre image
+                    }
+                    else
+                    {
+                        return NotFound(); // Si l'image n'est pas trouvée, retourner une réponse 404
+                    }
+                }
+                else
+                {
+                    return NotFound("le type n'est pas connu"); // le type n'est pas connu
+                }
+
             }
             catch (Exception ex)
             {
-                throw ex;
+                return StatusCode(500, "Error retrieving image from database.");
             }
-
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
-                {
-                    var guid = Guid.NewGuid().ToString();
-                    var fileName = file.FileName;
-                    var filePath = Path.Combine(_diveplacePlan, fileName);
-
-                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        Command command = new Command(@"UPDATE [Diveplace] SET 
-                                        guidMap = @guidMap
-                                        WHERE Id=@Id ; ", false);
-                        command.AddParameter("Id", id);
-                        command.AddParameter("guidMap", fileName);
-
-                        try
-                        {
-                            _connection.ExecuteScalar(command);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw ex;
-                        }
-                    }
-                }
-            }
-            return Ok(new { Message = "ok" });
-        }
-
-        [AllowAnonymous]
-        [HttpGet("SitePlan/{imageName}")]
-        public IActionResult GetSitePlan(string imageName)
-        {
-            var filePath = Path.Combine(_diveplacePlan, imageName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return File(imageFileStream, "image/jpeg");
         }
 
 
-        [HttpPost("OrganisationImage/{id}")]
-        public async Task<IActionResult> InsertOrganisationImage(int id)
-        {
-            var test = Directory.GetCurrentDirectory();
 
-            if (!Request.HasFormContentType)
-            {
-                return BadRequest("The request doesn't contain a valid form content.");
-            }
 
-            var form = Request.Form;
 
-            var files = form.Files;
 
-            string guidImage;
-            Command command1 = new Command(@"SELECT guidImage
-                                            FROM [Organisation]  
-                                            WHERE Id=@Id ; ", false);
-            command1.AddParameter("Id", id);
-
-            try
-            {
-                guidImage = _connection.ExecuteScalar(command1) as string;
-                if (!String.IsNullOrEmpty(guidImage))
-                {
-                    var filePath = Path.Combine(_organisationImage, guidImage);
-
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
-                {
-                    var guid = Guid.NewGuid().ToString();
-                    var fileName = file.FileName;
-                    var filePath = Path.Combine(_organisationImage, fileName);
-
-                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        Command command = new Command(@"UPDATE [Organisation] SET 
-                                        guidImage = @guidImage
-                                        WHERE Id=@Id ; ", false);
-                        command.AddParameter("Id", id);
-                        command.AddParameter("guidImage", fileName);
-
-                        try
-                        {
-                            _connection.ExecuteScalar(command);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw ex;
-                        }
-                    }
-                }
-            }
-            return Ok(new { Message = "ok" });
-        }
-
-        [AllowAnonymous]
-        [HttpGet("OrganisationImage/{imageName}")]
-        public IActionResult GetOrganisationImage(string imageName)
-        {
-            var filePath = Path.Combine(_organisationImage, imageName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return File(imageFileStream, "image/jpeg");
-        }
-
-        [HttpPost("TrainingImage/{id}")]
-        public async Task<IActionResult> InsertTrainingImage(int id)
-        {
-            var test = Directory.GetCurrentDirectory();
-
-            if (!Request.HasFormContentType)
-            {
-                return BadRequest("The request doesn't contain a valid form content.");
-            }
-
-            var form = Request.Form;
-
-            var files = form.Files;
-
-            string guidImage;
-            Command command1 = new Command(@"SELECT guidImage
-                                            FROM [Training]  
-                                            WHERE Id=@Id ; ", false);
-            command1.AddParameter("Id", id);
-
-            try
-            {
-                guidImage = _connection.ExecuteScalar(command1) as string;
-                if (!String.IsNullOrEmpty(guidImage))
-                {
-                    var filePath = Path.Combine(_trainingImage, guidImage);
-
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
-                {
-                    var guid = Guid.NewGuid().ToString();
-                    var fileName = file.FileName;
-                    var filePath = Path.Combine(_trainingImage, fileName);
-
-                    if (!System.IO.File.Exists(filePath)) // Vérifiez si le fichier existe déjà
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        Command command = new Command(@"UPDATE [Training] SET 
-                                        guidImage = @guidImage
-                                        WHERE Id=@Id ; ", false);
-                        command.AddParameter("Id", id);
-                        command.AddParameter("guidImage", fileName);
-
-                        try
-                        {
-                            _connection.ExecuteScalar(command);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            throw ex;
-                        }
-                    }
-                }
-            }
-            return Ok(new { Message = "ok" });
-        }
-
-        [AllowAnonymous]
-        [HttpGet("TrainingImage/{imageName}")]
-        public IActionResult GeTrainingImage(string imageName)
-        {
-            var filePath = Path.Combine(_trainingImage, imageName);
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            var imageFileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return File(imageFileStream, "image/jpeg");
-        }
 
     }
 

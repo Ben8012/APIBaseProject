@@ -15,10 +15,10 @@ namespace BLL.Models.DTO
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
         public int AdressId { get; set; }
-        public string GuidImage { get; set; }
-        public string GuidInsurance { get; set; }
-        public string GuidLevel { get; set; }
-        public string GuidCertificat { get; set; }
+        public byte[]? GuidImage { get; set; }
+        public byte[]? GuidInsurance { get; set; }
+        public byte[]? GuidLevel { get; set; }
+        public byte[]? GuidCertificat { get; set; }
         public bool IsLevelValid { get; set; }
         public DateTime? MedicalDateValidation { get; set; }
         public DateTime? InsuranceDateValidation { get; set; }

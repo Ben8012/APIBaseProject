@@ -236,8 +236,7 @@ namespace DAL.Services
         public void IsRead(int friendId, int userId)
         {
             Command command = new Command(@"UPDATE [Message] SET isRead = @isRead
-                                            WHERE sender_Id = @sender AND reciever_Id = @reciever
-                                            OR sender_Id = @reciever AND reciever_Id = @sender", false);
+                                            WHERE sender_Id = @reciever  AND reciever_Id = @sender", false);
             command.AddParameter("reciever", friendId);
             command.AddParameter("sender", userId);
             command.AddParameter("isRead", 1);

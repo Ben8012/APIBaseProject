@@ -2,8 +2,8 @@
 (
     [Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [name] NVARCHAR(50) NOT NULL,
-    [guidImage] NVARCHAR(100) NULL,
-    [guidMap] NVARCHAR(100) NULL,
+    [guidImage] VARBINARY(MAX) NULL,
+    [guidMap] VARBINARY(MAX) NULL,
     [description] NVARCHAR(1000) NULL,
     [createdAt] DATETIME2 NOT NULL,
     [updatedAt] DATETIME2 NULL,

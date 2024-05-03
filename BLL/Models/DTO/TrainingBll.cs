@@ -7,7 +7,7 @@ namespace BLL.Models.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public int PrerequisiteId { get; set; }
-        public string GuidImage { get; set; }
+        public byte[]? GuidImage { get; set; }
         public bool IsSpeciality { get; set; }
         public int OrganisationId { get; set; }
         public DateTime CreatedAt { get; set; }
