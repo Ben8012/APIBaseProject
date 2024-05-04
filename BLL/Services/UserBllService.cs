@@ -116,11 +116,11 @@ namespace BLL.Services
                     message.Reciever = _userDal.GetById(message.RecieverId).ToUserBll();
                     message.Reciever.Email = "";
                 }
-                friend.Adress = _adressBll.GetById(friend.AdressId);
+                friend.Adress = friend.AdressId == 0 ? null : _adressBll.GetById(friend.AdressId);
                 friend.Clubs = _clubDal.GetClubsByUserId(friend.Id).Select(c => c.ToClubBll()).ToList();
                 foreach(var club in friend.Clubs)
                 {
-                    club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(friend.AdressId);
+                    club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
                 }
                 friend.Divelogs = _diveLogDal.GetDivelogByUserId(friend.Id).Select(d => d.ToDivelogBll()).ToList();
                 friend.Events = _eventDal.GetEventByUserId(friend.Id).Select(e => e.ToEventBll()).ToList();
