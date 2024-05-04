@@ -61,7 +61,7 @@ namespace DAL.Services
 
         public UserDal? Insert(AddUserFormDal form)
         {
-            Command command = new Command("INSERT INTO [User](firstname, lastname, email, passwd, role, birthDate, createdAt, isActive) OUTPUT inserted.id VALUES(@firstname, @lastname, @email,@passwd, @role, @birthDate, @createdAt, @isActive)", false);
+            Command command = new Command("INSERT INTO [User](firstname, lastname, email, passwd, role, birthDate, createdAt, isActive, isLevelValid) OUTPUT inserted.id VALUES(@firstname, @lastname, @email,@passwd, @role, @birthDate, @createdAt, @isActive, @isLevelValid)", false);
             command.AddParameter("lastname", form.LastName);
             command.AddParameter("firstname", form.FirstName);
             command.AddParameter("email", form.Email);
@@ -70,6 +70,7 @@ namespace DAL.Services
             command.AddParameter("birthDate", form.Birthdate);
             command.AddParameter("createdAt", DateTime.Now);
             command.AddParameter("isActive",1);
+            command.AddParameter("isLevelValid", 0);
 
             try
             {
