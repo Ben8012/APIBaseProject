@@ -54,7 +54,7 @@ namespace BLL.Services
             foreach (UserBll user in users)
             {
                 user.Email = "";
-                user.Adress = _adressBll.GetById(user.AdressId);
+                user.Adress = user.AdressId == 0 ? null : _adressBll.GetById(user.AdressId);
                 user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
                 foreach (var club in user.Clubs)
                 {
