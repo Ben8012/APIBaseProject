@@ -35,7 +35,8 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_clubBll.GetAll().Select(u => u.ToClub()));
+                List<Club> clubs = _clubBll.GetAll().Select(u => u.ToClub()).ToList();
+                return Ok(clubs);
             }
             catch (Exception ex)
             {

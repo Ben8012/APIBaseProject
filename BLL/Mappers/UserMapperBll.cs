@@ -16,7 +16,7 @@ namespace BLL.Mappers
     {
 
         // vers la BLL
-        internal static UserBll ToUserBll(this UserDal userDal)
+        public static UserBll ToUserBll(this UserDal userDal)
         {
             return new UserBll()
             {

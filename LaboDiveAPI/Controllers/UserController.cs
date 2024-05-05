@@ -19,6 +19,7 @@ using DAL.Interfaces;
 using DAL.Models.DTO;
 using System.Net.Mail;
 using System.Net;
+using BLL.Mappers;
 
 namespace API.Controllers
 {
@@ -32,14 +33,16 @@ namespace API.Controllers
         private readonly ILogger _logger;
         private readonly ITokenManager _token;
         private readonly Connection _connection;
-        
+        private readonly IUserDal _userDal;
 
-        public UserController(ILogger<UserController> logger, IUserBll userBll, ITokenManager token, Connection connection)
+
+        public UserController(ILogger<UserController> logger, IUserBll userBll, IUserDal userDal, ITokenManager token, Connection connection)
         {
             _userBll = userBll;
             _logger = logger;
             _token = token;
             _connection = connection;
+            _userDal = userDal;
         }
 
 
@@ -308,7 +311,7 @@ namespace API.Controllers
                 {
                     return BadRequest(new { Message = "L'utilisateur n'a pas été trouvé " });
                 }
-                user.Token = form.TokenString;
+                user.Token = _token.GenerateJWTUser(user);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -378,58 +381,50 @@ namespace API.Controllers
         [HttpPost("SendEmailToResetPassword")]
         public IActionResult SendEmailToResetPassword([FromBody] SendEmailToResetPassword form)
         {
-            Command command = new Command("SELECT Id FROM [User] WHERE email = @email;", false);
+            Command command = new Command("SELECT [User].id FROM [User] WHERE email = @email;", false);
             command.AddParameter("email", form.Email);
 
-            User? user = new User();
             try
             {
-                int? id = (int?)_connection.ExecuteScalar(command); // recuperer l'id de la boisson inseré
+                int? id = (int?)_connection.ExecuteScalar(command);
                 if (id.HasValue)
                 {
-                    user = _userBll.GetById(id.Value).ToUser();
-                    if (user is null)
-                    {
-                        return BadRequest(new { Message = "L'utilisateur n'a pas été trouvé " });
-                    }
-                    user.Token = _token.GenerateJWTUser(user);
+                    User user = _userDal.GetById(id.Value).ToUserBll().ToUser();
+
+                    string token = _token.GenerateJWTUser(user);
+
+                    string smtpServer = "smtp.gmail.com";
+                    string smtpUsername = "easyorder100@gmail.com";
+                    string smtpPassword = "olmo vgpy thwt yupj";
+
+                    MailMessage message = new MailMessage();
+                    message.From = new MailAddress("easyorder100@gmail.com");
+                    //message.To.Add(form.Email);
+                    message.To.Add(form.Email);
+                    message.Subject = "Réinitialisation de mot de passe";
+                    //https://enjoyyourdive.azurewebsites.net
+                    message.Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : http://localhost:4200/reset-password/"+token;
+
+                    SmtpClient smtpClient = new SmtpClient(smtpServer);
+                    smtpClient.Port = 587; // Le port SMTP approprié
+                    smtpClient.EnableSsl = true;
+                    smtpClient.UseDefaultCredentials = false;
+                    smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+
+                    smtpClient.Send(message);
+                    return Ok();
                 }
                 else
                 {
-                    throw new Exception("probleme l'email est inconnu");
+                    return BadRequest(new { Message = "l'opération a échoué, contactez l'admin : " });
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                return BadRequest(new { Message = "l'opération a échoué, contactez l'admin : " + ex.Message });
             }
 
-            string smtpServer = "smtp.gmail.com";
-            string smtpUsername = "easyorder100@gmail.com";
-            string smtpPassword = "olmo vgpy thwt yupj";
-
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress("easyorder100@gmail.com");
-            //message.To.Add(form.Email);
-            message.To.Add(form.Email);
-            message.Subject = "Réinitialisation de mot de passe";
-            message.Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : https://enjoyyourdive.azurewebsites.net/reset-password/" + user.Token;
-
-            SmtpClient smtpClient = new SmtpClient(smtpServer);
-            smtpClient.Port = 587; // Le port SMTP approprié
-            smtpClient.EnableSsl = true;
-            smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-
-            try
-            {
-                smtpClient.Send(message);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = "Erreur lors de l'envoi de l'e-mail : " + ex.Message });
-            }
+            
         }
 
         [AllowAnonymous]
