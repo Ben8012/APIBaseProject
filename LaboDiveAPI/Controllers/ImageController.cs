@@ -10,6 +10,9 @@ using System.Drawing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore.Storage;
+using BLL.Interfaces;
+using API.Tools;
+using API.Mappers;
 
 namespace API.Controllers
 {
@@ -19,10 +22,14 @@ namespace API.Controllers
     public class ImageController : ControllerBase
     {
         private readonly Connection _connection;
-       
-        public ImageController(Connection connection)
+        private readonly IUserBll _userBll;
+        private readonly ITokenManager _token;
+
+        public ImageController(Connection connection, IUserBll userBll, ITokenManager tokenManager)
         {
            _connection = connection;
+           _userBll = userBll;
+            _token = tokenManager;
         }
 
 
@@ -158,7 +165,17 @@ namespace API.Controllers
                         }
 
                     }
-                    return Ok();
+                    User user = new User();
+                    try
+                    {
+                        user = _userBll.GetById(id)?.ToUser();
+                        user.Token = _token.GenerateJWTUser(user);
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+                    }
+                    return Ok(user);
                 }
                 else
                 {

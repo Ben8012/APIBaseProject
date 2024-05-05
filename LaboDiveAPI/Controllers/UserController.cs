@@ -63,6 +63,7 @@ namespace API.Controllers
             try
             {
                 User user = _userBll.GetById(id)?.ToUser();
+                user.Token = _token.GenerateJWTUser(user);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -157,7 +158,9 @@ namespace API.Controllers
             form.Id = id;
             try
             {
-                return Ok(_userBll.Update(form.ToUpdateUserFormBll())?.ToUser());
+                User user = _userBll.Update(form.ToUpdateUserFormBll())?.ToUser();
+                user.Token = _token.GenerateJWTUser(user);
+                return Ok(user);
             }
             catch (Exception ex)
             {

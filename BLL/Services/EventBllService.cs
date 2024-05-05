@@ -24,8 +24,9 @@ namespace BLL.Services
         private readonly IUserBll _userBll;
         private readonly ITrainingBll _trainingBll;
         private readonly IDivelogDal _divelogDal;
+        private readonly IUserDal _userDal;
 
-        public EventBllService(ILogger<EventBllService> logger, IEventDal eventDal, IDiveplaceBll diveplaceBll, IClubBll clubBll, IUserBll userBll, ITrainingBll trainingBll, IDivelogDal divelogDal)
+        public EventBllService(ILogger<EventBllService> logger,IUserDal userDal, IEventDal eventDal, IDiveplaceBll diveplaceBll, IClubBll clubBll, IUserBll userBll, ITrainingBll trainingBll, IDivelogDal divelogDal)
         {
             _eventDal = eventDal;
             _logger = logger;
@@ -34,6 +35,7 @@ namespace BLL.Services
             _userBll = userBll;
             _trainingBll = trainingBll;
             _divelogDal= divelogDal;
+            _userDal= userDal;
         }
 
         public int? Delete(int id)
