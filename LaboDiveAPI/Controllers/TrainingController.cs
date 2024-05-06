@@ -167,7 +167,7 @@ namespace API.Controllers
         {
             try
             {
-                int? resultid = _trainingBll.UpdateMostLevel(id);
+                int? resultid = _trainingBll.UpdateMostLevel(id,userId);
                 return Ok(_trainingBll.GetTrainingsByUserId(userId));
             }
             catch (Exception ex)

@@ -100,9 +100,9 @@ namespace BLL.Services
             return _trainingDal.InsertUserTraining(form.ToUserTrainingFromDal()).Select(u => u.ToTrainingBll()).ToList();
         }
 
-        public int? UpdateMostLevel(int id)
+        public int? UpdateMostLevel(int id, int userId)
         {
-            return _trainingDal.UpdateMostLevel(id);
+            return _trainingDal.UpdateMostLevel(id,userId);
         }
 
         public int? DeleteUserTraining(int trainingId, int userId)

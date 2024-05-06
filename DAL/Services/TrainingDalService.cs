@@ -251,10 +251,11 @@ namespace DAL.Services
             }
         }
 
-        public int? UpdateMostLevel(int id)
+        public int? UpdateMostLevel(int id, int userId)
         {
            
-            Command command = new Command("UPDATE [User_Training] SET isMostLevel = 0 WHERE isMostLevel = 1 ; ", false);
+            Command command = new Command("UPDATE [User_Training] SET isMostLevel = 0 WHERE isMostLevel = 1 And  user_Id = @user_Id; ", false);
+            command.AddParameter("user_Id", userId);
             try
             {
                 _connection.ExecuteNonQuery(command);

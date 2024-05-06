@@ -24,7 +24,7 @@ namespace DAL.Interfaces
         int? Enable(int id);
         int? Disable(int id);
 
-        int? UpdateMostLevel(int id);
+        int? UpdateMostLevel(int id, int userId);
         int? DeleteUserTraining(int trainingId, int userId);
     }
 }
