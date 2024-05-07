@@ -86,7 +86,19 @@ namespace BLL.Services
                 form.AdressId = null;
             }
             ClubBll club = _clubDal.Insert(form.ToClubFormDal()).ToClubBll();
-            return club; 
+            club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
+            club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
+            club.Participes = GetAllParticipeByClubId(club.Id).ToList();
+            foreach (var participe in club.Participes)
+            {
+                participe.Trainings = _trainingBll.GetTrainingsByUserId(participe.Id).ToList();
+            }
+            club.Demands = GetAllDemandsByClubId(club.Id).ToList();
+            foreach (var demand in club.Demands)
+            {
+                demand.Trainings = _trainingBll.GetTrainingsByUserId(demand.Id).ToList();
+            }
+            return club;
         }
 
         public ClubBll? Update(ClubFormBll form)
@@ -106,6 +118,18 @@ namespace BLL.Services
                 form.AdressId = null;
             }
             ClubBll club = _clubDal.Update(form.ToClubFormDal()).ToClubBll();
+            club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
+            club.Creator = club.CreatorId == 0 ? null : _userBll.GetById(club.CreatorId);
+            club.Participes = GetAllParticipeByClubId(club.Id).ToList();
+            foreach (var participe in club.Participes)
+            {
+                participe.Trainings = _trainingBll.GetTrainingsByUserId(participe.Id).ToList();
+            }
+            club.Demands = GetAllDemandsByClubId(club.Id).ToList();
+            foreach (var demand in club.Demands)
+            {
+                demand.Trainings = _trainingBll.GetTrainingsByUserId(demand.Id).ToList();
+            }
             return club;
         }
 

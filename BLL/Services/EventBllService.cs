@@ -90,12 +90,44 @@ namespace BLL.Services
 
         public EventBll? Insert(AddEventFormBll form)
         {
-            return _eventDal.Insert(form.ToAddEventFromDal())?.ToEventBll();
+            EventBll e = _eventDal.Insert(form.ToAddEventFromDal())?.ToEventBll();
+            e.Diveplace = e.DiveplaceId == 0 ? null : _diveplaceBll.GetById(e.DiveplaceId);
+            e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
+            e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
+            e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+            e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+            foreach (var participe in e.Participes)
+            {
+                participe.Trainings = _trainingBll.GetTrainingsByUserId(participe.Id).ToList();
+            }
+            e.Demands = GetAllDemandsByEventId(e.Id).ToList();
+            foreach (var demand in e.Demands)
+            {
+                demand.Trainings = _trainingBll.GetTrainingsByUserId(demand.Id).ToList();
+            }
+            e.Divelog = _divelogDal.GetDivelogByEventId(e.Id) is null ? null : _divelogDal.GetDivelogByEventId(e.Id).ToDivelogBll();
+            return e;
         }
 
         public EventBll? Update(UpdateEventFormBll form)
         {
-            return _eventDal.Update(form.ToUpdateEventFormDal())?.ToEventBll();
+            EventBll e = _eventDal.Update(form.ToUpdateEventFormDal())?.ToEventBll();
+            e.Diveplace = e.DiveplaceId == 0 ? null : _diveplaceBll.GetById(e.DiveplaceId);
+            e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
+            e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
+            e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+            e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+            foreach (var participe in e.Participes)
+            {
+                participe.Trainings = _trainingBll.GetTrainingsByUserId(participe.Id).ToList();
+            }
+            e.Demands = GetAllDemandsByEventId(e.Id).ToList();
+            foreach (var demand in e.Demands)
+            {
+                demand.Trainings = _trainingBll.GetTrainingsByUserId(demand.Id).ToList();
+            }
+            e.Divelog = _divelogDal.GetDivelogByEventId(e.Id) is null ? null : _divelogDal.GetDivelogByEventId(e.Id).ToDivelogBll();
+            return e;
         }
 
         public int? Disable(int id)

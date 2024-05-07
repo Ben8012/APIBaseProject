@@ -81,7 +81,7 @@ namespace DAL.Services
         public IEnumerable<ClubDal> GetAll()
         {
             Command command = new Command(@"SELECT Id, name, createdAt, updatedAt, isActive, adress_Id, creator_Id 
-                                            FROM [Club];", false);
+                                            FROM [Club] WHERE isActive = 1 ;", false);
             try
             {
                 return _connection.ExecuteReader(command, dr => dr.ToClubDal());
@@ -240,15 +240,13 @@ namespace DAL.Services
 
             try
             {
-                int? resultid = (int?)_connection.ExecuteScalar(command);
-                if (!resultid.HasValue) throw new Exception("probleme de recuperation de l'id lors de la mise a jour");
-                ClubDal? club = GetClubById(resultid.Value);
+                int resultid = (int)_connection.ExecuteScalar(command);
+                ClubDal? club = GetClubById(resultid);
                 if (club is null) throw new Exception("probleme de recuperation de l'utilisateur lors de la mise a jour");
                 return club;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
