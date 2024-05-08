@@ -289,7 +289,7 @@ namespace DAL.Services
         public int? DeleteUserTraining(int trainingId, int userId)
         {
 
-            Command command = new Command(@"DELETE FROM [User_Training] 
+            Command command = new Command(@"Update [User_Training] SET [isMostLevel] = 0 
                                     WHERE training_Id = @training_Id AND user_Id = @user_Id ", false);
             command.AddParameter("user_Id", userId);
             command.AddParameter("training_Id", trainingId);

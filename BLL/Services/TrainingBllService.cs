@@ -85,6 +85,7 @@ namespace BLL.Services
             foreach (TrainingBll training in trainings)
             {
                 training.Organisation = _organisationBll.GetById(training.OrganisationId);
+                training.Prerequis = training.PrerequisiteId == 0 ? null : _trainingDal.GetById(training.PrerequisiteId).ToTrainingBll();
             }
 
             return trainings;

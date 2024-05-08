@@ -52,6 +52,10 @@ namespace BLL.Services
                 e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
                 e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+                if(e.Training is not null)
+                {
+                    e.Training.Prerequis = e.Training.PrerequisiteId == 0 ? null : _trainingBll.GetById(e.Training.PrerequisiteId);
+                }
                 e.Participes = GetAllParticipeByEventId(e.Id).ToList();
                 foreach (var participe in e.Participes)
                 {
@@ -74,6 +78,10 @@ namespace BLL.Services
             e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
             e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
             e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+            if (e.Training is not null)
+            {
+                e.Training.Prerequis = e.Training.PrerequisiteId == 0 ? null : _trainingBll.GetById(e.Training.PrerequisiteId);
+            }
             e.Participes = GetAllParticipeByEventId(e.Id).ToList();
             foreach (var participe in e.Participes)
             {
@@ -95,6 +103,10 @@ namespace BLL.Services
             e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
             e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
             e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+            if (e.Training is not null)
+            {
+                e.Training.Prerequis = e.Training.PrerequisiteId == 0 ? null : _trainingBll.GetById(e.Training.PrerequisiteId);
+            }
             e.Participes = GetAllParticipeByEventId(e.Id).ToList();
             foreach (var participe in e.Participes)
             {
@@ -116,6 +128,10 @@ namespace BLL.Services
             e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
             e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
             e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
+            if (e.Training is not null)
+            {
+                e.Training.Prerequis = e.Training.PrerequisiteId == 0 ? null : _trainingBll.GetById(e.Training.PrerequisiteId);
+            }
             e.Participes = GetAllParticipeByEventId(e.Id).ToList();
             foreach (var participe in e.Participes)
             {
@@ -173,7 +189,10 @@ namespace BLL.Services
                 e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
                 e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
-                e.Participes = GetAllParticipeByEventId(e.Id).ToList();
+                if (e.Training is not null)
+                {
+                    e.Training.Prerequis = e.Training.PrerequisiteId == 0 ? null : _trainingBll.GetById(e.Training.PrerequisiteId);
+                };
                 foreach (var participe in e.Participes)
                 {
                     participe.Trainings = _trainingBll.GetTrainingsByUserId(participe.Id).ToList();

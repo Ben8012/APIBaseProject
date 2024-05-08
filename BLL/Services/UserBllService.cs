@@ -107,7 +107,7 @@ namespace BLL.Services
             user.Likeds = GetLikedsByUserId(user.Id).ToList();
             foreach (var friend in user.Friends)
             {
-                //friend.Email = "";
+                friend.Email = "";
                 friend.Messages = _messageDal.GetMessagesBetween(user.Id, friend.Id).Select(m => m.ToMessageBll()).ToList();
                 foreach (var message in friend.Messages)
                 {

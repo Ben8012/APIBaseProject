@@ -41,7 +41,9 @@ namespace BLL.Services
             foreach (var message in messages)
             {
                 message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                message.Sender.Email = "";
                 message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+                message.Reciever.Email = "";
             }
             return messages;
         }
@@ -51,7 +53,9 @@ namespace BLL.Services
         {
             MessageBll message = _messageDal.GetById(id)?.ToMessageBll();
             message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+            message.Sender.Email = "";
             message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+            message.Reciever.Email = "";
             return message;
         }
 
@@ -59,7 +63,9 @@ namespace BLL.Services
         {
             MessageBll message = _messageDal.Insert(form.ToAddMessageFromDal())?.ToMessageBll();
             message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+            message.Sender.Email = "";
             message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+            message.Reciever.Email = "";
             return message;
         }
 
@@ -84,7 +90,9 @@ namespace BLL.Services
             foreach (var message in messages)
             {
                 message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                message.Sender.Email = "";
                 message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+                message.Reciever.Email = "";
             }
             return messages;
         }
@@ -95,7 +103,10 @@ namespace BLL.Services
             foreach (var message in messages)
             {
                 message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                message.Sender.Email = "";
                 message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+                message.Reciever.Email = "";
+
             }
 
             return messages;
@@ -107,7 +118,9 @@ namespace BLL.Services
             foreach (var message in messages)
             {
                 message.Sender = message.SenderId == 0 ? null : _userDal.GetById(message.SenderId).ToUserBll();
+                message.Sender.Email = "";
                 message.Reciever = message.RecieverId == 0 ? null : _userDal.GetById(message.RecieverId).ToUserBll();
+                message.Reciever.Email = "";
             }
             return messages;
         }

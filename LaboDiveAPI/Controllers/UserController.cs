@@ -402,8 +402,8 @@ namespace API.Controllers
                     //message.To.Add(form.Email);
                     message.To.Add(form.Email);
                     message.Subject = "Réinitialisation de mot de passe";
-                    // http://localhost:4200
-                    message.Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : https://enjoyyourdive.azurewebsites.net/reset-password/" + token;
+                    //  https://enjoyyourdive.azurewebsites.net
+                    message.Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : http://localhost:4200/reset-password/" + token;
 
                     SmtpClient smtpClient = new SmtpClient(smtpServer);
                     smtpClient.Port = 587; // Le port SMTP approprié
