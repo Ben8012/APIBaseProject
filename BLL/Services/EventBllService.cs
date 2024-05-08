@@ -193,6 +193,7 @@ namespace BLL.Services
                 {
                     e.Training.Prerequis = e.Training.PrerequisiteId == 0 ? null : _trainingBll.GetById(e.Training.PrerequisiteId);
                 };
+                e.Participes = GetAllParticipeByEventId(e.Id).ToList();
                 foreach (var participe in e.Participes)
                 {
                     participe.Trainings = _trainingBll.GetTrainingsByUserId(participe.Id).ToList();
