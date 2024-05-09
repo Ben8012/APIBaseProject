@@ -78,6 +78,9 @@ namespace BLL.Services
                 form.AdressId = null;
             }
             DiveplaceBll diveplace = _diveplaceDal.Insert(form.ToDiveplaceFormDal())?.ToDiveplaceBll();
+            diveplace.Adress = diveplace.AdressId == 0 ? null : _adressBll.GetById(diveplace.AdressId);
+            diveplace.AvgVote = GetVoteAverageByDiveplaceId(form.UserId);
+            diveplace.UserVote = GetVoteByUserIdAndDiveplaceId(form.UserId, diveplace.Id);
             return diveplace;
         }
 
@@ -98,6 +101,9 @@ namespace BLL.Services
                 form.AdressId = null;
             }
             DiveplaceBll diveplace = _diveplaceDal.Update(form.ToDiveplaceFormDal())?.ToDiveplaceBll();
+            diveplace.Adress = diveplace.AdressId == 0 ? null : _adressBll.GetById(diveplace.AdressId);
+            diveplace.AvgVote = GetVoteAverageByDiveplaceId(form.UserId);
+            diveplace.UserVote = GetVoteByUserIdAndDiveplaceId(form.UserId, diveplace.Id);
             return diveplace;
         }
 

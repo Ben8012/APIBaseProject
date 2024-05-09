@@ -170,9 +170,11 @@ namespace BLL.Services
             return user;
         }
 
-        public UserBll? Update(UpdateUserFormBll form)
+        public UserBll? Update(UpdateUserFormBll form) 
         {
-            return _userDal.Update(form.ToUpdateUserFormDal())?.ToUserBll();   
+            UserBll? user = _userDal.Update(form.ToUpdateUserFormDal())?.ToUserBll();
+            user = GetById(user.Id);
+            return user;
         }
 
         public UserBll Login(LoginFormBll form)
@@ -222,14 +224,19 @@ namespace BLL.Services
             return _userDal.DeleteLike(likerId, likedId);
         }
 
-        public int? Admin(int id)
+        public UserBll Admin(int id)
         {
-            return _userDal.Admin(id);
+            _userDal.Admin(id);
+            UserBll user = _userDal.GetById(id).ToUserBll();
+            return user;
+
         }
 
-        public int? UnAdmin(int id)
+        public UserBll UnAdmin(int id)
         {
-            return _userDal.UnAdmin(id);
+            _userDal.UnAdmin(id);
+            UserBll user = _userDal.GetById(id).ToUserBll();
+            return user;
         }
 
         public int? UpdateInsuranceDate(int id, string date)

@@ -19,6 +19,8 @@ namespace BLL.Models.Forms.Diveplace
         public int? AdressId { get; set; }
 
         public int CreatorId { get; set; }
+
+        public int UserId { get; set; }
         public AdressFormBll Adress { get; set; }
     }
 }

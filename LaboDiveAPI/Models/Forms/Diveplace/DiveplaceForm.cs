@@ -39,6 +39,9 @@ namespace API.Models.Forms.Diveplace
         [Required]
         public int CreatorId { get; set; }
 
+        [Required]
+        public int UserId { get; set; }
+
 
 
 

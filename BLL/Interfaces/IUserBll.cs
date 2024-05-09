@@ -33,8 +33,8 @@ namespace BLL.Interfaces
         int? Like(int likerId, int likedId);
         int? UnLike(int likerId, int likedId);
         int? DeleteLike(int likerId, int likedId);
-        int? Admin(int id);
-        int? UnAdmin(int id);
+        UserBll Admin(int id);
+        UserBll UnAdmin(int id);
 
         int? UpdateInsuranceDate(int id, string date);
         int? UpdateCertificatDate(int id, string date);

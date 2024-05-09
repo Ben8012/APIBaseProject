@@ -52,6 +52,7 @@ namespace API.Mappers
                 Price= diveplaceFrom.Price,
                 Adress = diveplaceFrom.Adress is null ? null : diveplaceFrom.Adress.ToAdressBll(),
                 CreatorId= diveplaceFrom.CreatorId,
+                UserId =  diveplaceFrom.UserId,
             };
         }  
     }
