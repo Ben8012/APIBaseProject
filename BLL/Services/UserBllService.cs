@@ -54,27 +54,27 @@ namespace BLL.Services
             foreach (UserBll user in users)
             {
                 user.Email = "";
-                user.Adress = user.AdressId == 0 ? null : _adressBll.GetById(user.AdressId);
-                user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
-                foreach (var club in user.Clubs)
-                {
-                    club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
-                }
+                //user.Adress = user.AdressId == 0 ? null : _adressBll.GetById(user.AdressId);
+                //user.Clubs = _clubDal.GetClubsByUserId(user.Id).Select(c => c.ToClubBll()).ToList();
+                //foreach (var club in user.Clubs)
+                //{
+                //    club.Adress = club.AdressId == 0 ? null : _adressBll.GetById(club.AdressId);
+                //}
                 //user.Divelogs = _diveLogDal.GetDivelogByUserId(user.Id).Select(d => d.ToDivelogBll()).ToList();
                 //user.Events = _eventDal.GetEventByUserId(user.Id).Select(e => e.ToEventBll()).ToList();
-                user.Friends = GetFriendsUserId(user.Id).ToList();
-                user.Likers = GetLikersByUserId(user.Id).ToList();
-                user.Likeds = GetLikedsByUserId(user.Id).ToList();
+                //user.Friends = GetFriendsUserId(user.Id).ToList();
+                //user.Likers = GetLikersByUserId(user.Id).ToList();
+                //user.Likeds = GetLikedsByUserId(user.Id).ToList();
 
               
-                foreach (var liker in user.Likers)
-                {
-                    liker.Email = "";
-                }
-                foreach (var liked in user.Likeds)
-                {
-                    liked.Email = "";
-                }
+                //foreach (var liker in user.Likers)
+                //{
+                //    liker.Email = "";
+                //}
+                //foreach (var liked in user.Likeds)
+                //{
+                //    liked.Email = "";
+                //}
 
                 user.Trainings = _trainingDal.GetTrainingsByUserId(user.Id).Select(t => t.ToTrainingBll()).ToList();
                 foreach (var training in user.Trainings)
