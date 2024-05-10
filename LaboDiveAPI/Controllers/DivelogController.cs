@@ -134,6 +134,18 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetDivelogByEventId/{id}")]
+        public IActionResult GetDivelogByEventId(int id)
+        {
+            try
+            {
+                return Ok(_divelogBll.GetDivelogByEventId(id)?.ToDivelog());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
 
     }
 }

@@ -1,10 +1,13 @@
 ﻿using API.Mappers;
+using API.Models.DTO.UserAPI;
+using API.Models.DTO;
 using API.Models.Forms.Insurance;
 using API.Models.Forms.Organisation;
 using API.Models.Forms.Training;
 using API.Tools;
 using BLL.Interfaces;
 using BLL.Models.DTO;
+using DAL.Interfaces;
 using DAL.Models.DTO;
 using DAL.Models.Forms.Training;
 using Microsoft.AspNetCore.Authorization;
@@ -188,6 +191,22 @@ namespace API.Controllers
             {
                 return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
             }
+        }
+
+
+        [HttpGet("GetTrainingsByUserId/{id}")]
+        public IActionResult GetTrainingsByUserId(int id)
+        {
+
+            try
+            {
+                return Ok(_trainingBll.GetTrainingsByUserId(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "l'operation a echoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+            
         }
 
     }

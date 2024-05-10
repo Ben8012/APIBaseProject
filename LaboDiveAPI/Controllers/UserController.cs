@@ -45,7 +45,6 @@ namespace API.Controllers
             _userDal = userDal;
         }
 
-
         [HttpGet]
         public IActionResult GetAll()
         {

@@ -52,7 +52,7 @@ namespace BLL.Services
                 e.Club = e.ClubId == 0 ? null : _clubBll.GetById(e.ClubId);
                 e.Creator = e.CreatorId == 0 ? null : _userBll.GetById(e.CreatorId);
                 e.Training = e.TrainingId == 0 ? null : _trainingBll.GetById(e.TrainingId);
-                if(e.Training is not null)
+                if (e.Training is not null)
                 {
                     e.Training.Prerequis = e.Training.PrerequisiteId == 0 ? null : _trainingBll.GetById(e.Training.PrerequisiteId);
                 }

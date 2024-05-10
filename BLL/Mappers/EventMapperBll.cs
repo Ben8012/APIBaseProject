@@ -8,7 +8,7 @@ namespace BLL.Mappers
 {
     public static class EventMapperBll
     {
-        internal static EventBll ToEventBll(this EventDal eventDal)
+        public static EventBll ToEventBll(this EventDal eventDal)
         {
             return new EventBll()
             {

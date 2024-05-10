@@ -1,14 +1,11 @@
 ﻿using API.Mappers;
 using API.Models.DTO;
-using API.Models.DTO.UserAPI;
-using API.Models.Forms.Diveplace;
 using API.Models.Forms.Event;
-using API.Models.Forms.Insurance;
-using API.Tools;
 using BLL.Interfaces;
+using BLL.Mappers;
 using BLL.Models.DTO;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,14 +16,13 @@ namespace API.Controllers
     {
 
         private readonly IEventBll _eventBll;
-        private readonly ILogger _logger;
-        private readonly ITokenManager _token;
-
-        public EventController(ILogger<EventController> logger, ITokenManager token, IEventBll eventBll)
+        private readonly IEventDal _eventDal;
+        private readonly ITrainingBll _trainingBll;
+        public EventController(IEventBll eventBll, IEventDal eventDal, ITrainingBll trainingBll)
         {
             _eventBll = eventBll;
-            _logger = logger;
-            _token = token;
+            _eventDal = eventDal;
+            _trainingBll = trainingBll;
         }
 
         [AllowAnonymous]
@@ -35,7 +31,14 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_eventBll.GetAll().Select(u => u.ToEvent()));
+                List<Event>events = _eventBll.GetAll().Select(u => u.ToEvent()).ToList();
+
+                //List<EventBll> events = _eventDal.GetAll().Select(u => u.ToEventBll()).ToList();
+                return Ok(events);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return StatusCode(500, new { Message = "Failed to retrieve events. Please contact the administrator." });
             }
             catch (Exception ex)
             {
@@ -253,5 +256,31 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetAllParticipeByEventId/{eventId}")]
+        public IActionResult GetAllParticipeByEventId(int id)
+        {
+            try
+            {
+                return Ok( _eventBll.GetAllParticipeByEventId(id).Select(u => u.ToUser()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("GetAllDemandsByEventId/{eventId}")]
+        public IActionResult GetAllDemandsByEventId(int id)
+        {
+            try
+            {
+                return Ok(_eventBll.GetAllDemandsByEventId(id).Select(u => u.ToUser()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "la suppression a échoué, contactez l'admin", ErrorMessage = ex.Message });
+            }
+        }
+       
     }
 }

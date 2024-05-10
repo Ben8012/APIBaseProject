@@ -69,7 +69,8 @@ namespace BLL.Services
 
         public DivelogBll? GetDivelogByEventId(int id)
         {
-            return _divelogDal.GetDivelogByEventId(id).ToDivelogBll();
+            DivelogBll divelog = _divelogDal.GetDivelogByEventId(id) is null ? null : _divelogDal.GetDivelogByEventId(id).ToDivelogBll();
+            return divelog;
         }
     }
 }
