@@ -1,6 +1,7 @@
 ﻿
 using API.Mappers;
 using API.Models.DTO;
+using API.Models.DTO.UserAPI;
 using BLL.Interfaces;
 using BLL.Models.Forms.Message;
 using Microsoft.AspNetCore.SignalR;
@@ -18,13 +19,27 @@ namespace API.Hubs
         public async Task SendMessage(AddMessageFormBll message)
         {
             Message messageTosend = _messageBll.Insert(message).ToMessage();
-            await Clients.All.SendAsync("ReceiveMessage", messageTosend);
+            List<Message> messages = _messageBll.GetMessagesBetween(message.SenderId,message.RecieverId).Select(m => m.ToMessage()).ToList();
+            var MessageToReturn = new {
+                Messages = messages,
+                SenderId = message.SenderId,
+                RecieverId = message.RecieverId,
+
+            };
+            await Clients.All.SendAsync("ReceiveMessage", MessageToReturn);
         }
 
         public async Task DeleteMessage(DeleteMessageFormBll message)
         {
             _messageBll.Delete(message.Id);
-            await Clients.All.SendAsync("MessageDeleted", message);
+            List<Message> messages = _messageBll.GetMessagesBetween(message.SenderId, message.RecieverId).Select(m => m.ToMessage()).ToList();
+            var MessageToReturn = new {
+                Messages = messages,
+                SenderId = message.SenderId,
+                RecieverId = message.RecieverId,
+
+            };
+            await Clients.All.SendAsync("MessageDeleted", MessageToReturn);
         }
 
         public async Task MessageIsRead(IsReadMessageFormBll message)
